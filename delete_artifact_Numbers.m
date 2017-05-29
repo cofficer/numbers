@@ -3,11 +3,15 @@ function [ data ] = delete_artifact_Numbers( artifacts,data )
 %and removes the samples.
 
 
-%Find the indices of artifacts
+%Find the indices of artifacts, add one so that there is no + 
 onset_artifacts= artifacts-data.sampleinfo(1);
 
+%If there is a 0 add 1;
+idx_0 = onset_artifacts==0;
+onset_artifacts(idx_0)=1;
+
 %Insert NaNs for each artfifact
-for iart = 1:length(onset_artifacts)
+for iart = 1:size(onset_artifacts,1)
     
     
    %insert nans for all the artifacts
