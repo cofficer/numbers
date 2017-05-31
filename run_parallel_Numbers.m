@@ -21,11 +21,13 @@ switch runcfg.execute
     case 'cohICA'
         
         %component for blinks
-        coherenceICA(cfgin{1},'UADC004');
+        [val_corBlink,idx_corBlink] = coherenceICA(cfgin{1},'UADC004');
         %component for heart rate
-        coherenceICA(cfgin{1},'EEG059');
+        [val_corHR,idx_corHR] = coherenceICA(cfgin{1},'EEG059');
         %cellfun(@createFullMatrix, cfg1, outputfile);    
-
+        
+        %Decide where to save the component to reject information, 
+        %or remove them directly and finish the preprocessing.
     case 'parallel'
         nnodes = 1;%64; % how many licenses?
         stack = 1;%round(length(cfg1)/nnodes);
