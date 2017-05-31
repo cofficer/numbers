@@ -1,4 +1,4 @@
-function coherenceICA( dataset,channelRej )
+function [val_cor,idx_cor] = coherenceICA( dataset,channelRej )
 %Using coherence analysis this function will output the channels which
 %should be rejected.
 %channelRej='UADC004'; %UADC004, % EEG059 Heart.
