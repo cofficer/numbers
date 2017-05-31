@@ -2,7 +2,7 @@ function [ rej_components ] = heartrateICA( data,channelRej )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
-channelRej='EEG058'; %UADC004, % EEG059 Hear.
+channelRej='UADC004'; %UADC004, % EEG059 Hear.
 
 %define ds file, this is actually from the trial-based data
 dsfile = '/mnt/homes/home024/ktsetsos/resting/20_S2_P3.mat';

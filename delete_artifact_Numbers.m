@@ -1,10 +1,10 @@
-function [ data ] = delete_artifact_Numbers( artifacts,data )
+function [ data ] = delete_artifact_Numbers( artifacts,data,sampleinfo)
 %takes artifacts which should be removed from data.trial and data.time
 %and removes the samples.
 
 
 %Find the indices of artifacts, add one so that there is no + 
-onset_artifacts= artifacts-data.sampleinfo(1);
+onset_artifacts= artifacts-sampleinfo(1);
 
 %If there is a 0 add 1;
 idx_0 = onset_artifacts==0;

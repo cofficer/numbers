@@ -1,10 +1,11 @@
-function [ rej_components ] = coherenceICA( dataset,channelRej )
+function coherenceICA( dataset,channelRej )
 %Using coherence analysis this function will output the channels which
 %should be rejected.
-%channelRej='EEG058'; %UADC004, % EEG059 Hear.
+%channelRej='UADC004'; %UADC004, % EEG059 Heart.
 
 %define ds file, this is actually from the trial-based data
-dsfile = sprintf('/mnt/homes/home024/ktsetsos/resting/%s',dataset);
+dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/preproc%s'...
+    ,dataset(1:2),dataset(4:end));
 
 load(dsfile)
 
@@ -18,42 +19,60 @@ ecg.label{:} = 'ECG';
 %%
 %select components for heart rate
 cfg                       = [];
-cfg.trl                   = data.cfg.trl;
-cfg.dataset               = data.cfg.dataset;
+cfg.trl                   = [1 length(data.trial{1})];
+cfg.dataset               = data;
 cfg.continuous            = 'yes';
-cfg.artfctdef.ecg.pretim  = 0.2;
-cfg.artfctdef.ecg.psttim  = 0.20-1/1200;
+if channelRej == 'UADC004'
+    cfg.artfctdef.ecg.pretim  = 0.05;
+    cfg.artfctdef.ecg.psttim  = 0.1-1/500;
+else
+    cfg.artfctdef.ecg.pretim  = 0.15;
+    cfg.artfctdef.ecg.psttim  = 0.07-1/500;
+end
 cfg.channel               = {channelRej};
 cfg.artfctdef.ecg.inspect = {channelRej};
 cfg.artfctdef.ecg.cutoff  = 1;
-cfg.artfctdef.ecg.interactive = 'no';
+cfg.artfctdef.ecg.interactive = 'yes';
 [cfg, artifact]           = ft_artifact_ecg(cfg, ecg);
+
+%%
+%can the same be done with the preprocessed data... YES!
+
+
 
 %%
 % preproces the data around the QRS-complex, i.e. read the segments of raw data containing the ECG artifact
 
-cd('/mnt/homes/home024/ktsetsos/meg_data')
+%cd('/mnt/homes/home024/ktsetsos/meg_data')
 
+%this part might be unnecessary
+% cfg            = [];
+% cfg.dataset    = data;
+% cfg.continuous = 'yes';
+% cfg.padding    = 10;
+% cfg.dftfilter  = 'yes';
+% cfg.demean     = 'yes';
+% cfg.trl        = [artifact zeros(size(artifact,1),1)];
+% cfg.channel    = {'MEG'};
+% %data_ecg       = ft_preprocessing(cfg);
+% cfg.channel    = {channelRej};
+% ecg            = ft_preprocessing(cfg);
+% ecg.channel{:} = 'ECG'; % renaming is purely for clarity and consistency
+
+%Or actually I need to make the continuous data into trials based on the
+%artifacts
 cfg            = [];
-cfg.dataset    = data.cfg.dataset;
-cfg.continuous = 'yes';
-cfg.padding    = 10;
-cfg.dftfilter  = 'yes';
-cfg.demean     = 'yes';
-cfg.trl        = [artifact zeros(size(artifact,1),1)];
+cfg.trl        = [artifact,zeros(size(artifact,1),1)];
 cfg.channel    = {'MEG'};
-data_ecg       = ft_preprocessing(cfg);
+cfg.continuous = 'yes';
+data_ecg       = ft_preprocessing(cfg,data);
+data_ecg       = ft_redefinetrial(cfg,data_ecg);
 cfg.channel    = {channelRej};
-ecg            = ft_preprocessing(cfg);
-ecg.channel{:} = 'ECG'; % renaming is purely for clarity and consistency
+ecg            = ft_preprocessing(cfg,data);
+ecg            = ft_redefinetrial(cfg,ecg);
+ecg.channel{:} = channelRej;
 
-% resample to speed up the decomposition and frequency analysis, especially usefull for 1200Hz MEG data
-cfg            = [];
-cfg.resamplefs = 300;
-cfg.detrend    = 'no';
-data_ecg       = ft_resampledata(cfg, data_ecg);
-ecg            = ft_resampledata(cfg, ecg);
-
+%load the previously computed ICA components
 load('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/comp01S2P1.mat')
 
 % decompose the ECG-locked datasegments into components, using the previously found (un)mixing matrix
@@ -63,7 +82,7 @@ cfg.topolabel = comp.topolabel;
 comp_ecg      = ft_componentanalysis(cfg, data_ecg);
 
 % append the ecg channel to the data structure;
-comp_ecg      = ft_appenddata([], ecg, comp_ecg);
+comp_ecg      = ft_appenddata([], ecg, comp_ecg); 
 
 % average the components timelocked to the QRS-complex
 cfg           = [];
@@ -94,9 +113,9 @@ cfg.method     = 'coh';
 fdcomp         = ft_connectivityanalysis(cfg, freq);
 
 % look at the coherence spectrum between all components and the ECG
-% figure;
-% subplot(2,1,1); plot(fdcomp.freq, abs(fdcomp.cohspctrm));
-% subplot(2,1,2); imagesc(abs(fdcomp.cohspctrm));
+ figure;
+ subplot(2,1,1); plot(fdcomp.freq, abs(fdcomp.cohspctrm));
+ subplot(2,1,2); imagesc(abs(fdcomp.cohspctrm));
 
 %calculate to average coherence over all frequencies:
 [~,idx_coh] = sort(mean(fdcomp.cohspctrm,2));
@@ -105,7 +124,7 @@ fdcomp         = ft_connectivityanalysis(cfg, freq);
 rej_components = idx_coh(end);
 
 %Compute the spatial correlation of artifact and all components
-cor_comp_artifact = corr(comp.topo(:,14),comp.topo(:,:));
+cor_comp_artifact = corr(comp.topo(:,rej_components),comp.topo(:,:));
 
 %Sort in order of spatial correlation 
 [val_cor,idx_cor] = sort(cor_comp_artifact);

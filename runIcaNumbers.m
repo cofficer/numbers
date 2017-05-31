@@ -1,4 +1,4 @@
-function [ output_args ] = runIcaNumbers( input_args )
+function [ output_args ] = runIcaNumbers( cfgin )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -8,9 +8,11 @@ function [ output_args ] = runIcaNumbers( input_args )
 % pconn_preproc_ica
 
 %restoredefaultpath
+try
+cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin(1:2)))
 
 %load the preproc data.
-load('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P20/preprocS2_P3.mat')
+load(sprintf('preproc%s.mat',cfgin(4:8)))
 
 %load the raw data:
 %dsfile = '/mnt/homes/home024/ktsetsos/resting/01_S2_P1.mat';
@@ -31,19 +33,34 @@ dataMEG=ft_selectdata(cfg,data);
 
 %run the ica
 comp = ft_componentanalysis(cfg,dataMEG);
-save('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P20/comp01S2P1.mat','comp')
+savefile = sprintf('comp%s.mat',cfgin(4:8));
+save(savefile,'comp')
+
+catch err
+    
+    cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
+    fid=fopen('logfileICA','a+');
+    c=clock;
+    fprintf(fid,sprintf('\n\n\n\nNew entry for %s at %i/%i/%i %i:%i\n\n\n\n',cfgin,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
+    
+    fprintf(fid,'%s',err.getReport('extended','hyperlinks','off'))
+    
+    fclose(fid)
+    
+end
+
 %load('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/comp01S2P1.mat')
 %Stop the function here and save the output of the ft_componentanalysis
 %%
 
 % 
 % % here, you might want to plot the topography and timecourse
-% cfg = [];
-% cfg.viewmode = 'component';
-% %cfg.component = compidx(1);
-% cfg.layout = 'CTF275.lay';
-% cfg.style = 'straight';
-% ft_databrowser(cfg, comp);
+cfg = [];
+cfg.viewmode = 'component';
+%cfg.component = compidx(1);
+cfg.layout = 'CTF275.lay';
+cfg.style = 'straight';
+ft_databrowser(cfg, comp);
 % 
 % %%
 % cfg.path            ='/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/';
@@ -60,7 +77,7 @@ save('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocesse
 % 
 % %plot timecourse of component of interest
 % cfg3                 =[];
-% cfg3.path            ='/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P20';
+% cfg3.path            ='/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/';
 % cfg3.prefix          ='S2_P1';
 % %cfg3.component       = 15;
 % cfg3.comment         = 'no';

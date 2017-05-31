@@ -15,18 +15,15 @@ dsfile = sprintf('/mnt/homes/home024/ktsetsos/resting/%s',cfgin.restingfile);
 
 load(dsfile)
 
-    addpath(genpath('/mnt/homes/home024/chrisgahn/Documents/MATLAB/code/analysis'))
-    addpath('/mnt/homes/home024/chrisgahn/Documents/MATLAB/fieldtrip-20151020/')
-    addpath('/mnt/homes/home024/chrisgahn/Documents/MATLAB/fieldtrip-20151020/qsub')
-    addpath(genpath('/mnt/homes/home024/chrisgahn/Documents/MATLAB/Lissajous'))
-     addpath(genpath('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos'))
-    ft_defaults
+ 
+
+    
 %%
 %From Anne, Donner git example
 %Skipping head motion calculation...
 
 
-
+sampleinfo = data.sampleinfo;
 
 % plot a quick power spectrum
 % save those cfgs for later plotting
@@ -76,7 +73,7 @@ cfg                              = [];
 cfg.continuous                   = 'yes'; % data has been epoched
 
 % channel selection, cutoff and padding
-cfg.artfctdef.zvalue.channel     = {'EEG057'}; %UADC003
+cfg.artfctdef.zvalue.channel     = {'UADC004'}; %UADC003
 
 % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
 cfg.artfctdef.zvalue.trlpadding  = 0; % avoid filter edge artefacts by setting to negative
@@ -97,26 +94,29 @@ cfg.artfctdef.zvalue.interactive = 'no';
 artifact_eogVertical = artifact_eog; 
 
 
+
 cfg                             = [];
 cfg.artfctdef.reject            = 'partial';
 cfg.artfctdef.eog.artifact      = artifact_eogVertical;
 
 %plot the blink rate vertical??
 cfg=[];
-cfg.channel = 'EEG057'; % UADC004 if eyelink is present
+cfg.channel = 'HAD003'; % UADC004 if eyelink is present
 blinks = ft_selectdata(cfg,data);
+
+
 
 %If there is no variance in the data then it is probably because the
 %eyelink was not working for that session
-% if var(blinks.trial{:})<0.01 %No eyelink
-% 	cfg=[];
-%     cfg.channel = 'EEG057';
-%     blinks = ft_selectdata(cfg,data);
-% end
+if var(blinks.trial{:})<0.01 %No eyelink
+       %raise error
+       msg='There is no Eylink data';
+       error(msg);
+end
 subplot(2,3,cnt); cnt = cnt + 1;
 plot(blinks.trial{:})
 axis tight; axis square; box off;
-title('Blink rate EEG057')
+title('Blink rate UADC004')
 % reject blinks only when they occur between fix and stim offset
 %crittoilim = [ data.trialinfo(:,2) - data.trialinfo(:,1) - 0.4*data.fsample ...
 %    data.trialinfo(:,5) - data.trialinfo(:,1) + 0.8*data.fsample]  / data.fsample;
@@ -134,7 +134,7 @@ cfg                              = [];
 cfg.continuous                   = 'yes'; % data has been epoched
 
 % channel selection, cutoff and padding
-cfg.artfctdef.zvalue.channel     = {'EEG058'}; %UADC004
+cfg.artfctdef.zvalue.channel     = {'UADC003'}; %UADC004s
 
 % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
 cfg.artfctdef.zvalue.trlpadding  = 0; % padding doesnt work for data thats already on disk
@@ -167,7 +167,7 @@ cfg.artfctdef.eog.artifact      = artifact_eogHorizontal;
 
 %plot the blink rate horizontal??
 cfg=[];
-cfg.channel = 'EEG058'; % UADC004 if eyelink is present
+cfg.channel = 'UADC003'; % UADC004 if eyelink is present
 blinks = ft_selectdata(cfg,data);
 
 %If there is no variance in the data then it is probably because the
@@ -180,7 +180,7 @@ blinks = ft_selectdata(cfg,data);
 subplot(2,3,cnt); cnt = cnt + 1;
 plot(blinks.trial{:})
 axis tight; axis square; box off;
-title('Blink rate EEG058')
+title('Blink rate UADC003')
 
 %%
 % ==================================================================
@@ -197,46 +197,84 @@ cfg.detrend     = 'yes';
 cfg.demean      = 'yes';
 data            = ft_preprocessing(cfg, data);
 
-% get the fourier spectrum per trial and sensor
-cfgfreq.keeptrials  = 'yes';
-freq                = ft_freqanalysis(cfgfreq, data);
-
 % compute the intercept of the loglog fourier spectrum on each trial
 disp('searching for trials with squid jumps...');
-intercept       = nan(size(freq.powspctrm, 1), size(freq.powspctrm, 2));
-x = [ones(size(freq.freq))' log(freq.freq)'];
 
-for t = 1:size(freq.powspctrm, 1),
-    for c = 1:size(freq.powspctrm, 2),
-        b = x\log(squeeze(freq.powspctrm(t,c,:)));
-        intercept(t,c) = b(1);
-    end
-end
 
 % detect jumps as outliers
-[~, idx] = deleteoutliers(intercept(:));
+cfg                    = [];
+%cfg.trl = trl;
+%cfg.datafile   = 'ArtifactMEG.ds';
+%cfg.headerfile = 'ArtifactMEG.ds';
+cfg.continuous = 'yes';
+ 
+% channel selection, cutoff and padding
+cfg.artfctdef.zvalue.channel    = 'MEG';
+cfg.artfctdef.zvalue.cutoff     = 150;
+cfg.artfctdef.zvalue.trlpadding = 0;
+cfg.artfctdef.zvalue.artpadding = 0;
+cfg.artfctdef.zvalue.fltpadding = 0;
+ 
+% algorithmic parameters
+cfg.artfctdef.zvalue.cumulative    = 'yes';
+cfg.artfctdef.zvalue.medianfilter  = 'yes';
+cfg.artfctdef.zvalue.medianfiltord = 9;
+cfg.artfctdef.zvalue.absdiff       = 'yes';
+ 
+% make the process interactive
+cfg.artfctdef.zvalue.interactive = 'no';
+ 
+[cfg, artifact_Jump] = ft_artifact_zvalue(cfg,data);
+
 subplot(2,3,cnt); cnt = cnt + 1;
-if isempty(idx),
+if isempty(artifact_Jump),
     fprintf('no squid jump trials found \n');
     title('No jumps'); axis off;
 else
-    fprintf('removing %d squid jump trials \n', length(unique(t)));
-    [t,~] = ind2sub(size(intercept),idx);
     
-    % remove those trials
-    cfg                 = [];
-    cfg.trials          = true(1, length(data.trial));
-    cfg.trials(unique(t)) = false; % remove these trials
-    data                = ft_selectdata(cfg, data);
+    %Figure out the actual number of jumps. 
+    baselineSample = artifact_Jump(:,1)-artifact_Jump(1,1);
     
-    % plot the spectrum again
-    cfgfreq.keeptrials = 'no';
-    freq            = ft_freqanalysis(cfgfreq, data);
-    loglog(freq.freq, freq.powspctrm, 'linewidth', 0.1); hold on;
-    loglog(freq.freq, mean(freq.powspctrm), 'k', 'linewidth', 1);
+    %first jump
+    it_jump = 1;
+    
+    %set distance between jumps threshold in samples
+    thresh_jumps = 1200;
+ 
+    %Iteratively find the number of jumps
+    while sum(baselineSample(:)>thresh_jumps)>0
+        %then there are more than 1 jumps
+        
+        %total number of iterations
+        it_jump = it_jump + 1;
+        
+        
+        
+        %find the next one further away than threshold
+        if  (baselineSample(it_jump)-baselineSample(it_jump-1))>thresh_jumps
+            baselineSample(it_jump:end)=baselineSample(it_jump:end)-baselineSample(it_jump,1);
+        end
+    end
+    
+   
+    
+    %I need to get the start and end samples and then add some samples to
+    %remove.
+    jumpPadding = 1200*0.2;
+    
+    %index the startsamples of the jumps
+    jumpStart = artifact_Jump(baselineSample(:,1)==0)-jumpPadding;
+    jumpEnd   = artifact_Jump(baselineSample(:,1)==0)+jumpPadding;
+    artifact_Jump=[jumpStart jumpEnd]; 
+    
+    %delete jump data artifact
+    %[ data ] = delete_artifact_Numbers(artifact_Jump, data, sampleinfo);
+
+    
+    plot(artifact_Jump, 'k', 'linewidth', 1);
     axis tight; axis square; box off;
-    set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-    title(sprintf('%d jumps removed', length(unique(t))));
+    %set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
+    title(sprintf('jump removed'));
 end
 %%
 % ==================================================================
@@ -247,6 +285,8 @@ cfg             = [];
 cfg.bsfilter    = 'yes';
 cfg.bsfreq      = [49 51; 99 101; 149 151];
 data            = ft_preprocessing(cfg, data);
+
+%data.sampleinfo=sampleinfo;
 
 % plot power spectrum
 % freq            = ft_freqanalysis(cfgfreq, data);
@@ -271,6 +311,7 @@ cfg.artfctdef.zvalue.channel     = {'MEG'}; % make sure there are no NaNs
 cfg.artfctdef.zvalue.trlpadding  = 0;
 cfg.artfctdef.zvalue.fltpadding  = 0; % 0.2; - this crashes ft_artifact_zvalue!
 cfg.artfctdef.zvalue.artpadding  = 0.1;
+cfg.artfctdef.zvalue.interactive = 'no';
 
 % algorithmic parameters
 cfg.artfctdef.zvalue.bpfilter    = 'yes';
@@ -307,8 +348,10 @@ set(gca, 'xtick', [10 50 100], 'tickdir', 'out');
 %Run a function which removes the artifacts we want. So far only muscle,
 %also needs to include jumps
 
-
-[ data ] = delete_artifact_Numbers( artifact_Muscle,data );
+%Make sampleinfo 0 because then artifacts are no longer added by the
+%sampleinfo from before
+%sampleinfo=sampleinfo-sampleinfo;
+[ data ] = delete_artifact_Numbers([artifact_Jump;artifact_Muscle], data, sampleinfo);
 
 
 %%
@@ -341,6 +384,10 @@ else
     mkdir(name)
     cd(name)
 end
+
+%the problem is that some of the artifacts are based on the sampleinfo and
+%some are not.
+data.sampleinfoOld = sampleinfo;
 %Save the data
 filestore=sprintf('preproc%s.mat',dsfile(end-8:end-4));
 save(filestore,'data')
@@ -348,7 +395,7 @@ save(filestore,'data')
 %Save the artifacts
 artstore=sprintf('artifacts%s.mat',dsfile(end-8:end-4));
 
-save(artstore,'artifact_eogVertical','artifact_eogHorizontal','artifact_Muscle') %Jumpos?
+save(artstore,'artifact_eogVertical','artifact_eogHorizontal','artifact_Muscle','artifact_Jump') %Jumpos?
 
 %save the invisible figure
 figurestore=sprintf('Overview%s.png',dsfile(end-8:end-4));
