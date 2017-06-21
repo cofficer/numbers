@@ -17,11 +17,11 @@ for icfg = 1:length(restingpaths)
     cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
     %cfgin=cfgin{1}
 end
-    
+
 
 %Define script to run and whether to run on the torque
-runcfg.execute = 'findsquid'; %preproc, parallel, findsquid
-runcfg.timreq          = 2000; % number of minutes. 
+runcfg.execute = 'check_nSensors'; %preproc, parallel, findsquid, check_nSensors
+runcfg.timreq          = 2000; % number of minutes.
 runcfg.parallel         ='torque'; %local or torque
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting')
@@ -39,34 +39,34 @@ run_parallel_Numbers(runcfg, cfgin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %read all the names of resting datasets
-cd('/mnt/homes/home024/ktsetsos/resting')
+%cd('/mnt/homes/home024/ktsetsos/resting')
 
 %Store all the seperate data files
-restingpaths = dir('*.mat');
+%restingpaths = dir('*.mat');
 
 
 %Read csv of all paticipants to avoid
-cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
-fid = fopen('participantsNoEyelink.csv');
-C = textscan(fid, '%s');
-fclose(fid);
+%cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
+%fid = fopen('participantsNoEyelink.csv');
+%C = textscan(fid, '%s');
+%fclose(fid);
 
 %define the script to run.
-runcfg.execute = 'ICA';
-runcfg.timreq          = 2000; % number of minutes. 
-runcfg.parallel         ='torque';
+%runcfg.execute = 'ICA';
+%runcfg.timreq          = 2000; % number of minutes.
+%runcfg.parallel         ='torque';
 
 
 %Datasets which contain eyelink ata and has been properly preprocessed
-dataEyelink = setdiff({restingpaths.name},C{1});
+%dataEyelink = setdiff({restingpaths.name},C{1});
 
-for icfg = 1:length(dataEyelink)
-    cfgin{icfg}             = dataEyelink{icfg};%40 100. test 232, issues.
-end
+%for icfg = 1:length(dataEyelink)
+%    cfgin{icfg}             = dataEyelink{icfg};%40 100. test 232, issues.
+%end
 
 
 %Execute jobs on the torque
-run_parallel_Numbers(runcfg, cfgin)
+%run_parallel_Numbers(runcfg, cfgin)
 
 
 %%
@@ -75,47 +75,38 @@ run_parallel_Numbers(runcfg, cfgin)
 
 
 %read all the names of resting datasets
-cd('/mnt/homes/home024/ktsetsos/resting')
+%cd('/mnt/homes/home024/ktsetsos/resting')
 
 %Store all the seperate data files
-restingpaths = dir('*.mat');
+%restingpaths = dir('*.mat');
 
 
 %Read csv of all paticipants to avoid
-cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
-fid = fopen('participantsNoEyelink.csv');
-C = textscan(fid, '%s');
-fclose(fid);
+%cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
+%fid = fopen('participantsNoEyelink.csv');
+%C = textscan(fid, '%s');
+%fclose(fid);
 
 %define the script to run.
-runcfg.execute = 'cohICA';
-runcfg.timreq          = 2000; % number of minutes. 
-runcfg.parallel         ='torque';
+%runcfg.execute = 'cohICA';
+%runcfg.timreq          = 2000; % number of minutes.
+%runcfg.parallel         ='torque';
 
 
 %Datasets which contain eyelink ata and has been properly preprocessed
-dataEyelink = setdiff({restingpaths.name},C{1});
+%dataEyelink = setdiff({restingpaths.name},C{1});
 
-for icfg = 1:1%length(dataEyelink)
-    cfgin{icfg}             = dataEyelink{100};%40 100. test 232, issues.
-end
+%for icfg = 1:1%length(dataEyelink)
+%    cfgin{icfg}             = dataEyelink{100};%40 100. test 232, issues.
+%end
 
 
 %Execute jobs on the torque
-run_parallel_Numbers(runcfg, cfgin)
+%run_parallel_Numbers(runcfg, cfgin)
 
 
 
 
 
 %%
-%Remove the components 
-
-
-
-
-
-
-
-
-
+%Remove the components

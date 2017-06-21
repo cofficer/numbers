@@ -17,7 +17,7 @@ ecg.label{:} = 'ECG';
 % concatenate component activity
 
 %%
-%select components for heart rate
+%select components for heart rate  s
 cfg                       = [];
 cfg.trl                   = data.cfg.trl;
 cfg.dataset               = data.cfg.dataset;
@@ -87,7 +87,7 @@ cfg.pad        = 'maxperlen';
 freq           = ft_freqanalysis(cfg, comp_ecg);
 % compute coherence between all components and the ECG
 cfg            = [];
-cfg.channelcmb = {'all' channelRej}; 
+cfg.channelcmb = {'all' channelRej};
 cfg.jackknife  = 'no';
 cfg.method     = 'coh';
 fdcomp         = ft_connectivityanalysis(cfg, freq);
@@ -100,13 +100,13 @@ subplot(2,1,2); imagesc(abs(fdcomp.cohspctrm));
 %calculate to average coherence over all frequencies:
 [~,idx_coh] = sort(mean(fdcomp.cohspctrm,2));
 
-%Take the  highest correlating component and use as a spatial template to calculate the coherence. 
+%Take the  highest correlating component and use as a spatial template to calculate the coherence.
 rej_components = idx_coh(end);
 
 %Compute the spatial correlation of artifact and all components
 cor_comp_artifact = corr(comp.topo(:,14),comp.topo(:,:));
 
-%Sort in order of spatial correlation 
+%Sort in order of spatial correlation
 [val_cor,idx_cor] = sort(cor_comp_artifact);
 
 
@@ -116,11 +116,10 @@ cor_comp_artifact = corr(comp.topo(:,14),comp.topo(:,:));
 % cfg.unmixing  = comp.unmixing;
 % cfg.topolabel = comp.topolabel;
 % comp_orig     = ft_componentanalysis(cfg, data);
-% 
+%
 % % the original data can now be reconstructed, excluding those components
 % cfg           = [];
 % cfg.component = [rej_components];
 % data_clean    = ft_rejectcomponent(cfg, comp_orig,data);
 
 end
-

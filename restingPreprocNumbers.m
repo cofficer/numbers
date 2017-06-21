@@ -8,16 +8,13 @@ try
 cd('/mnt/homes/home024/ktsetsos/resting')
 
 %The key here is to use the already defined tables for samples when calling
-%trialfun function which I should define next. 
+%trialfun function which I should define next.
 
 %define ds file, this is actually from the trial-based data
 dsfile = sprintf('/mnt/homes/home024/ktsetsos/resting/%s',cfgin.restingfile);
 
 load(dsfile)
 
- 
-
-    
 %%
 %From Anne, Donner git example
 %Skipping head motion calculation...
@@ -61,11 +58,11 @@ axis tight; box off;
 %%
 % ==================================================================
 % 2. REMOVE TRIALS WITH EYEBLINKS (only during beginning of trial)
-% Bandpass filter the vertical EOG channel between 1-15 Hz and z-transform 
-% this filtered time course. Select complete trials that exceed a threshold of  
-% z =4 (alternatively you can set the z-threshold per data file or per subject 
-% with the ?interactive? mode in ft_artifact_zvalue function). Reject trials 
-% that contain blink artifacts before going on to the next step. For monitoring 
+% Bandpass filter the vertical EOG channel between 1-15 Hz and z-transform
+% this filtered time course. Select complete trials that exceed a threshold of
+% z =4 (alternatively you can set the z-threshold per data file or per subject
+% with the ?interactive? mode in ft_artifact_zvalue function). Reject trials
+% that contain blink artifacts before going on to the next step. For monitoring
 % purposes, plot the time courses of your trials before and after blink rejection.
 % ==================================================================
 
@@ -91,7 +88,7 @@ cfg.artfctdef.zvalue.hilbert    = 'yes';
 cfg.artfctdef.zvalue.cutoff     = 4; % to detect all blinks, be strict
 cfg.artfctdef.zvalue.interactive = 'no';
 [~, artifact_eog]               = ft_artifact_zvalue(cfg, data);
-artifact_eogVertical = artifact_eog; 
+artifact_eogVertical = artifact_eog;
 
 
 
@@ -107,7 +104,7 @@ blinks = ft_selectdata(cfg,data);
 
 
 %If there is no variance in the data then it is probably because the
-%eyelink was not working for that session
+%eyelink was not working for that session.
 if var(blinks.trial{:})<0.01 %No eyelink
        %raise error
        msg='There is no Eylink data';
@@ -125,8 +122,8 @@ title('Blink rate UADC004')
 %%
 % ==================================================================
 % 3. REMOVE TRIALS WITH SACCADES (only during beginning of trial)
-% Remove trials with (horizontal) saccades (EOGH). Use the same settings as 
-% for the EOGV-based blinks detection. The z-threshold can be set a bit higher 
+% Remove trials with (horizontal) saccades (EOGH). Use the same settings as
+% for the EOGV-based blinks detection. The z-threshold can be set a bit higher
 % (z = [4 6]). Reject all trials that contain saccades before going further.
 % ==================================================================
 
@@ -186,8 +183,8 @@ title('Blink rate UADC003')
 % ==================================================================
 % 4. REMOVE TRIALS WITH JUMPS
 % Compute the power spectrum of all trials and a linear line on the loglog-
-% transformed power spectrum. Jumps cause broad range increase in the power 
-% spectrum so trials containing jumps can be selected by detecting outliers 
+% transformed power spectrum. Jumps cause broad range increase in the power
+% spectrum so trials containing jumps can be selected by detecting outliers
 % in the intercepts of the fitted lines (using Grubb?s test for outliers).
 % ==================================================================
 
@@ -195,21 +192,21 @@ title('Blink rate UADC003')
 idx_jump=findSquidJumps(data);
 
 subplot(2,3,cnt); cnt = cnt + 1;
-%If there are jumps 
+%If there are jumps
 if ~isempty(idx_jump)
 
         for iout = 1:length(idx_jump)
-            
+
             %I belive that y is trial and x is channel.
             [y,x] = ind2sub(size(intercept),idx_jump(iout)) ;
-            
+
             %Store the name of the channel
             channelJump{iout} = freq.label(x);
-            
-            %Plot each channel containing a jump. 
+
+            %Plot each channel containing a jump.
             plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
             hold on
-            
+
         end
     axis tight; axis square; box off;
     %set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
@@ -230,7 +227,7 @@ data            = ft_preprocessing(cfg, data);
 
 % ==================================================================
 % 7. REMOVE TRIALS WITH MUSCLE BURSTS BEFORE RESPONSE
-% Remove muscle using the same z-value-based approach as for the eye 
+% Remove muscle using the same z-value-based approach as for the eye
 % channels. Filter the data between 110-140 Hz and use a z-value threshold of 10.
 % ==================================================================
 
@@ -260,10 +257,10 @@ cfg                              = [];
 cfg.artfctdef.reject             = 'partial';
 cfg.artfctdef.muscle.artifact    = artifact_Muscle;
 
-% 
+%
 % % plot final power spectrum
 freq            = ft_freqanalysis(cfgfreq, data);
-subplot(2,3,cnt); 
+subplot(2,3,cnt);
 %loglog(freq.freq, freq.powspctrm, 'linewidth', 0.5); hold on;
 loglog(freq.freq, squeeze(mean(freq.powspctrm)), 'k', 'linewidth', 1);
 axis tight; axis square; box off; %ylim(ylims);
@@ -304,7 +301,7 @@ cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/
 name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(1:2));
 
 if 7==exist(name,'dir')
-    
+
     cd(name)
 else
     mkdir(name)
@@ -329,19 +326,18 @@ saveas(gca,figurestore,'png')
 
 %Catch any error and write into file
 catch err
-    
+
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
     fid=fopen('logfile','a+');
     c=clock;
     fprintf(fid,sprintf('\n\n\n\nNew entry for %s at %i/%i/%i %i:%i\n\n\n\n',cfgin.restingfile,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
-    
+
     fprintf(fid,'%s',err.getReport('extended','hyperlinks','off'))
-    
+
     fclose(fid)
-    
-    
+
+
 end
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting')
 end
-

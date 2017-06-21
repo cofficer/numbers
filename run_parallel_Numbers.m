@@ -4,29 +4,29 @@ function run_parallel_Numbers(runcfg, cfgin)
 
 
 switch runcfg.execute
-   
-    
+
+
     case 'preproc'
         %restingPreprocNumbers(cfgin{1})
         cellfun(@restingPreprocNumbers, cfgin);
-        
-        
+
+
     case 'ICA'
-        
+
         nnodes = 1;%64; % how many licenses?
         stack = 1;%round(length(cfg1)/nnodes);
         qsubcellfun(@runIcaNumbers, cfgin, 'compile', 'no', ...
             'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
-        
+
     case 'cohICA'
-        
+
         %component for blinks
         [val_corBlink,idx_corBlink] = coherenceICA(cfgin{1},'UADC004');
         %component for heart rate
         [val_corHR,idx_corHR] = coherenceICA(cfgin{1},'EEG059');
-        %cellfun(@createFullMatrix, cfg1, outputfile);    
-        
-        %Decide where to save the component to reject information, 
+        %cellfun(@createFullMatrix, cfg1, outputfile);
+
+        %Decide where to save the component to reject information,
         %or remove them directly and finish the preprocessing.
     case 'parallel'
         nnodes = 1;%64; % how many licenses?
@@ -42,16 +42,24 @@ switch runcfg.execute
        % cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting')
         %save jobidarray.mat jobidarray
         %exit
-        
+
     case 'findsquid'
         nnodes = 1;%64; % how many licenses?
         stack = 1;%round(length(cfg1)/nnodes);
         qsubcellfun(@findSquidJumps, cfgin, 'compile', 'no', ...
             'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
-        
-end
+
+
+    case 'check_nSensors'
+        nnodes = 1;%64; % how many licenses?
+        stack = 1;%round(length(cfg1)/nnodes);
+        qsubcellfun(@check_nSensors, cfgin, 'compile', 'no', ...
+            'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
 
 
 
 end
 
+
+
+end
