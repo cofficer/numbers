@@ -55,12 +55,12 @@ end
 
 % 
 % % here, you might want to plot the topography and timecourse
-cfg = [];
-cfg.viewmode = 'component';
-%cfg.component = compidx(1);
-cfg.layout = 'CTF275.lay';
-cfg.style = 'straight';
-ft_databrowser(cfg, comp);
+% cfg = [];
+% cfg.viewmode = 'component';
+% %cfg.component = compidx(1);
+% cfg.layout = 'CTF275.lay';
+% cfg.style = 'straight';
+% ft_databrowser(cfg, comp);
 % 
 % %%
 % cfg.path            ='/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/';

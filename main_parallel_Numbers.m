@@ -12,17 +12,17 @@ restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
 
-for icfg = 1:1%length(restingpaths)
+for icfg = 1:length(restingpaths)
 
-    cfgin{icfg}.restingfile             = restingpaths(127).name;%40 100. test 232, issues.
+    cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
     %cfgin=cfgin{1}
 end
     
 
 %Define script to run and whether to run on the torque
-runcfg.execute = 'preproc'; %preproc, parallel
+runcfg.execute = 'findsquid'; %preproc, parallel, findsquid
 runcfg.timreq          = 2000; % number of minutes. 
-runcfg.parallel         ='torque';
+runcfg.parallel         ='torque'; %local or torque
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting')
 

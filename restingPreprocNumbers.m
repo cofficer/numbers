@@ -101,7 +101,7 @@ cfg.artfctdef.eog.artifact      = artifact_eogVertical;
 
 %plot the blink rate vertical??
 cfg=[];
-cfg.channel = 'HAD003'; % UADC004 if eyelink is present
+cfg.channel = 'UADC004'; % UADC004 if eyelink is present
 blinks = ft_selectdata(cfg,data);
 
 
@@ -191,90 +191,31 @@ title('Blink rate UADC003')
 % in the intercepts of the fitted lines (using Grubb?s test for outliers).
 % ==================================================================
 
-% detrend and demean
-cfg             = [];
-cfg.detrend     = 'yes';
-cfg.demean      = 'yes';
-data            = ft_preprocessing(cfg, data);
-
-% compute the intercept of the loglog fourier spectrum on each trial
-disp('searching for trials with squid jumps...');
-
-
-% detect jumps as outliers
-cfg                    = [];
-%cfg.trl = trl;
-%cfg.datafile   = 'ArtifactMEG.ds';
-%cfg.headerfile = 'ArtifactMEG.ds';
-cfg.continuous = 'yes';
- 
-% channel selection, cutoff and padding
-cfg.artfctdef.zvalue.channel    = 'MEG';
-cfg.artfctdef.zvalue.cutoff     = 150;
-cfg.artfctdef.zvalue.trlpadding = 0;
-cfg.artfctdef.zvalue.artpadding = 0;
-cfg.artfctdef.zvalue.fltpadding = 0;
- 
-% algorithmic parameters
-cfg.artfctdef.zvalue.cumulative    = 'yes';
-cfg.artfctdef.zvalue.medianfilter  = 'yes';
-cfg.artfctdef.zvalue.medianfiltord = 9;
-cfg.artfctdef.zvalue.absdiff       = 'yes';
- 
-% make the process interactive
-cfg.artfctdef.zvalue.interactive = 'no';
- 
-[cfg, artifact_Jump] = ft_artifact_zvalue(cfg,data);
+%call function which calculates all jumps
+idx_jump=findSquidJumps(data);
 
 subplot(2,3,cnt); cnt = cnt + 1;
-if isempty(artifact_Jump),
-    fprintf('no squid jump trials found \n');
-    title('No jumps'); axis off;
-else
-    
-    %Figure out the actual number of jumps. 
-    baselineSample = artifact_Jump(:,1)-artifact_Jump(1,1);
-    
-    %first jump
-    it_jump = 1;
-    
-    %set distance between jumps threshold in samples
-    thresh_jumps = 1200;
- 
-    %Iteratively find the number of jumps
-    while sum(baselineSample(:)>thresh_jumps)>0
-        %then there are more than 1 jumps
-        
-        %total number of iterations
-        it_jump = it_jump + 1;
-        
-        
-        
-        %find the next one further away than threshold
-        if  (baselineSample(it_jump)-baselineSample(it_jump-1))>thresh_jumps
-            baselineSample(it_jump:end)=baselineSample(it_jump:end)-baselineSample(it_jump,1);
-        end
-    end
-    
-   
-    
-    %I need to get the start and end samples and then add some samples to
-    %remove.
-    jumpPadding = 1200*0.2;
-    
-    %index the startsamples of the jumps
-    jumpStart = artifact_Jump(baselineSample(:,1)==0)-jumpPadding;
-    jumpEnd   = artifact_Jump(baselineSample(:,1)==0)+jumpPadding;
-    artifact_Jump=[jumpStart jumpEnd]; 
-    
-    %delete jump data artifact
-    %[ data ] = delete_artifact_Numbers(artifact_Jump, data, sampleinfo);
+%If there are jumps 
+if ~isempty(idx_jump)
 
-    
-    plot(artifact_Jump, 'k', 'linewidth', 1);
+        for iout = 1:length(idx_jump)
+            
+            %I belive that y is trial and x is channel.
+            [y,x] = ind2sub(size(intercept),idx_jump(iout)) ;
+            
+            %Store the name of the channel
+            channelJump{iout} = freq.label(x);
+            
+            %Plot each channel containing a jump. 
+            plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
+            hold on
+            
+        end
     axis tight; axis square; box off;
     %set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-    title(sprintf('jump removed'));
+    title(sprintf('Jumps found'));
+else
+     title(sprintf('No jumps'));
 end
 %%
 % ==================================================================
@@ -286,16 +227,6 @@ cfg.bsfilter    = 'yes';
 cfg.bsfreq      = [49 51; 99 101; 149 151];
 data            = ft_preprocessing(cfg, data);
 
-%data.sampleinfo=sampleinfo;
-
-% plot power spectrum
-% freq            = ft_freqanalysis(cfgfreq, data);
-% subplot(2,3,cnt); cnt = cnt + 1;
-% %loglog(freq.freq, freq.powspctrm, 'linewidth', 0.5); hold on;
-% loglog(freq.freq, (squeeze(mean(freq.powspctrm))), 'k', 'linewidth', 1);
-% axis tight;  axis square; box off;%ylim(ylims);
-% title('After bandstop');
-% set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
 
 % ==================================================================
 % 7. REMOVE TRIALS WITH MUSCLE BURSTS BEFORE RESPONSE
@@ -329,11 +260,6 @@ cfg                              = [];
 cfg.artfctdef.reject             = 'partial';
 cfg.artfctdef.muscle.artifact    = artifact_Muscle;
 
-% only remove muscle bursts before the response
-%crittoilim = [data.trialinfo(:,1) - data.trialinfo(:,1) ...
-%    data.trialinfo(:,9) - data.trialinfo(:,1)]  ./ data.fsample;
-%cfg.artfctdef.crittoilim        = crittoilim;
-%data                            = ft_rejectartifact(cfg, data);
 % 
 % % plot final power spectrum
 freq            = ft_freqanalysis(cfgfreq, data);
@@ -351,7 +277,7 @@ set(gca, 'xtick', [10 50 100], 'tickdir', 'out');
 %Make sampleinfo 0 because then artifacts are no longer added by the
 %sampleinfo from before
 %sampleinfo=sampleinfo-sampleinfo;
-[ data ] = delete_artifact_Numbers([artifact_Jump;artifact_Muscle], data, sampleinfo);
+[ data ] = delete_artifact_Numbers(artifact_Muscle, data, sampleinfo);
 
 
 %%

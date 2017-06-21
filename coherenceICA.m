@@ -14,7 +14,7 @@ cfg.channel = channelRej;
 ecg = ft_selectdata(cfg,data);
 ecg.label{:} = 'ECG';
 
-% concatenate component activity
+% concatenate component activity, small change
 
 %%
 %select components for heart rate
@@ -22,7 +22,7 @@ cfg                       = [];
 cfg.trl                   = [1 length(data.trial{1})];
 cfg.dataset               = data;
 cfg.continuous            = 'yes';
-if channelRej == 'UADC004'
+if strcmp(channelRej,'UADC004') || strcmp(channelRej,'EEG057')
     cfg.artfctdef.ecg.pretim  = 0.05;
     cfg.artfctdef.ecg.psttim  = 0.1-1/500;
 else
@@ -82,7 +82,7 @@ cfg.topolabel = comp.topolabel;
 comp_ecg      = ft_componentanalysis(cfg, data_ecg);
 
 % append the ecg channel to the data structure;
-comp_ecg      = ft_appenddata([], ecg, comp_ecg); 
+comp_ecg      = ft_appenddata([], ecg, comp_ecg);
 
 % average the components timelocked to the QRS-complex
 cfg           = [];
@@ -107,7 +107,7 @@ cfg.pad        = 'maxperlen';
 freq           = ft_freqanalysis(cfg, comp_ecg);
 % compute coherence between all components and the ECG
 cfg            = [];
-cfg.channelcmb = {'all' channelRej}; 
+cfg.channelcmb = {'all' channelRej};
 cfg.jackknife  = 'no';
 cfg.method     = 'coh';
 fdcomp         = ft_connectivityanalysis(cfg, freq);
@@ -120,13 +120,13 @@ fdcomp         = ft_connectivityanalysis(cfg, freq);
 %calculate to average coherence over all frequencies:
 [~,idx_coh] = sort(mean(fdcomp.cohspctrm,2));
 
-%Take the  highest correlating component and use as a spatial template to calculate the coherence. 
+%Take the  highest correlating component and use as a spatial template to calculate the coherence.
 rej_components = idx_coh(end);
 
 %Compute the spatial correlation of artifact and all components
 cor_comp_artifact = corr(comp.topo(:,rej_components),comp.topo(:,:));
 
-%Sort in order of spatial correlation 
+%Sort in order of spatial correlation
 [val_cor,idx_cor] = sort(cor_comp_artifact);
 
 
@@ -136,11 +136,10 @@ cor_comp_artifact = corr(comp.topo(:,rej_components),comp.topo(:,:));
 % cfg.unmixing  = comp.unmixing;
 % cfg.topolabel = comp.topolabel;
 % comp_orig     = ft_componentanalysis(cfg, data);
-% 
+%
 % % the original data can now be reconstructed, excluding those components
 % cfg           = [];
 % cfg.component = [rej_components];
 % data_clean    = ft_rejectcomponent(cfg, comp_orig,data);
 
 end
-
