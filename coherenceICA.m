@@ -14,7 +14,7 @@ cfg.channel = channelRej;
 ecg = ft_selectdata(cfg,data);
 ecg.label{:} = 'ECG';
 
-% concatenate component activity, small change
+% concatenate component activity, small change, test
 
 %%
 %select components for heart rate
