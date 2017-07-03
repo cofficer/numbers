@@ -15,12 +15,17 @@ ft_defaults
 
 %Store filenames
 cd(eyelinkpath)
-alleyes     = dir('03*.mat');
+eyes_30s     = dir('03*.mat');
+alleyes     = dir('*.mat');
+%remove the 30's because they have already had the eyelink channels added.
+[allNeweyes]=setdiff({alleyes.name},{eyes_30s.name})
 
 %figure(1),clf
 %loop all eyelink files
-for ieye = 2:length(alleyes)
+for ieye = 1:length(allNeweyes)
 
+  %A bit of a hack, change the name to the left over after setdiff
+  alleyes(ieye).name = allNeweyes{ieye}
   %load the eyelink file
   dat_eye         = load(alleyes(ieye).name);
   fprintf('Eyelink asc %s\n',alleyes(ieye).name)
@@ -30,9 +35,13 @@ for ieye = 2:length(alleyes)
 
   %load the MEG data
   dat_megname      = sprintf('%s%s_S%s_P%s.mat',megpath,alleyes(ieye).name(2:3),alleyes(ieye).name(5),alleyes(ieye).name(7));
+
+  %Need to understand why this is sometimes the case...
   if ~exist(dat_megname)
     continue
   end
+
+  %Load the meg data.
   dat_meg          = load(dat_megname);
 
   %Insert the eyelink channels in the MEG data
@@ -64,9 +73,6 @@ for ieye = 2:length(alleyes)
     %Extract and equalize the length of data.
     eye_Chans                    = dat_eye.asc.trial{1}(it_eye,:);
     eyelink_Scale{1}(it_eye,:)     = [ones(1,length(dat_meg.data.time{1})-length(eye_Chans)),eye_Chans];
-
-
-
 
   end
 
