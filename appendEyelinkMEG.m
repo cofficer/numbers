@@ -17,9 +17,9 @@ ft_defaults
 cd(eyelinkpath)
 alleyes     = dir('03*.mat');
 
-figure(1),clf
+%figure(1),clf
 %loop all eyelink files
-for ieye = 1:length(alleyes)
+for ieye = 2:length(alleyes)
 
   %load the eyelink file
   dat_eye         = load(alleyes(ieye).name);
@@ -30,7 +30,10 @@ for ieye = 1:length(alleyes)
 
   %load the MEG data
   dat_megname      = sprintf('%s%s_S%s_P%s.mat',megpath,alleyes(ieye).name(2:3),alleyes(ieye).name(5),alleyes(ieye).name(7));
-  dat_meg          = load(dat_megname)
+  if ~exist(dat_megname)
+    continue
+  end
+  dat_meg          = load(dat_megname);
 
   %Insert the eyelink channels in the MEG data
   %Consideration: Need to figure out the most appropriate way to combine the two datasets.
