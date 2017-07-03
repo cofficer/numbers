@@ -7,7 +7,7 @@ savepath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/';
 edfpath = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/eye_chris/';
 
 %addpath D:\Experiments\Surprise_accumulation\Analysis\Pupil
-addpath '/home/chrisgahn/Documents/MATLAB/fieldtrip-20170528/'  % tell Matlab where FieldTrip is
+addpath('/home/chrisgahn/Documents/MATLAB/fieldtrip-20170528/')  % tell Matlab where FieldTrip is
 ft_defaults
 
 %subj = 'DHB';
@@ -36,13 +36,17 @@ for s = 1:length(sess);
 
         % Define file names
         edfFile = [edfpath,folder_subj ,edf_name];
-        ascFile = [folder_subj ,edf_name(1:end-4),'.asc'];
+        ascFile = [edfpath,folder_subj ,edf_name(1:end-4),'.asc'];
 %             edfFile = [loadpath,subj,'\Training\Eyetracking\',subj,'_',num2str(s),'_',num2str(b),'.edf'];
 %             ascFile = [loadpath,subj,'\Training\Eyetracking\',subj,'_',num2str(s),'_',num2str(b),'.asc'];
         matFile = [savepath,subj,'_',num2str(sess(s)),'_',num2str(b),'.mat'];
 
             % edf2asc
             if ~exist(ascFile)
+                system(sprintf('%s %s -failsafe -input', [loadpath,'edf2asc-linux'], edfFile));
+                assert(exist(ascFile, 'file') > 1, 'Edf not properly converted...');  % check that asc has actually been created
+            else
+                delete(ascFile)
                 system(sprintf('%s %s -failsafe -input', [loadpath,'edf2asc-linux'], edfFile));
                 assert(exist(ascFile, 'file') > 1, 'Edf not properly converted...');  % check that asc has actually been created
             end
