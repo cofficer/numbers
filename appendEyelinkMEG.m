@@ -15,17 +15,14 @@ ft_defaults
 
 %Store filenames
 cd(eyelinkpath)
-eyes_30s     = dir('03*.mat');
 alleyes     = dir('*.mat');
 %remove the 30's because they have already had the eyelink channels added.
-[allNeweyes]=setdiff({alleyes.name},{eyes_30s.name})
+%[allNeweyes]=setdiff({alleyes.name},{eyes_30s.name})
 
 %figure(1),clf
 %loop all eyelink files
-for ieye = 1:length(allNeweyes)
+for ieye = 1:length(alleyes)
 
-  %A bit of a hack, change the name to the left over after setdiff
-  alleyes(ieye).name = allNeweyes{ieye}
   %load the eyelink file
   dat_eye         = load(alleyes(ieye).name);
   fprintf('Eyelink asc %s\n',alleyes(ieye).name)
@@ -44,6 +41,10 @@ for ieye = 1:length(allNeweyes)
   %Load the meg data.
   dat_meg          = load(dat_megname);
 
+  %If I have already added the eyelink data.
+  if size(dat_meg.data.label,1)>407
+    continue
+  end
   %Insert the eyelink channels in the MEG data
   %Consideration: Need to figure out the most appropriate way to combine the two datasets.
   %Naming: UADC004 already excists, so I will extend the convention to UADC009, but this is not possible unless the lengths are identical. The only solution might be to interpolate the eyelink data. This can be checked against the eyelink data which has been simulaneously collected.
@@ -83,6 +84,7 @@ for ieye = 1:length(allNeweyes)
   %Save the new MEG files
   cfg = [];
   combined_dat=ft_appenddata(cfg,dat_meg.data,dat_eye.asc);
+  save(dat_megname,'combined_dat')
 
 end
 
@@ -93,6 +95,5 @@ end
 %end
 %saveas(gca,'testin.png','png')
 
-save(dat_megname,'combined_dat')
 
 end
