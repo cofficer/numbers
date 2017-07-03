@@ -9,7 +9,7 @@ data_eye    = ft_preprocessing(cfg);
 
 %Downsample the eyelink data
 cfg         = [];
-cfg.resamplefs = 500;
+cfg.resamplefs = 1200;
 [asc] = ft_resampledata(cfg, data_eye);
 
 end

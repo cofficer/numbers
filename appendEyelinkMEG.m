@@ -19,6 +19,11 @@ for ieye = 1:length(alleyes)
   dat_eye         = load(alleyes(ieye).name);
   fprintf('Eyelink asc %s\n',alleyes(ieye).name)
 
+  %Upsample from 500Hz to 1200Hz
+  cfg             = [];
+  cfg.resamplefs  = 1200;
+  dat_eye         = ft_resampledata(cfg,dat_eye);
+
   %load the MEG data
   dat_megname      = sprintf('%s%s_S%s_P%s.mat',megpath,alleyes(ieye).name(2:3),alleyes(ieye).name(5),alleyes(ieye).name(7))
   dat_meg          = load(dat_megname)

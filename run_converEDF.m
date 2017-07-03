@@ -1,6 +1,11 @@
 %Script wrapped around running EDF file conversion. Could be implemented into parallel exec.
 
-subjAll = 44:45;
+subjAll = 10:45;
+
+removeSubj = [9,15,21,25,42,43];
+
+subjAll=subjAll(~ismember(subjAll,removeSubj));
+
 
 for isub = 1:length(subjAll)
 
