@@ -4,8 +4,8 @@
 %
 clear all
 %%
-%Change the folder to where MEG data is contained
-cd('/mnt/homes/home024/ktsetsos/resting')
+%Change the folder to where eyelink data is contained
+cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
 %Store all the seperate data files
 restingpaths = dir('*.mat');
@@ -20,7 +20,7 @@ end
 
 
 %Define script to run and whether to run on the torque
-runcfg.execute = 'check_nSensors'; %preproc, parallel, findsquid, check_nSensors
+runcfg.execute = 'preproc'; %preproc, parallel, findsquid, check_nSensors
 runcfg.timreq          = 2000; % number of minutes.
 runcfg.parallel         ='torque'; %local or torque
 

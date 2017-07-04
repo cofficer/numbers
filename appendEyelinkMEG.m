@@ -21,7 +21,7 @@ alleyes     = dir('*.mat');
 
 %figure(1),clf
 %loop all eyelink files
-for ieye = 194:length(alleyes)
+for ieye = 217:length(alleyes)
 
   %load the eyelink file
   dat_eye         = load(alleyes(ieye).name);
@@ -41,7 +41,7 @@ for ieye = 194:length(alleyes)
   %Load the meg data.
   dat_meg          = load(dat_megname);
 
-  
+
   %Insert the eyelink channels in the MEG data
   %Consideration: Need to figure out the most appropriate way to combine the two datasets.
   %Naming: UADC004 already excists, so I will extend the convention to UADC009, but this is not possible unless the lengths are identical. The only solution might be to interpolate the eyelink data. This can be checked against the eyelink data which has been simulaneously collected.

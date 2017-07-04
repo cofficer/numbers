@@ -72,7 +72,8 @@ function restingPreprocNumbers( cfgin )
     cfg.continuous                   = 'yes'; % data has been epoched
 
     % channel selection, cutoff and padding
-    cfg.artfctdef.zvalue.channel     = {'UADC004'}; %UADC003
+    %The channel '4' is the appended eyelink.
+    cfg.artfctdef.zvalue.channel     = {'4'}; %UADC004 UADC003
 
     % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
     cfg.artfctdef.zvalue.trlpadding  = 0; % avoid filter edge artefacts by setting to negative
@@ -80,11 +81,11 @@ function restingPreprocNumbers( cfgin )
     cfg.artfctdef.zvalue.artpadding  = 0.05; % go a bit to the sides of blinks
 
     % algorithmic parameters
-    cfg.artfctdef.zvalue.bpfilter   = 'yes';
-    cfg.artfctdef.zvalue.bpfilttype = 'but';
-    cfg.artfctdef.zvalue.bpfreq     = [1 15];
-    cfg.artfctdef.zvalue.bpfiltord  = 2;
-    cfg.artfctdef.zvalue.hilbert    = 'yes';
+    cfg.artfctdef.zvalue.bpfilter   = 'no';
+    % cfg.artfctdef.zvalue.bpfilttype = 'but';
+    % cfg.artfctdef.zvalue.bpfreq     = [1 15];
+    % cfg.artfctdef.zvalue.bpfiltord  = 2;
+    % cfg.artfctdef.zvalue.hilbert    = 'yes';
 
     % set cutoff
     cfg.artfctdef.zvalue.cutoff     = 4; % to detect all blinks, be strict
@@ -100,7 +101,7 @@ function restingPreprocNumbers( cfgin )
 
     %plot the blink rate vertical??
     cfg=[];
-    cfg.channel = 'UADC004'; % UADC004 if eyelink is present
+    cfg.channel = '4'; % UADC004 if eyelink is present
     blinks = ft_selectdata(cfg,data);
 
 
@@ -115,7 +116,7 @@ function restingPreprocNumbers( cfgin )
     subplot(2,3,cnt); cnt = cnt + 1;
     plot(blinks.trial{:})
     axis tight; axis square; box off;
-    title('Blink rate UADC004')
+    title('Blink rate 4')
     % reject blinks only when they occur between fix and stim offset
     %crittoilim = [ data.trialinfo(:,2) - data.trialinfo(:,1) - 0.4*data.fsample ...
     %    data.trialinfo(:,5) - data.trialinfo(:,1) + 0.8*data.fsample]  / data.fsample;
@@ -133,7 +134,7 @@ function restingPreprocNumbers( cfgin )
     cfg.continuous                   = 'yes'; % data has been epoched
 
     % channel selection, cutoff and padding
-    cfg.artfctdef.zvalue.channel     = {'UADC003'}; %UADC004s
+    cfg.artfctdef.zvalue.channel     = {'3'}; %UADC003 UADC004s
 
     % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
     cfg.artfctdef.zvalue.trlpadding  = 0; % padding doesnt work for data thats already on disk
@@ -141,11 +142,11 @@ function restingPreprocNumbers( cfgin )
     cfg.artfctdef.zvalue.artpadding  = 0.05; % go a bit to the sides of blinks
 
     % algorithmic parameters
-    cfg.artfctdef.zvalue.bpfilter   = 'yes';
-    cfg.artfctdef.zvalue.bpfilttype = 'but';
-    cfg.artfctdef.zvalue.bpfreq     = [1 15];
-    cfg.artfctdef.zvalue.bpfiltord  = 2;
-    cfg.artfctdef.zvalue.hilbert    = 'yes';
+    cfg.artfctdef.zvalue.bpfilter   = 'no';
+    % cfg.artfctdef.zvalue.bpfilttype = 'but';
+    % cfg.artfctdef.zvalue.bpfreq     = [1 15];
+    % cfg.artfctdef.zvalue.bpfiltord  = 2;
+    % cfg.artfctdef.zvalue.hilbert    = 'yes';
 
     % set cutoff
     cfg.artfctdef.zvalue.cutoff     = 4;
@@ -166,7 +167,7 @@ function restingPreprocNumbers( cfgin )
 
     %plot the blink rate horizontal??
     cfg=[];
-    cfg.channel = 'UADC003'; % UADC004 if eyelink is present
+    cfg.channel = '3'; %UADC003 UADC004 if eyelink is present
     blinks = ft_selectdata(cfg,data);
 
     %If there is no variance in the data then it is probably because the
@@ -179,7 +180,7 @@ function restingPreprocNumbers( cfgin )
     subplot(2,3,cnt); cnt = cnt + 1;
     plot(blinks.trial{:})
     axis tight; axis square; box off;
-    title('Blink rate UADC003')
+    title('Blink rate 3')
 
     %%
     % ==================================================================
@@ -276,6 +277,7 @@ function restingPreprocNumbers( cfgin )
     %Make sampleinfo 0 because then artifacts are no longer added by the
     %sampleinfo from before
     %sampleinfo=sampleinfo-sampleinfo;
+    sampleinfo = data.sampleinfo
     [ data ] = delete_artifact_Numbers(artifact_Muscle, data, sampleinfo);
 
 
