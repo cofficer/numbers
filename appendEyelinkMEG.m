@@ -21,7 +21,7 @@ alleyes     = dir('*.mat');
 
 %figure(1),clf
 %loop all eyelink files
-for ieye = 110:length(alleyes)
+for ieye = 1:length(alleyes)
 
   %load the eyelink file
   dat_eye         = load(alleyes(ieye).name);
