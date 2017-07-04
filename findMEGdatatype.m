@@ -17,13 +17,10 @@ for icfg = 1:length(restingpaths)
     if restingpaths(icfg).name(7)=='2'
       restingpaths(icfg).name(7) ='3';
     end
-    dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,restingpaths(icfg).name(2:3),restingpaths(icfg).name(5),restingpaths(icfg).name(7));
+    dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,restingpaths(icfg).name(2:3),restingpaths(icfg).name(5),restingpaths(icfg).name(7))
     dat = load(dsfile)
 
 end
-
-
-
 
 
 end
