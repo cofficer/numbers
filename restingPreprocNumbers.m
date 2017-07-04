@@ -12,8 +12,7 @@ function restingPreprocNumbers( cfgin )
     %trialfun function which I should define next.
 
     %define ds file, this is actually from the trial-based data
-    dsfile = sprintf('%s%s',rawpath,cfgin.restingfile);
-
+    dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
     dat = load(dsfile)
     data = dat.combined_dat;
     clear dat
@@ -253,7 +252,7 @@ function restingPreprocNumbers( cfgin )
     cfg.artfctdef.zvalue.boxcar      = 0.2;
 
     % set cutoff
-    cfg.artfctdef.zvalue.cutoff      = 20;
+    cfg.artfctdef.zvalue.cutoff      = 40;
     [~, artifact_Muscle]             = ft_artifact_zvalue(cfg, data);
 
     cfg                              = [];
