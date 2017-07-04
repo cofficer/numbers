@@ -15,13 +15,14 @@ function restingPreprocNumbers( cfgin )
     dsfile = sprintf('%s%s',rawpath,cfgin.restingfile);
 
     dat = load(dsfile)
-
+    data = dat.combined_dat;
+    clear dat
     %%
     %From Anne, Donner git example
     %Skipping head motion calculation...
 
-
-    sampleinfo = data.sampleinfo;
+    %It appears sampleinfo no longer is there in the data struct...
+    %sampleinfo = data.sampleinfo;
 
     % plot a quick power spectrum
     % save those cfgs for later plotting
@@ -32,7 +33,7 @@ function restingPreprocNumbers( cfgin )
     cfgfreq.channel     = 'MEG';
     cfgfreq.foi         = 1:130;
     cfgfreq.keeptrials  = 'no';
-    freq                = ft_freqanalysis(cfgfreq, data);
+    freq                = ft_freqanalysis(cfgfreq, data); %Should only be done on MEG channels.
 
     %plot those data and save for visual inspection
     figure('vis','off'),clf
