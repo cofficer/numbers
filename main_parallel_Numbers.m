@@ -12,7 +12,7 @@ restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
 
-for icfg = 1:2%length(restingpaths)
+for icfg = 1:length(restingpaths)
 
     cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
     %cfgin=cfgin{1}
