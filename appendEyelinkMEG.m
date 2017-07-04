@@ -10,8 +10,8 @@ megpath     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/ra
 currpath    = '/home/chrisgahn/Documents/MATLAB/ktsetsos/code/numbers/';
 
 %Fieldtrip paths
-addpath '/home/chrisgahn/Documents/MATLAB/fieldtrip-20170528/'  % tell Matlab where FieldTrip is
-ft_defaults
+%addpath '/home/chrisgahn/Documents/MATLAB/fieldtrip-20170528/'  % tell Matlab where FieldTrip is
+%ft_defaults
 
 %Store filenames
 cd(eyelinkpath)
@@ -21,7 +21,7 @@ alleyes     = dir('*.mat');
 
 %figure(1),clf
 %loop all eyelink files
-for ieye = 217:length(alleyes)
+for ieye = 1:length(alleyes)
 
   %load the eyelink file
   dat_eye         = load(alleyes(ieye).name);
@@ -29,6 +29,9 @@ for ieye = 217:length(alleyes)
 
   %save the variance for comparison
   %eyelink_var(ieye) = var(dat_eye.asc.trial{1}(4,:));
+  if alleyes(ieye).name(7)=='2'
+    alleyes(ieye).name(7) ='3';
+  end
 
   %load the MEG data
   dat_megname      = sprintf('%s%s_S%s_P%s.mat',megpath,alleyes(ieye).name(2:3),alleyes(ieye).name(5),alleyes(ieye).name(7));
@@ -37,6 +40,8 @@ for ieye = 217:length(alleyes)
   if ~exist(dat_megname)
     continue
   end
+
+  %I really need to know which files have the combined_dat and which only have data...
 
   %Load the meg data.
   dat_meg          = load(dat_megname);

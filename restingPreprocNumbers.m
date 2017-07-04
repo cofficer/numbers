@@ -12,6 +12,10 @@ function restingPreprocNumbers( cfgin )
     %trialfun function which I should define next.
 
     %define ds file, this is actually from the trial-based data
+    %So the ending of P2 does not exist and needs to be P3...
+    if cfgin.restingfile(7)=='2'
+      cfgin.restingfile(7) ='3';
+    end
     dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
     dat = load(dsfile);
     data = dat.combined_dat;
