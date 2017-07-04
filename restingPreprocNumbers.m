@@ -192,7 +192,7 @@ function restingPreprocNumbers( cfgin )
 
     %call function which calculates all jumps
     idx_jump=findSquidJumps(data);
-
+    artifact_Jump = idx_jump;
     subplot(2,3,cnt); cnt = cnt + 1;
     %If there are jumps
     if ~isempty(idx_jump)
@@ -301,7 +301,7 @@ function restingPreprocNumbers( cfgin )
     %Change folder and save approapriate data + figures
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/')
 
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(1:2));
+    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(2:3));
 
     if 7==exist(name,'dir')
 
