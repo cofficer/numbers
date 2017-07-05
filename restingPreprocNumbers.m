@@ -196,10 +196,21 @@ function restingPreprocNumbers( cfgin )
     % ==================================================================
 
     %call function which calculates all jumps
-    idx_jump=findSquidJumps(data,cfgin);
-    artifact_Jump = idx_jump;
-    % subplot(2,3,cnt); cnt = cnt + 1;
-    %If there are jumps
+    channelJump=findSquidJumps(data,cfgin);
+    artifact_Jump = channelJump;
+    subplot(2,3,cnt); cnt = cnt + 1;
+
+    %If there are jumps, plot them.
+    if ~isempty(channelJump)
+      %subplot...
+      for ijump = 1:length(channelJump)
+        plot(data.trial{1}( ismember(data.label,channelJump{ijump}),:))
+        hold on
+      end
+    else
+      title('No jumps')
+    end
+
     % if ~isempty(idx_jump)
 
       % for iout = 1:length(idx_jump)

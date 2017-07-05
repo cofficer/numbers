@@ -1,80 +1,80 @@
 function [channelJump]=findSquidJumps( data,pathname )
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+  %UNTITLED Summary of this function goes here
+  %   Detailed explanation goes here
 
-%clear all
+  %clear all
 
-%%
-%Change the folder to where MEG data is contained
-cd('/mnt/homes/home024/ktsetsos/resting')
+  %%
+  %Change the folder to where MEG data is contained
+  cd('/mnt/homes/home024/ktsetsos/resting')
 
-%Store all the seperate data files
-%restingpaths = dir('*.mat');
+  %Store all the seperate data files
+  %restingpaths = dir('*.mat');
 
-%Loop all data files into seperate jobs
+  %Loop all data files into seperate jobs
 
-%for icfg = 1:length(restingpaths)
+  %for icfg = 1:length(restingpaths)
 
-   % cfgin{icfg}.restingfile             = restingpaths(icfg).name;%128 works.
+  % cfgin{icfg}.restingfile             = restingpaths(icfg).name;%128 works.
 
-    %load data
-    %load(pathname.restingfile)
-    doplot=0;
-    %calculate squid jumps
-    cfg = [] ;
-    cfg.length = 7;
-    %lengthsec = 7;
-    %cfg.toilim =[0 7];
-    %cfg.offset = 1:1200*lengthsec:1200*301;
-    cfg.overlap =0;
+  %load data
+  %load(pathname.restingfile)
+  doplot=0;
+  %calculate squid jumps
+  cfg = [] ;
+  cfg.length = 7;
+  %lengthsec = 7;
+  %cfg.toilim =[0 7];
+  %cfg.offset = 1:1200*lengthsec:1200*301;
+  cfg.overlap =0;
 
-    data = ft_redefinetrial(cfg,data) ;
-
-
-
-    % detrend and demean
-    cfg             = [];
-    cfg.detrend     = 'yes';
-    cfg.demean      = 'yes';
-    %cfg1.trials     = cfg1.trial{1}
-    data            = ft_preprocessing(cfg, data);
-
-    % compute the intercept of the loglog fourier spectrum on each trial
-    disp('searching for trials with squid jumps...');
+  data = ft_redefinetrial(cfg,data) ;
 
 
-% get the fourier spectrum per trial and sensor
-cfgfreq             = [];
-cfgfreq.method      = 'mtmfft';
-cfgfreq.output      = 'pow';
-cfgfreq.taper       = 'hanning';
-cfgfreq.channel     = 'MEG';
-cfgfreq.foi         = 1:130;
-cfgfreq.keeptrials  = 'yes';
-freq                = ft_freqanalysis(cfgfreq, data);
 
-% compute the intercept of the loglog fourier spectrum on each trial
-disp('searching for trials with squid jumps...');
-intercept       = nan(size(freq.powspctrm, 1), size(freq.powspctrm, 2));
-x = [ones(size(freq.freq))' log(freq.freq)'];
+  % detrend and demean
+  cfg             = [];
+  cfg.detrend     = 'yes';
+  cfg.demean      = 'yes';
+  %cfg1.trials     = cfg1.trial{1}
+  data            = ft_preprocessing(cfg, data);
 
-for t = 1:size(freq.powspctrm, 1),
+  % compute the intercept of the loglog fourier spectrum on each trial
+  disp('searching for trials with squid jumps...');
+
+
+  % get the fourier spectrum per trial and sensor
+  cfgfreq             = [];
+  cfgfreq.method      = 'mtmfft';
+  cfgfreq.output      = 'pow';
+  cfgfreq.taper       = 'hanning';
+  cfgfreq.channel     = 'MEG';
+  cfgfreq.foi         = 1:130;
+  cfgfreq.keeptrials  = 'yes';
+  freq                = ft_freqanalysis(cfgfreq, data);
+
+  % compute the intercept of the loglog fourier spectrum on each trial
+  disp('searching for trials with squid jumps...');
+  intercept       = nan(size(freq.powspctrm, 1), size(freq.powspctrm, 2));
+  x = [ones(size(freq.freq))' log(freq.freq)'];
+
+  for t = 1:size(freq.powspctrm, 1),
     for c = 1:size(freq.powspctrm, 2),
-        b = x\log(squeeze(freq.powspctrm(t,c,:)));
-        intercept(t,c) = b(1);
+      b = x\log(squeeze(freq.powspctrm(t,c,:)));
+      intercept(t,c) = b(1);
     end
-end
+  end
 
 
-% detect jumps as outliers, actually this returns the channels too...
-[~, idx] = deleteoutliers(intercept(:));
+  % detect jumps as outliers, actually this returns the channels too...
+  [~, idx] = deleteoutliers(intercept(:));
 
-%subplot(4,4,cnt); cnt = cnt + 1;
-if isempty(idx),
+  %subplot(4,4,cnt); cnt = cnt + 1;
+  if isempty(idx),
     fprintf('no squid jump trials found \n');
     %title('No jumps'); axis off;
     channelJump=[];
-else
+  else
 
     jumps_total=length(idx);
 
@@ -88,43 +88,43 @@ else
     fclose(fid)
 
     %For each detected jump, loop and get the name
-    if doplot
 
-        %reload data
-        load(pathname.restingfile)
 
-        for iout = 1:length(idx)
+    %reload data
+    load(pathname.restingfile)
 
-            %I belive that y is trial and x is channel.
-            [y,x] = ind2sub(size(intercept),idx(iout)) ;
+    for iout = 1:length(idx)
 
-            %Store the name of the channel
-            channelJump{iout} = freq.label(x);
+      %I belive that y is trial and x is channel.
+      [y,x] = ind2sub(size(intercept),idx(iout)) ;
 
-            %subplot...
-            plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
-            hold on
-
-        end
+      %Store the name of the channel
+      channelJump{iout} = freq.label(x);
+      if doplot
+        %subplot...
+        plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
+        hold on
+      end
     end
-    %error('Finally a jump')
-%     fprintf('removing %d squid jump trials \n', length(unique(t)));
-%     [t,~] = ind2sub(size(intercept),idx);
-%
-%     % remove those trials
-%     cfg                 = [];
-%     cfg.trials          = true(1, length(data.trial));
-%     cfg.trials(unique(t)) = false; % remove these trials
-%     data                = ft_selectdata(cfg, data);
-%
-%     % plot the spectrum again
-%     cfgfreq.keeptrials = 'no';
-%     freq            = ft_freqanalysis(cfgfreq, data);
-%     loglog(freq.freq, freq.powspctrm, 'linewidth', 0.1); hold on;
-%     loglog(freq.freq, mean(freq.powspctrm), 'k', 'linewidth', 1);
-%     axis tight; axis square; box off;
-%     set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-%     title(sprintf('%d jumps removed', length(unique(t))));
+  end
+  %error('Finally a jump')
+  %     fprintf('removing %d squid jump trials \n', length(unique(t)));
+  %     [t,~] = ind2sub(size(intercept),idx);
+  %
+  %     % remove those trials
+  %     cfg                 = [];
+  %     cfg.trials          = true(1, length(data.trial));
+  %     cfg.trials(unique(t)) = false; % remove these trials
+  %     data                = ft_selectdata(cfg, data);
+  %
+  %     % plot the spectrum again
+  %     cfgfreq.keeptrials = 'no';
+  %     freq            = ft_freqanalysis(cfgfreq, data);
+  %     loglog(freq.freq, freq.powspctrm, 'linewidth', 0.1); hold on;
+  %     loglog(freq.freq, mean(freq.powspctrm), 'k', 'linewidth', 1);
+  %     axis tight; axis square; box off;
+  %     set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
+  %     title(sprintf('%d jumps removed', length(unique(t))));
 end
 
 
@@ -153,7 +153,7 @@ end
 %
 %     [cfg, artifact_Jump] = ft_artifact_zvalue(cfg,data);
 %
-    %subplot(2,3,cnt); cnt = cnt + 1;
+%subplot(2,3,cnt); cnt = cnt + 1;
 %     if isempty(artifact_Jump),
 %         fprintf('no squid jump trials found \n');
 %         title('No jumps'); axis off;
@@ -205,7 +205,7 @@ end
 %     end
 %
 
-    %cfgin=cfgin{1}
+%cfgin=cfgin{1}
 %end
 
 
