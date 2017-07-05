@@ -15,7 +15,7 @@ restingpaths = dir('*.mat');
 for icfg = 1:length(restingpaths)
 
     cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
-    %cfgin=cfgin{1}
+    %cfgin=cfgin{199}
 end
 
 %Define script to run and whether to run on the torque
