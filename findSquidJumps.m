@@ -91,7 +91,7 @@ function [channelJump]=findSquidJumps( data,pathname )
 
 
     %reload data
-    load(pathname.restingfile)
+    %load(pathname.restingfile)
 
     for iout = 1:length(idx)
 
@@ -100,11 +100,7 @@ function [channelJump]=findSquidJumps( data,pathname )
 
       %Store the name of the channel
       channelJump{iout} = freq.label(x);
-      if doplot
-        %subplot...
-        plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
-        hold on
-      end
+
     end
   end
   %error('Finally a jump')
