@@ -1,4 +1,4 @@
-function idx=findSquidJumps( data )
+function idx=findSquidJumps( data,pathname )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
