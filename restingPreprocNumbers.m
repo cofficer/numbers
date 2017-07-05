@@ -198,29 +198,29 @@ function restingPreprocNumbers( cfgin )
     %call function which calculates all jumps
     idx_jump=findSquidJumps(data,cfgin);
     artifact_Jump = idx_jump;
-    subplot(2,3,cnt); cnt = cnt + 1;
+    % subplot(2,3,cnt); cnt = cnt + 1;
     %If there are jumps
-    if ~isempty(idx_jump)
+    % if ~isempty(idx_jump)
 
-      for iout = 1:length(idx_jump)
+      % for iout = 1:length(idx_jump)
 
         %I belive that y is trial and x is channel.
-        [y,x] = ind2sub(size(intercept),idx_jump(iout)) ;
+        % [y,x] = ind2sub(size(intercept),idx_jump(iout)) ;
 
         %Store the name of the channel
-        channelJump{iout} = freq.label(x);
+        % channelJump{iout} = freq.label(x);
 
         %Plot each channel containing a jump.
-        plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
-        hold on
+        % plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
+        % hold on
 
-      end
-      axis tight; axis square; box off;
+      % end
+      % axis tight; axis square; box off;
       %set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-      title(sprintf('Jumps found'));
-    else
-      title(sprintf('No jumps'));
-    end
+      % title(sprintf('Jumps found'));
+    % else
+      % title(sprintf('No jumps'));
+    % end
     %%
     % ==================================================================
     % 5. REMOVE LINE NOISE

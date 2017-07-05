@@ -1,4 +1,4 @@
-function idx=findSquidJumps( data,pathname )
+function [channelJump]=findSquidJumps( data,pathname )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -73,6 +73,7 @@ end
 if isempty(idx),
     fprintf('no squid jump trials found \n');
     %title('No jumps'); axis off;
+    channelJump=[];
 else
 
     jumps_total=length(idx);
