@@ -27,7 +27,7 @@ for ieye = 1:length(alleyes)
   dat_eye         = load(alleyes(ieye).name);
   fprintf('Eyelink asc %s\n',alleyes(ieye).name)
 
-  %save the variance for comparison
+  %save the variance for comparison027_1_1.mat
   %eyelink_var(ieye) = var(dat_eye.asc.trial{1}(4,:));
   if alleyes(ieye).name(7)=='1'
     continue
@@ -49,7 +49,10 @@ for ieye = 1:length(alleyes)
   %Load the meg data.
   dat_meg          = load(dat_megname);
 
-
+  %If dat_meg has field combined_dat, keep going otherwise load the next one.
+  if isfield(dat_meg,'combined_dat')
+    continue
+  end
   %Insert the eyelink channels in the MEG data
   %Consideration: Need to figure out the most appropriate way to combine the two datasets.
   %Naming: UADC004 already excists, so I will extend the convention to UADC009, but this is not possible unless the lengths are identical. The only solution might be to interpolate the eyelink data. This can be checked against the eyelink data which has been simulaneously collected.
