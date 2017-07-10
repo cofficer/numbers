@@ -29,11 +29,11 @@ for ieye = 1:length(alleyes)
 
   %save the variance for comparison027_1_1.mat
   %eyelink_var(ieye) = var(dat_eye.asc.trial{1}(4,:));
-  if alleyes(ieye).name(7)=='1'
-    continue
-  else
-    alleyes(ieye).name(7) ='3';
-  end
+   if alleyes(ieye).name(7)=='1'
+    aaa=1;
+  elseif alleyes(ieye).name(7)=='2'
+     alleyes(ieye).name(7) ='3';
+   end
 
   %load the MEG data
   dat_megname      = sprintf('%s%s_S%s_P%s.mat',megpath,alleyes(ieye).name(2:3),alleyes(ieye).name(5),alleyes(ieye).name(7));
