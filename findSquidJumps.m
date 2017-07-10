@@ -81,7 +81,7 @@ function [channelJump]=findSquidJumps( data,pathname )
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
     fid=fopen('logfile_squidJumps','a+');
     c=clock;
-    fprintf(fid,sprintf('\n\nNew entry for %s at %i/%i/%i %i:%i\n\n',pathname,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
+    fprintf(fid,sprintf('\n\nNew entry for %s at %i/%i/%i %i:%i\n\n',pathname.restingfile,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
 
     fprintf(fid,'Number of squid jumps: %i',jumps_total)
 
