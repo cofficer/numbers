@@ -18,9 +18,9 @@ function restingPreprocNumbers( cfgin )
     end
 
     dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
-    dat = load(dsfile);
-    data = dat.combined_dat;
-    clear dat
+    data = load(dsfile);
+    data = data.combined_dat;
+
     %%
     %From Anne, Donner git example
     %Skipping head motion calculation...

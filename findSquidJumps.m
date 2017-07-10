@@ -6,7 +6,7 @@ function [channelJump]=findSquidJumps( data,pathname )
 
   %%
   %Change the folder to where MEG data is contained
-  cd('/mnt/homes/home024/ktsetsos/resting')
+  %cd('/mnt/homes/home024/ktsetsos/resting')
 
   %Store all the seperate data files
   %restingpaths = dir('*.mat');
@@ -81,7 +81,7 @@ function [channelJump]=findSquidJumps( data,pathname )
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
     fid=fopen('logfile_squidJumps','a+');
     c=clock;
-    fprintf(fid,sprintf('\n\nNew entry for %s at %i/%i/%i %i:%i\n\n',pathname.restingfile,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
+    fprintf(fid,sprintf('\n\nNew entry for %s at %i/%i/%i %i:%i\n\n',pathname,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
 
     fprintf(fid,'Number of squid jumps: %i',jumps_total)
 
@@ -93,13 +93,14 @@ function [channelJump]=findSquidJumps( data,pathname )
     %reload data
     %load(pathname.restingfile)
 
+    channelJump = cell(length(idx),1);
     for iout = 1:length(idx)
 
       %I belive that y is trial and x is channel.
       [y,x] = ind2sub(size(intercept),idx(iout)) ;
 
       %Store the name of the channel
-      channelJump{iout} = freq.label(x);
+      channelJump(iout) = freq.label(x);
 
     end
   end
