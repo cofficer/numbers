@@ -28,8 +28,10 @@ function [channelJump]=findSquidJumps( data,pathname )
   %cfg.offset = 1:1200*lengthsec:1200*301;
   cfg.overlap =0;
 
-  data = ft_redefinetrial(cfg,data) ;
-
+  %Only change the trialstructure if it is continuous
+  if length(data.trial) < 2
+    data = ft_redefinetrial(cfg,data) ;
+  end
 
 
   % detrend and demean
