@@ -196,7 +196,7 @@ function restingPreprocNumbers( cfgin )
     % ==================================================================
 
     %call function which calculates all jumps
-    channelJump=findSquidJumps(data,cfgin);
+    channelJump=findSquidJumps(data,cfgin.restingfile(1:3));
     artifact_Jump = channelJump;
     subplot(2,3,cnt); cnt = cnt + 1;
 
