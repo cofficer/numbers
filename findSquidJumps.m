@@ -103,7 +103,7 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname )
 
       %Store the name of the channel
       channelJump(iout) = freq.label(x);
-      trialnum(iout)    = y(iout);
+      trialnum(iout)    = y;
     end
   end
 end
