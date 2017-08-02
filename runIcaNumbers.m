@@ -46,7 +46,7 @@ catch err
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
     fid=fopen('logfileICA','a+');
     c=clock;
-    fprintf(fid,sprintf('\n\n\n\nNew entry for %s at %i/%i/%i %i:%i\n\n\n\n',cfgin,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
+    fprintf(fid,sprintf('\n\n\n\nNew entry for %s at %i/%i/%i %i:%i\n\n\n\n',cfgin.restingfile,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
 
     fprintf(fid,'%s',err.getReport('extended','hyperlinks','off'))
 
