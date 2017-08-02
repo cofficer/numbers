@@ -12,7 +12,7 @@ try
 cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(2:3)))
 
 %load the preproc data.
-if cfgin.restingfile(7)==2
+if cfgin.restingfile(7)=='2'
   load(sprintf('preprocS%s_P3.mat',cfgin.restingfile(5)))
   savefile = sprintf('compS%s_P3.mat',cfgin.restingfile(5));
 else
