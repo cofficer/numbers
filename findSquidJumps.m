@@ -24,7 +24,7 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname )
   cfg = [] ;
   cfg.length = 7;
   %lengthsec = 7;
-  %cfg.toilim =[0 7];
+  cfg.toilim =[0 7];
   %cfg.offset = 1:1200*lengthsec:1200*301;
   cfg.overlap =0;
 
@@ -39,6 +39,9 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname )
   cfg.detrend     = 'yes';
   cfg.demean      = 'yes';
   %cfg1.trials     = cfg1.trial{1}
+  %cfg.hpfilter = 'yes';
+  %cfg.channel  = {'MEG'};
+  %cfg.hpfreq   = 60;
   data            = ft_preprocessing(cfg, data);
 
   % compute the intercept of the loglog fourier spectrum on each trial

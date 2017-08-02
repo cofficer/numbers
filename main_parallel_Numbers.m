@@ -19,7 +19,7 @@ for icfg = 1:length(restingpaths)
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute = 'preproc'; %preproc, parallel, findsquid, check_nSensors
+runcfg.execute = 'ICA'; %preproc, parallel, findsquid, check_nSensors, ICA
 runcfg.timreq          = 2000; % number of minutes.
 runcfg.parallel         ='torque'; %local or torque
 
