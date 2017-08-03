@@ -11,11 +11,14 @@ cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
-
+idx_cfg = 1;
 for icfg = 1:length(restingpaths)
 
-    cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
-    %cfgin=cfgin{199}
+    %if restingpaths(icfg).name(7) ~= '1'
+      cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
+      %cfgin=cfgin{199}
+      %idx_cfg = idx_cfg + 1;
+    %end
 end
 
 %Define script to run and whether to run on the torque
