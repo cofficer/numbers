@@ -140,15 +140,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Bunch of plotting!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Which figures are important? 
-%1.The overall coherence. Done 
-%2. Also the variance of the top coherence components. 
-%3. Also the first thirty components. And their variances.  
+%Which figures are important?
+%1.The overall coherence. Done
+%2. Also the variance of the top coherence components.
+%3. Also the first thirty components. And their variances.
 cfg          = [];
 cfg.channel  = [idx_coh(end-10:end)]; % components to be plotted
 cfg.viewmode = 'component';
 cfg.layout   = 'CTF275.lay'; % specify the layout file that should be used for plotting
-cfg2= ft_databrowser(cfg, comp)
+ft_databrowser(cfg, comp)
 
 cfg          = [];
 cfg.channel  = [1:10]; % components to be plotted
@@ -157,7 +157,7 @@ cfg.layout   = 'CTF275.lay'; % specify the layout file that should be used for p
 ft_databrowser(cfg, comp)
 
 %Plot the comoponent data together with the artifact data, timelocked to
-%the artifact. 
+%the artifact.
 figure('vis','off'),clf
 subplot(2,1,1); plot(timelock.time, timelock.avg(1,:))
 subplot(2,1,2); plot(timelock.time, timelock.avg(2:end,:))
@@ -165,7 +165,15 @@ figurestore=sprintf('TimelockComp%s.png',cfgin.restingfile(2:7));
 saveas(gca,figurestore,'png')
 close
 
-
+%Plot the variance of the components.
+figure('vis','off'),clf
+cfg = [];
+cfg.channel  = 'runica014';%[idx_coh(end-10:end)];
+cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed';
+cfg.prefix   = 'cohComp';
+cfg.layout          = 'CTF275.lay';
+cfg.viewmode        = 'component';
+ft_icabrowser(cfg,comp)
 
 % decompose the original data as it was prior to downsampling to 150Hz
 % cfg           = [];
