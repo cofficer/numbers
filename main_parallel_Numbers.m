@@ -14,11 +14,13 @@ restingpaths = dir('*.mat');
 idx_cfg = 1;
 for icfg = 1:length(restingpaths)
 
-    %if restingpaths(icfg).name(7) ~= '1'
+    if restingpaths(icfg).name(7) ~= '1'       
+        restingpaths(icfg).name(7) = '3';
+    end
       cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
       %cfgin=cfgin{199}
       %idx_cfg = idx_cfg + 1;
-    %end
+    
 end
 
 %Define script to run and whether to run on the torque
