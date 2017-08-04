@@ -168,6 +168,12 @@ close
 %Plot the variance of the components.
 figure('vis','off'),clf
 cfg = [];
+
+%trick fieldtrip into thinking it has meg and not comp.
+corect_labels = ft_channelselection('meg',data.label);
+comp_labels=comp.label;
+comp.label = corect_labels(1:length(comp_labels));
+
 cfg.channel  = 'runica014';%[idx_coh(end-10:end)];
 cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed';
 cfg.prefix   = 'cohComp';
