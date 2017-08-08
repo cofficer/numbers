@@ -62,7 +62,7 @@ cfgtopo.style     = 'straight';
 if isfield(cfg, 'colormap'),  cfgtopo.colormap  = cfg.colormap;  end
 
 err = 0;
-manpos = [0.1 0.1 0.8 0.8]; % figure position, can be updated later
+manpos = [0 0 1 1]; % figure position, can be updated later old: 0.1 0.1 0.8 0.8
 
 % ------------------------------------------------
 % COMPUTE LATENCY FOR 2s-WINDOWS
@@ -149,7 +149,7 @@ end
         % ------------------------------------------------
         subcomp{3}{il} = subplot(subpl,3,(i-(l-1)*subpl)*3);
         cfgtopo.component = i;       % specify the component(s) that should be plotted
-        cfgtopo.title = cfg.channel(i)
+        cfgtopo.title = cfg.channel(i);
         ft_topoplotIC(cfgtopo, comp);
 
         if mod(i,subpl)==0 || i == 80
