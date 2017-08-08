@@ -120,6 +120,10 @@ fdcomp         = ft_connectivityanalysis(cfg, freq);
  figure;
  subplot(2,1,1); plot(fdcomp.freq, abs(fdcomp.cohspctrm));
  subplot(2,1,2); imagesc(abs(fdcomp.cohspctrm));
+ figurestore=sprintf('cohspctrmComp%s.png',channelRej);
+ saveas(gca,figurestore,'png')
+ close
+%Save this figure.
 
 %calculate to average coherence over all frequencies:
 [val_cor,idx_coh] = sort(mean(fdcomp.cohspctrm,2));
@@ -134,6 +138,9 @@ if channelRej ~= 'EEG059'
 
     %Sort in order of spatial correlation
     [val_cor,idx_coh] = sort(cor_comp_artifact);
+
+
+
 end
 
 %%
@@ -151,7 +158,7 @@ end
 figure('vis','off'),clf
 subplot(2,1,1); plot(timelock.time, timelock.avg(1,:))
 subplot(2,1,2); plot(timelock.time, timelock.avg(2:end,:))
-figurestore=sprintf('TimelockComp%s.png',cfgin.restingfile(2:7));
+figurestore=sprintf('TimelockComp%s.png',channelRej);
 saveas(gca,figurestore,'png')
 close
 
@@ -170,9 +177,11 @@ cfg.layout          = 'CTF275.lay';
 cfg.viewmode        = 'component';
 %plot the 8 highest coherence components.
 modded_ft_icabrowser(cfg,comp);
-figurestore=sprintf('highCohComp%s.png',cfgin.restingfile(2:7));
+figurestore=sprintf('highCohComp%s.png',channelRej);
 saveas(gca,figurestore,'png')
 
+%Only necessary to plot the first 30 components once.
+if channelRej ~= 'EEG059'
 %plot the 30 first components.
 cfg.channel  = 1:8;
 modded_ft_icabrowser(cfg,comp);
@@ -196,7 +205,7 @@ cfg.channel  = 25:32;
 modded_ft_icabrowser(cfg,comp);
 figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
 saveas(gca,figurestore,'png')
-
+end
 
 % decompose the original data as it was prior to downsampling to 150Hz
 % cfg           = [];

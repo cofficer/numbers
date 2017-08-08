@@ -14,17 +14,17 @@ restingpaths = dir('*.mat');
 idx_cfg = 1;
 for icfg = 1:length(restingpaths)
 
-    if restingpaths(icfg).name(7) ~= '1'       
+    if restingpaths(icfg).name(7) ~= '1'
         restingpaths(icfg).name(7) = '3';
     end
       cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
       %cfgin=cfgin{199}
       %idx_cfg = idx_cfg + 1;
-    
+
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute = 'ICA'; %preproc, parallel, findsquid, check_nSensors, ICA
+runcfg.execute = 'cohICA'; %preproc, parallel, findsquid, check_nSensors, ICA
 runcfg.timreq          = 2000; % number of minutes.
 runcfg.parallel         ='torque'; %local or torque
 

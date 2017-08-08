@@ -24,9 +24,9 @@ switch runcfg.execute
     case 'cohICA'
 
         %component for blinks
-        [val_corBlink,idx_corBlink] = coherenceICA(cfgin{1},'UADC004');
+        [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'UADC004');
         %component for heart rate
-        [val_corHR,idx_corHR] = coherenceICA(cfgin{1},'EEG059');
+        [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
         %cellfun(@createFullMatrix, cfg1, outputfile);
 
         %Decide where to save the component to reject information,
