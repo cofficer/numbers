@@ -141,20 +141,10 @@ end
 %Bunch of plotting!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Which figures are important?
-%1.The overall coherence. Done
+%1. The overall coherence. Done
 %2. Also the variance of the top coherence components.
 %3. Also the first thirty components. And their variances.
-cfg          = [];
-cfg.channel  = [idx_coh(end-10:end)]; % components to be plotted
-cfg.viewmode = 'component';
-cfg.layout   = 'CTF275.lay'; % specify the layout file that should be used for plotting
-ft_databrowser(cfg, comp)
 
-cfg          = [];
-cfg.channel  = [1:10]; % components to be plotted
-cfg.viewmode = 'component';
-cfg.layout   = 'CTF275.lay'; % specify the layout file that should be used for plotting
-ft_databrowser(cfg, comp)
 
 %Plot the comoponent data together with the artifact data, timelocked to
 %the artifact.
@@ -179,7 +169,7 @@ cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/p
 cfg.prefix   = 'cohComp';
 cfg.layout          = 'CTF275.lay';
 cfg.viewmode        = 'component';
-modded_ft_icabrowser(cfg,comp)
+modded_ft_icabrowser(cfg,comp);
 
 
 figurestore=sprintf('someComp%s.png',cfgin.restingfile(2:7));
