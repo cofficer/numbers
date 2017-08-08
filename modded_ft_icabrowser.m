@@ -148,7 +148,7 @@ end
         % PLOT COMPONENT TOPOGRAPHY
         % ------------------------------------------------
         subcomp{3}{il} = subplot(subpl,3,(i-(l-1)*subpl)*3);
-        cfgtopo.component = i;       % specify the component(s) that should be plotted
+        cfgtopo.component = cfg.channel(i);       % specify the component(s) that should be plotted
         cfgtopo.title = cfg.channel(i);
         ft_topoplotIC(cfgtopo, comp);
 

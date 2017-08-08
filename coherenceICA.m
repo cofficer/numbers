@@ -163,17 +163,40 @@ cfg = [];
 corect_labels = ft_channelselection('meg',data.label);
 comp_labels   = comp.label;
 comp.label    = corect_labels(1:length(comp_labels));
-
 cfg.channel  = [idx_coh(end-7:end)];
 cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed';
 cfg.prefix   = 'cohComp';
 cfg.layout          = 'CTF275.lay';
 cfg.viewmode        = 'component';
+%plot the 8 highest coherence components.
 modded_ft_icabrowser(cfg,comp);
-
-
-figurestore=sprintf('someComp%s.png',cfgin.restingfile(2:7));
+figurestore=sprintf('highCohComp%s.png',cfgin.restingfile(2:7));
 saveas(gca,figurestore,'png')
+
+%plot the 30 first components.
+cfg.channel  = 1:8;
+modded_ft_icabrowser(cfg,comp);
+figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+saveas(gca,figurestore,'png')
+
+%plot the 30 first components.
+cfg.channel  = 9:16;
+modded_ft_icabrowser(cfg,comp);
+figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+saveas(gca,figurestore,'png')
+
+%plot the 30 first components.
+cfg.channel  = 17:24;
+modded_ft_icabrowser(cfg,comp);
+figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+saveas(gca,figurestore,'png')
+
+%plot the 30 first components.
+cfg.channel  = 25:32;
+modded_ft_icabrowser(cfg,comp);
+figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+saveas(gca,figurestore,'png')
+
 
 % decompose the original data as it was prior to downsampling to 150Hz
 % cfg           = [];
