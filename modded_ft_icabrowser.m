@@ -127,10 +127,10 @@ end
         subcomp{1}{il} = subplot(subpl,3,(i-(l-1)*subpl)*3-2);
         if logar
             plot(freq(strt:stp),log10(smoothed(strt:stp)));
-            ylabel('(dB/Hz)');
+            %ylabel('(dB/Hz)');
         else
             plot(freq(strt:stp),smoothed(strt:stp));
-            ylabel('T^2/Hz');
+            %ylabel('T^2/Hz');
         end
         set(gca,'TickDir','out','XTick',0:25:200)
         %xlabel('Frequency (Hz)'); grid on;
@@ -141,7 +141,7 @@ end
         % ------------------------------------------------
         subcomp{2}{il} = subplot(subpl,3,(i-(l-1)*subpl)*3-1);
         scatter(comp_time,comp_var(i,:),'k.');
-        %xlabel('Time (s)'); ylabel('Variance');
+        %xlabel('Time (s)'); %ylabel('Variance');
         axis tight; set(gca, 'tickdir', 'out');
 
         % ------------------------------------------------
