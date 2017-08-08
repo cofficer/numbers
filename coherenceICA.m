@@ -164,7 +164,7 @@ corect_labels = ft_channelselection('meg',data.label);
 comp_labels   = comp.label;
 comp.label    = corect_labels(1:length(comp_labels));
 
-cfg.channel  = [idx_coh(end-8:end)];
+cfg.channel  = [idx_coh(end-9:end)];
 cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed';
 cfg.prefix   = 'cohComp';
 cfg.layout          = 'CTF275.lay';

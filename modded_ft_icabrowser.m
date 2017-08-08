@@ -133,7 +133,7 @@ end
             ylabel('T^2/Hz');
         end
         set(gca,'TickDir','out','XTick',0:25:200)
-        xlabel('Frequency (Hz)'); grid on;
+        %xlabel('Frequency (Hz)'); grid on;
         axis tight;
 
         % ------------------------------------------------
@@ -141,7 +141,7 @@ end
         % ------------------------------------------------
         subcomp{2}{il} = subplot(subpl,3,(i-(l-1)*subpl)*3-1);
         scatter(comp_time,comp_var(i,:),'k.');
-        xlabel('Time (s)'); ylabel('Variance');
+        %xlabel('Time (s)'); ylabel('Variance');
         axis tight; set(gca, 'tickdir', 'out');
 
         % ------------------------------------------------
