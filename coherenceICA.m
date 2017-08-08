@@ -1,7 +1,7 @@
 function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
 %Using coherence analysis this function will output the channels which
 %should be rejected. cfgin.restingfile='040_3_3.mat'
-%channelRej='UADC004'; %UADC004, % EEG059 Heart.
+%channelRej='4' %'UADC004'; %UADC004, % EEG059 Heart.
 
 %define ds file, this is actually from the trial-based data
 dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/preprocS%s_P%s.mat'...
@@ -166,20 +166,24 @@ saveas(gca,figurestore,'png')
 close
 
 %Plot the variance of the components.
-figure('vis','off'),clf
+f=figure('vis','off'),clf
 cfg = [];
 
 %trick fieldtrip into thinking it has meg and not comp.
 corect_labels = ft_channelselection('meg',data.label);
-comp_labels=comp.label;
-comp.label = corect_labels(1:length(comp_labels));
+comp_labels   = comp.label;
+comp.label    = corect_labels(1:length(comp_labels));
 
-cfg.channel  = 'runica014';%[idx_coh(end-10:end)];
+cfg.channel  = [idx_coh(end-10:end)];
 cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed';
 cfg.prefix   = 'cohComp';
 cfg.layout          = 'CTF275.lay';
 cfg.viewmode        = 'component';
 ft_icabrowser(cfg,comp)
+
+
+figurestore=sprintf('someComp%s.png',cfgin.restingfile(2:7));
+saveas(f,figurestore,'png')
 
 % decompose the original data as it was prior to downsampling to 150Hz
 % cfg           = [];
