@@ -166,7 +166,7 @@ saveas(gca,figurestore,'png')
 close
 
 %Plot the variance of the components.
-f=figure('vis','off'),clf
+%f=figure('vis','off'),clf
 cfg = [];
 
 %trick fieldtrip into thinking it has meg and not comp.
@@ -179,11 +179,11 @@ cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/p
 cfg.prefix   = 'cohComp';
 cfg.layout          = 'CTF275.lay';
 cfg.viewmode        = 'component';
-ft_icabrowser(cfg,comp)
+modded_ft_icabrowser(cfg,comp)
 
 
 figurestore=sprintf('someComp%s.png',cfgin.restingfile(2:7));
-saveas(f,figurestore,'png')
+saveas(gca,figurestore,'png')
 
 % decompose the original data as it was prior to downsampling to 150Hz
 % cfg           = [];

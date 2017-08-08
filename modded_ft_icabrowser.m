@@ -36,7 +36,7 @@ fft_data = cat(2,comp.trial{1:5:end});
 % preallocate rejected components
 rej_comp = zeros(size(comp.label,1),1);
 
-subpl = 4;
+subpl = length(cfg.channel);
 l = 0;
 cnt = 1;
 il = 0;
