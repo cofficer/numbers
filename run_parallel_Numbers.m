@@ -24,7 +24,7 @@ switch runcfg.execute
     case 'cohICA'
 
         %component for blinks
-        [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'UADC004');
+        [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'4');
         %component for heart rate
         [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
         %cellfun(@createFullMatrix, cfg1, outputfile);
