@@ -121,7 +121,7 @@ fdcomp         = ft_connectivityanalysis(cfg, freq);
  figure;
  subplot(2,1,1); plot(fdcomp.freq, abs(fdcomp.cohspctrm));
  subplot(2,1,2); imagesc(abs(fdcomp.cohspctrm));
- figurestore=sprintf('cohspctrmComp%s.png',channelRej);
+ figurestore=sprintf('cohspctrmComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
  saveas(gca,figurestore,'png')
  close
 %Save this figure.
