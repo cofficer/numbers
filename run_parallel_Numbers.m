@@ -24,14 +24,15 @@ function run_parallel_Numbers(runcfg, cfgin)
   case 'cohICA'
 
     %component for blinks
-    [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'3');
+    % [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'3');
     %component for heart rate
-    [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
+    % [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
     %cellfun(@createFullMatrix, cfg1, outputfile);
     %get the comp_idx for all correlation >0.52
-    comp_idx1= idx_corBlink(val_corBlink>0.52)';
-    comp_idx2= idx_corHR(val_corHR>0.52);
-
+    %comp_idx1= idx_corBlink(val_corBlink>0.52)';
+    %comp_idx2= idx_corHR(val_corHR>0.52);
+    comp_idx1=[9;11];
+    comp_idx2=[2;9];
     if isempty(comp_idx1) & ~isempty(comp_idx2)
       comp_idx=comp_idx2;
     elseif isempty(comp_idx2) & ~isempty(comp_idx1)
