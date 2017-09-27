@@ -29,9 +29,21 @@ function run_parallel_Numbers(runcfg, cfgin)
     [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
     %cellfun(@createFullMatrix, cfg1, outputfile);
     %get the comp_idx for all correlation >0.52
-    comp_idx1= idx_corBlink(val_corBlink>0.52);
+    comp_idx1= idx_corBlink(val_corBlink>0.52)';
     comp_idx2= idx_corHR(val_corHR>0.52);
-    comp_idx = [comp_idx1;comp_idx2]';
+
+    if isempty(comp_idx1) & ~isempty(comp_idx2)
+      comp_idx=comp_idx2;
+    elseif isempty(comp_idx2) & ~isempty(comp_idx1)
+      comp_idx=comp_idx2;
+    elseif isempty(comp_idx2) && isempty(comp_idx1)
+      comp_idx = [];
+    else
+      comp_idx = [comp_idx1;comp_idx2]';
+
+    end
+    comp_idx=unique(comp_idx);
+
     disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
     resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
 
