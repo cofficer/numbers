@@ -45,24 +45,26 @@ function run_parallel_Numbers(runcfg, cfgin)
     comp_idx=unique(comp_idx);
 
     disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
-    resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
+    add_comps=0
+    if add_comps
+      resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
 
-    switch resp_add
-    case '1'
-      while strcmp(resp_add,'1')
-        disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
-        comp_idx(end+1) = input('Extra components: ')
-        resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
-      end
-    case '2'
-      while strcmp(resp_add,'2')
-        disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
-        comp_idx_rem = input('Index remove: ');
-        comp_idx(comp_idx_rem)=[];
-        resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
+      switch resp_add
+      case '1'
+        while strcmp(resp_add,'1')
+          disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
+          comp_idx(end+1) = input('Extra components: ')
+          resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
+        end
+      case '2'
+        while strcmp(resp_add,'2')
+          disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
+          comp_idx_rem = input('Index remove: ');
+          comp_idx(comp_idx_rem)=[];
+          resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
+        end
       end
     end
-
     remove_ICA(cfgin,comp_idx)
     %Decide where to save the component to reject information,
     %or remove them directly and finish the preprocessing.

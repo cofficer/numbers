@@ -30,10 +30,10 @@ runcfg.parallel         ='torque'; %local or torque
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting')
 
-
+for icfg2 = 85:length(restingpaths)%84 - manual rest fully autom.
 %Execute jobs on the torque
-run_parallel_Numbers(runcfg, cfgin)
-
+run_parallel_Numbers(runcfg, cfgin{icfg2})
+end
 
 
 
