@@ -18,7 +18,7 @@ for icfg = 1:length(restingpaths)
         restingpaths(icfg).name(7) = '3';
     end
       cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
-      %cfgin=cfgin{199}
+      %cfgin=cfgin{101}
       %idx_cfg = idx_cfg + 1;
 
 end
