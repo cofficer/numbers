@@ -24,7 +24,7 @@ cfg                       = [];
 cfg.trl                   = [1 length(data.trial{1})];
 cfg.dataset               = data;
 cfg.continuous            = 'yes';
-if strcmp(channelRej,'3') || strcmp(channelRej,'EEG057') || || strcmp(channelRej,'EEG057')
+if strcmp(channelRej,'3') || strcmp(channelRej,'EEG057') || strcmp(channelRej,'EEG057')
     cfg.artfctdef.ecg.pretim  = 0.1;
     cfg.artfctdef.ecg.psttim  = 0.1-1/500;
 else
