@@ -159,7 +159,7 @@ end
 figure('vis','off'),clf
 subplot(2,1,1); plot(timelock.time, timelock.avg(1,:))
 subplot(2,1,2); plot(timelock.time, timelock.avg(2:end,:))
-figurestore=sprintf('TimelockComp%s.png',channelRej);
+figurestore=sprintf('TimelockComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
 saveas(gca,figurestore,'png')
 close
 
@@ -178,7 +178,7 @@ cfg.layout          = 'CTF275.lay';
 cfg.viewmode        = 'component';
 %plot the 8 highest coherence components.
 modded_ft_icabrowser(cfg,comp);
-figurestore=sprintf('highCohComp%s.png',channelRej);
+figurestore=sprintf('highCohComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
 saveas(gca,figurestore,'png')
 
 %Only necessary to plot the first 30 components once.
@@ -186,25 +186,25 @@ if channelRej ~= 'EEG059'
 %plot the 30 first components.
 cfg.channel  = 1:8;
 modded_ft_icabrowser(cfg,comp);
-figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
 saveas(gca,figurestore,'png')
 
 %plot the 30 first components.
 cfg.channel  = 9:16;
 modded_ft_icabrowser(cfg,comp);
-figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
 saveas(gca,figurestore,'png')
 
 %plot the 30 first components.
 cfg.channel  = 17:24;
 modded_ft_icabrowser(cfg,comp);
-figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
 saveas(gca,figurestore,'png')
 
 %plot the 30 first components.
 cfg.channel  = 25:32;
 modded_ft_icabrowser(cfg,comp);
-figurestore=sprintf('Comp%d-%d.png',cfg.channel(1),cfg.channel(end));
+figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
 saveas(gca,figurestore,'png')
 end
 
