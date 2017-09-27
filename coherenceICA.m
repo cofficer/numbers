@@ -77,7 +77,8 @@ ecg            = ft_redefinetrial(cfg,ecg);
 ecg.channel{:} = 'ECG';%channelRej;
 
 %load the previously computed ICA components
-load('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/comp01S2P1.mat')
+load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/compS%s_P%s.mat',...
+cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7)))
 
 % decompose the ECG-locked datasegments into components, using the previously found (un)mixing matrix
 cfg           = [];
