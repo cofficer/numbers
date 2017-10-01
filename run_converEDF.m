@@ -15,7 +15,7 @@ removeSubj = [8,9,15,21,25,30,31,42,43]; %Check-up removals...
 subjAll=subjAll(~ismember(subjAll,removeSubj));
 
 %Remove before torque.
-block_typ = 'task';
+block_type = 'task';
 
 %Remove loop before torque
 for isub = 1:length(subjAll)
