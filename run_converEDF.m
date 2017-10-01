@@ -18,7 +18,7 @@ subjAll=subjAll(~ismember(subjAll,removeSubj));
 block_type = 'task';
 
 %Remove loop before torque
-for isub = 1:length(subjAll)
+for isub = 2:length(subjAll) %redo 5
 
   if subjAll(isub)>9
     subj = sprintf('0%d',subjAll(isub))

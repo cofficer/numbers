@@ -4,7 +4,7 @@ function convertEDF(subj,block_type)
 loadpath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/code/numbers/';
 savepath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/trial/eyedat/';
 
-edfpath = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/eye_chris/';
+edfpath = '/home/ktsetsos/eyelink/';
 
 %addpath D:\Experiments\Surprise_accumulation\Analysis\Pupil
 % addpath('/home/chrisgahn/Documents/MATLAB/fieldtrip-20170528/')  % tell Matlab where FieldTrip is
@@ -58,10 +58,10 @@ for s = 1:length(sess);
             if ~exist(ascFile)
                 system(sprintf('%s %s -failsafe -input', [loadpath,'edf2asc-linux'], edfFile));
                 assert(exist(ascFile, 'file') > 1, 'Edf not properly converted...');  % check that asc has actually been created
-            else
-                delete(ascFile)
-                system(sprintf('%s %s -failsafe -input', [loadpath,'edf2asc-linux'], edfFile));
-                assert(exist(ascFile, 'file') > 1, 'Edf not properly converted...');  % check that asc has actually been created
+            % else
+                % delete(ascFile)
+                % system(sprintf('%s %s -failsafe -input', [loadpath,'edf2asc-linux'], edfFile));
+                % assert(exist(ascFile, 'file') > 1, 'Edf not properly converted...');  % check that asc has actually been created
             end
 
         % Read the asc file into matlab & save
