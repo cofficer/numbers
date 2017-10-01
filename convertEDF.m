@@ -2,13 +2,13 @@ function convertEDF(subj,block_type)
 % Convert from Eyelink .edf files to .asc files using edf2asc converter
 % Subj input need to be a number between 001 and 045.
 loadpath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/code/numbers/';
-savepath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/';
+savepath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/trial/eyedat/';
 
 edfpath = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/eye_chris/';
 
 %addpath D:\Experiments\Surprise_accumulation\Analysis\Pupil
-addpath('/home/chrisgahn/Documents/MATLAB/fieldtrip-20170528/')  % tell Matlab where FieldTrip is
-ft_defaults
+% addpath('/home/chrisgahn/Documents/MATLAB/fieldtrip-20170528/')  % tell Matlab where FieldTrip is
+% ft_defaults
 
 %subj = 'DHB';
 sess = [1 2 3];
