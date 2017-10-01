@@ -24,17 +24,22 @@ for icfg = 1:length(restingpaths)
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute = 'cohICA'; %preproc, parallel, findsquid, check_nSensors, ICA
+runcfg.execute = 'preproc'; %preproc, parallel, findsquid, check_nSensors, ICA
 runcfg.timreq          = 2000; % number of minutes.
 runcfg.parallel         ='torque'; %local or torque
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting')
 
-for icfg2 = 85:length(restingpaths)%84 - manual rest fully autom.
-%Execute jobs on the torque
-run_parallel_Numbers(runcfg, cfgin{icfg2})
-end
+%84 - manual rest fully autom. 108 crash
+%150, preproc missing.
+%157, preproc missing
+% for icfg2 = 1:length(restingpaths)
+% %Execute jobs on the torque
+% run_parallel_Numbers(runcfg, cfgin{icfg2})
+% end
 
+
+run_parallel_Numbers(runcfg, cfgin)
 
 
 %%

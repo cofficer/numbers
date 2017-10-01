@@ -1,4 +1,4 @@
-function convertEDF(subj)
+function convertEDF(subj,block_type)
 % Convert from Eyelink .edf files to .asc files using edf2asc converter
 % Subj input need to be a number between 001 and 045.
 loadpath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/code/numbers/';
@@ -12,10 +12,23 @@ ft_defaults
 
 %subj = 'DHB';
 sess = [1 2 3];
-nblocks = [10 20]; % 10 and 20 represent the first and last resting block
 
 % Loop through individual files
 for s = 1:length(sess);
+
+  if strcmp(block_type,'task')
+    switch s
+      case 1
+        nblocks = [1 7 2];
+      case 2
+        nblocks = [3 8 4];
+      case 3
+        nblocks = [5 9 6];
+      end
+  else
+    nblocks = [10 20]; % 10 and 20 represent the first and last resting block
+  end
+
     for b = 1:length(nblocks);
 
         fprintf('Subj %s, session %d, block %d \n',subj,s,b)
