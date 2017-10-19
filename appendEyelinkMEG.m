@@ -3,10 +3,11 @@ function appendEyelinkMEG(~)
 %There is an important consideraration about the length of each eyelinkfile
 %So lets have a look.
 
+block_type='trial';
 
 %General paths
-eyelinkpath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/';
-megpath     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/raw/';
+eyelinkpath = sprintf('/home/chrisgahn/Documents/MATLAB/ktsetsos/%s/eyedat/',block_type);
+megpath     = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/raw/',block_type);
 currpath    = '/home/chrisgahn/Documents/MATLAB/ktsetsos/code/numbers/';
 
 %Fieldtrip paths
@@ -29,14 +30,21 @@ for ieye = 1:length(alleyes)
 
   %save the variance for comparison027_1_1.mat
   %eyelink_var(ieye) = var(dat_eye.asc.trial{1}(4,:));
-   if alleyes(ieye).name(7)=='1'
-    aaa=1;
-  elseif alleyes(ieye).name(7)=='2'
-     alleyes(ieye).name(7) ='3';
-   end
+  %  if alleyes(ieye).name(7)=='1'
+  %   aaa=1;
+  % elseif alleyes(ieye).name(7)=='2'
+  %    alleyes(ieye).name(7) ='3';
+  %  end
 
+  %Remove the 0 if part 1:9. Else do nothing.
+  part0 = ismember(alleyes(ieye).name(2:3),'0');
+  if part0(2)==0
+    partstr=alleyes(ieye).name(3);
+  else
+    partstr=alleyes(ieye).name(2:3);
+  end
   %load the MEG data
-  dat_megname      = sprintf('%s%s_S%s_P%s.mat',megpath,alleyes(ieye).name(2:3),alleyes(ieye).name(5),alleyes(ieye).name(7));
+  dat_megname      = sprintf('%sp%s_s%s_b%s.mat',megpath,partstr,alleyes(ieye).name(5),alleyes(ieye).name(7));
 
   %Need to understand why this is sometimes the case...
   %if ~exist(dat_megname)
@@ -77,6 +85,7 @@ for ieye = 1:length(alleyes)
 
   %Pupil dilation
   %Store each label as its own variable
+  
   for it_eye = 1:5
 
     %Extract and equalize the length of data.
