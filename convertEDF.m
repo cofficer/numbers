@@ -79,7 +79,7 @@ function convertEDF(subj,block_type)
         %
 
         % Read the asc file into matlab & save
-        %if ~exist(matFile)
+        %if ~exist(matFile
         asc = read_eyelink(ascFile);
 
         ascTotalTrials.trial{i_behav} = asc.trial{1};

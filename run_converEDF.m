@@ -45,3 +45,14 @@ end
 % Cannot CD to /home/ktsetsos/eyelink/// (Name is nonexistent or not a directory).
 % Subj 043, session 1, block 1
 % Insufficient number of outputs from right hand side of equal sign to satisfy assignment.
+
+
+%Errors from task:
+% Subj 008, session 1, block 3
+% Insufficient number of outputs from right hand side of equal sign to satisfy assignment.
+% Subj 009 does not exist.
+% Subj 015 Insufficient number of outputs from right hand side of equal sign to satisfy assignment.
+% Subj 021, session 3, block 3
+% Insufficient number of outputs from right hand side of equal sign to satisfy assignment.
+% Subj 025, session 2, block 1
+% Insufficient number of outputs from right hand side of equal sign to satisfy assignment.

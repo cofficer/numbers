@@ -7,6 +7,11 @@ cfg         = [];
 cfg.dataset = ascFile;
 data_eye    = ft_preprocessing(cfg);
 
+% event_eye = ft_read_event(ascFile);
+%
+% disp(unique({event_eye.type}))
+
+
 %Downsample the eyelink data
 cfg         = [];
 cfg.resamplefs = 1200;

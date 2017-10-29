@@ -85,7 +85,7 @@ for ieye = 1:length(alleyes)
 
   %Pupil dilation
   %Store each label as its own variable
-  
+
   for it_eye = 1:5
 
     %Extract and equalize the length of data.
