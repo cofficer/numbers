@@ -1,11 +1,15 @@
 function taskPreprocNumbers( cfgin )
-  %The current code is copied as a first step from lissajous_preproc.m
-  %This script removes muscle artifacts and jumps from the MEG data and saves
-  %the remainder, as well as all of the timestamps of all artifacts.
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %The current code is copied from restingPreprocNumbers
+  %Needs to output 1 continuous trial, from 3 trial input.
+  %TODO: remove all eyelink-related analysis, and replace w/ eog.
+  %Only remove jumps and muscle.
+  %2017-10-29 created.
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   try
     %Folder with the resting data
-    rawpath = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/raw/';
+    rawpath = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/raw/';
     cd(rawpath)
 
     %The key here is to use the already defined tables for samples when calling
@@ -13,20 +17,13 @@ function taskPreprocNumbers( cfgin )
 
     %define ds file, this is actually from the trial-based data
     %So the ending of P2 does not exist and needs to be P3...
-    if cfgin.restingfile(7)=='2'
-      cfgin.restingfile(7) ='3';
-    end
+    % if cfgin.restingfile(7)=='2'
+    %   cfgin.restingfile(7) ='3';
+    % endp 23_s3_b3
 
-    dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+    dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
     data = load(dsfile);
-    data = data.combined_dat;
-
-    %%
-    %From Anne, Donner git example
-    %Skipping head motion calculation...
-
-    %It appears sampleinfo no longer is there in the data struct...
-    %sampleinfo = data.sampleinfo;
+    data = data.data;
 
     % plot a quick power spectrum
     % save those cfgs for later plotting
@@ -49,7 +46,7 @@ function taskPreprocNumbers( cfgin )
     axis tight; axis square; box off;
     set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
 
-    cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
+    cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed')
 
     %%
 
@@ -77,7 +74,7 @@ function taskPreprocNumbers( cfgin )
 
     % channel selection, cutoff and padding
     %The channel '4' is the appended eyelink.
-    cfg.artfctdef.zvalue.channel     = {'4'}; %UADC004 UADC003
+    cfg.artfctdef.zvalue.channel     = {'EEG058'}; %UADC004 UADC003
 
     % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
     cfg.artfctdef.zvalue.trlpadding  = 0; % avoid filter edge artefacts by setting to negative
@@ -85,11 +82,11 @@ function taskPreprocNumbers( cfgin )
     cfg.artfctdef.zvalue.artpadding  = 0.05; % go a bit to the sides of blinks
 
     % algorithmic parameters
-    cfg.artfctdef.zvalue.bpfilter   = 'no';
-    % cfg.artfctdef.zvalue.bpfilttype = 'but';
-    % cfg.artfctdef.zvalue.bpfreq     = [1 15];
-    % cfg.artfctdef.zvalue.bpfiltord  = 2;
-    % cfg.artfctdef.zvalue.hilbert    = 'yes';
+    %cfg.artfctdef.zvalue.bpfilter   = 'no';
+    cfg.artfctdef.zvalue.bpfilttype = 'but';
+    cfg.artfctdef.zvalue.bpfreq     = [1 15];
+    cfg.artfctdef.zvalue.bpfiltord  = 2;
+    cfg.artfctdef.zvalue.hilbert    = 'yes';
 
     % set cutoff
     cfg.artfctdef.zvalue.cutoff     = 4; % to detect all blinks, be strict
@@ -315,9 +312,9 @@ function taskPreprocNumbers( cfgin )
 
     %%
     %Change folder and save approapriate data + figures
-    cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/')
+    cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/')
 
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(2:3));
+    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s',cfgin.restingfile(2:3));
 
     if 7==exist(name,'dir')
 
@@ -346,7 +343,7 @@ function taskPreprocNumbers( cfgin )
     %Catch any error and write into file
   catch err
 
-    cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed')
+    cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed')
     fid=fopen('logfile','a+');
     c=clock;
     fprintf(fid,sprintf('\n\n\n\nNew entry for %s at %i/%i/%i %i:%i\n\n\n\n',cfgin.restingfile,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
