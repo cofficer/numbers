@@ -30,7 +30,7 @@ function check_meg_eyelink(~)
   namesDat=cellfun(@(x) x(1:3),namesDat,'UniformOutput',false)
   [val_uni,pos_uni]=unique(namesDat)
 
-  idx_006 = ismember(namesDat,'006');
+  idx_006 = ismember(namesDat,'012');
 
   alleyes=alleyes(idx_006);
   %figure(1),clf

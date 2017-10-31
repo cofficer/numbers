@@ -24,7 +24,7 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname )
   cfg = [] ;
   cfg.length = 7;
   %lengthsec = 7;
-  cfg.toilim =[0 7];
+  %cfg.toilim =[0 7];
   %cfg.offset = 1:1200*lengthsec:1200*301;
   cfg.overlap =0;
 

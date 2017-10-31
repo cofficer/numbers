@@ -25,6 +25,10 @@ function taskPreprocNumbers( cfgin )
     data = load(dsfile);
     data = data.data;
 
+    %Fuse the trial seperation.
+    data.trial=[data.trial{:}];
+    data.time=[data.trial{:}];
+
     % plot a quick power spectrum
     % save those cfgs for later plotting
     cfgfreq             = [];
@@ -82,14 +86,14 @@ function taskPreprocNumbers( cfgin )
     cfg.artfctdef.zvalue.artpadding  = 0.05; % go a bit to the sides of blinks
 
     % algorithmic parameters
-    %cfg.artfctdef.zvalue.bpfilter   = 'no';
+    cfg.artfctdef.zvalue.bpfilter   = 'yes';
     cfg.artfctdef.zvalue.bpfilttype = 'but';
     cfg.artfctdef.zvalue.bpfreq     = [1 15];
     cfg.artfctdef.zvalue.bpfiltord  = 2;
     cfg.artfctdef.zvalue.hilbert    = 'yes';
 
     % set cutoff
-    cfg.artfctdef.zvalue.cutoff     = 4; % to detect all blinks, be strict
+    cfg.artfctdef.zvalue.cutoff     = 2; % to detect all blinks, be strict
     cfg.artfctdef.zvalue.interactive = 'no';
     [~, artifact_eog]               = ft_artifact_zvalue(cfg, data);
     artifact_eogVertical = artifact_eog;
@@ -102,86 +106,29 @@ function taskPreprocNumbers( cfgin )
 
     %plot the blink rate vertical??
     cfg=[];
-    cfg.channel = '4'; % UADC004 if eyelink is present
+    cfg.channel = 'EEG058'; % UADC004 if eyelink is present
     blinks = ft_selectdata(cfg,data);
 
 
 
     %If there is no variance in the data then it is probably because the
     %eyelink was not working for that session.
-    if var(blinks.trial{:})<0.01 %No eyelink
-      %raise error
-      msg='There is no Eylink data';
-      error(msg);
-    end
+    % if var(blinks.trial{:})<0.01 %No eyelink
+    %   %raise error
+    %   msg='There is no Eylink data';
+    %   error(msg);
+    % end
     subplot(2,3,cnt); cnt = cnt + 1;
-    plot(blinks.trial{:})
+    plot([blinks.trial{:}])
     axis tight; axis square; box off;
-    title('Blink rate 4')
+    title('Blink rate eog58')
+
     % reject blinks only when they occur between fix and stim offset
     %crittoilim = [ data.trialinfo(:,2) - data.trialinfo(:,1) - 0.4*data.fsample ...
     %    data.trialinfo(:,5) - data.trialinfo(:,1) + 0.8*data.fsample]  / data.fsample;
     %cfg.artfctdef.crittoilim        = crittoilim;
     %data                            = ft_rejectartifact(cfg, data);
     %%
-    % ==================================================================
-    % 3. REMOVE TRIALS WITH SACCADES (only during beginning of trial)
-    % Remove trials with (horizontal) saccades (EOGH). Use the same settings as
-    % for the EOGV-based blinks detection. The z-threshold can be set a bit higher
-    % (z = [4 6]). Reject all trials that contain saccades before going further.
-    % ==================================================================
-
-    cfg                              = [];
-    cfg.continuous                   = 'yes'; % data has been epoched
-
-    % channel selection, cutoff and padding
-    cfg.artfctdef.zvalue.channel     = {'3'}; %UADC003 UADC004s
-
-    % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
-    cfg.artfctdef.zvalue.trlpadding  = 0; % padding doesnt work for data thats already on disk
-    cfg.artfctdef.zvalue.fltpadding  = 0; % 0.2; this crashes the artifact func!
-    cfg.artfctdef.zvalue.artpadding  = 0.05; % go a bit to the sides of blinks
-
-    % algorithmic parameters
-    cfg.artfctdef.zvalue.bpfilter   = 'no';
-    % cfg.artfctdef.zvalue.bpfilttype = 'but';
-    % cfg.artfctdef.zvalue.bpfreq     = [1 15];
-    % cfg.artfctdef.zvalue.bpfiltord  = 2;
-    % cfg.artfctdef.zvalue.hilbert    = 'yes';
-
-    % set cutoff
-    cfg.artfctdef.zvalue.cutoff     = 4;
-    cfg.artfctdef.zvalue.interactive = 'no';
-    [~, artifact_eog]               = ft_artifact_zvalue(cfg, data);
-
-    artifact_eogHorizontal = artifact_eog;
-
-    cfg                             = [];
-    cfg.artfctdef.reject            = 'partial';
-    cfg.artfctdef.eog.artifact      = artifact_eogHorizontal;
-
-    % reject blinks when they occur between ref and the offset of the stim
-    %crittoilim = [data.trialinfo(:,2) - data.trialinfo(:,1) - 0.4*data.fsample ...
-    %    data.trialinfo(:,5) - data.trialinfo(:,1) + 0.8*data.fsample] / data.fsample;
-    %cfg.artfctdef.crittoilim        = crittoilim;
-    %data                            = ft_rejectartifact(cfg, data);
-
-    %plot the blink rate horizontal??
-    cfg=[];
-    cfg.channel = '3'; %UADC003 UADC004 if eyelink is present
-    blinks = ft_selectdata(cfg,data);
-
-    %If there is no variance in the data then it is probably because the
-    %eyelink was not working for that session
-    % if var(blinks.trial{:})<0.01 %No eyelink
-    % 	cfg=[];
-    %     cfg.channel = 'EEG057';
-    %     blinks = ft_selectdata(cfg,data);
-    % end
-    subplot(2,3,cnt); cnt = cnt + 1;
-    plot(blinks.trial{:})
-    axis tight; axis square; box off;
-    title('Blink rate 3')
 
     %%
     % ==================================================================
@@ -193,7 +140,7 @@ function taskPreprocNumbers( cfgin )
     % ==================================================================
 
     %call function which calculates all jumps
-    channelJump=findSquidJumps(data,cfgin);
+    channelJump=findSquidJumps(data,cfgin.restingfile);
     artifact_Jump = channelJump;
     subplot(2,3,cnt); cnt = cnt + 1;
 
@@ -207,6 +154,8 @@ function taskPreprocNumbers( cfgin )
     else
       title('No jumps')
     end
+
+    %So nothing is done about jumps currently.
 
     % if ~isempty(idx_jump)
 
