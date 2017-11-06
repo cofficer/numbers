@@ -22,12 +22,32 @@ function taskPreprocNumbers( cfgin )
     % endp 23_s3_b3
 
     dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
-    data = load(dsfile);
-    data = data.data;
+    load(dsfile);
 
-    %Fuse the trial seperation.
-    data.trial=[data.trial{:}];
-    data.time=[data.trial{:}];
+    % resample the data
+    cfg3 = [];
+    cfg3.resample = 'yes';
+    cfg3.fsample = 1200;
+    cfg3.resamplefs = 500;
+    cfg3.detrend = 'no';
+
+    data = ft_resampledata(cfg3,data);
+
+    %Fuse the trial seperation. Not sure this is a good approach.
+    %First of all it is slower. I would rather split the data in the trials.
+    %I could loop over the trl nr. Do some ft_selectdata.
+    %Change data.time, so to be unique all the way.
+    %TODO: remove unneccessary channels.
+    dat_trl = [data.trial{:}];
+    data.trial=[];
+    data.trial{1}=dat_trl;
+    clear dat_trl
+
+    dat_tme = [data.time{:}];
+    data.time=[];
+    data.time{1}=[0:length(dat_tme)-1]./1200;
+
+    %data.sampleinfo=[data.sampleinfo(1) data.sampleinfo(end)];
 
     % plot a quick power spectrum
     % save those cfgs for later plotting
@@ -38,6 +58,9 @@ function taskPreprocNumbers( cfgin )
     cfgfreq.channel     = 'MEG';
     cfgfreq.foi         = 1:130;
     cfgfreq.keeptrials  = 'no';
+    %Requires a tonne of memory, 16gb needed.
+    %But this analysis is imortant, for quality checking jumps.
+    %The questions is if dividing up the data is better/faster.
     freq                = ft_freqanalysis(cfgfreq, data); %Should only be done on MEG channels.
 
     %plot those data and save for visual inspection
@@ -139,13 +162,35 @@ function taskPreprocNumbers( cfgin )
     % in the intercepts of the fitted lines (using Grubb?s test for outliers).
     % ==================================================================
 
-    %call function which calculates all jumps
+
+    %save figure
+    % cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/plots')
+    % %New naming file standard. Apply to all projects.
+    % formatOut = 'yyyy-mm-dd';
+    % todaystr = datestr(now,formatOut);
+    % namefigure='testplots_preproc_task'
+    % figurefreqname = sprintf('%s_%s_2P%s_T%d.png',todaystr,namefigure)%
+    % saveas(gca,figurefreqname,'png')
+
+    %TODO: Join the findSquidJumps with the first freq analysis...
     channelJump=findSquidJumps(data,cfgin.restingfile);
+    channelJump=[];
     artifact_Jump = channelJump;
     subplot(2,3,cnt); cnt = cnt + 1;
 
     %If there are jumps, plot them.
     if ~isempty(channelJump)
+      %I will do the channelrepair from here on
+      cfg = [];
+      cfg.method = 'spline';
+      cfg.badchannel = artifact_Jump%ismember(data.label,artifact_Jump);
+      cfg2=[];
+      cfg2.method = 'template';
+      cfg2.template = 'CTF275_neighb.mat';
+      cfg2.channel = 'MEG';
+      cfg.neighbours = ft_prepare_neighbours(cfg2,data);
+      cfg.senstype = 'meg';
+      data=ft_channelrepair(cfg,data);
       %subplot...
       for ijump = 1:length(channelJump)
         plot(data.trial{1}( ismember(data.label,channelJump{ijump}),:))
@@ -155,30 +200,7 @@ function taskPreprocNumbers( cfgin )
       title('No jumps')
     end
 
-    %So nothing is done about jumps currently.
 
-    % if ~isempty(idx_jump)
-
-      % for iout = 1:length(idx_jump)
-
-        %I belive that y is trial and x is channel.
-        % [y,x] = ind2sub(size(intercept),idx_jump(iout)) ;
-
-        %Store the name of the channel
-        % channelJump{iout} = freq.label(x);
-
-        %Plot each channel containing a jump.
-        % plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
-        % hold on
-
-      % end
-      % axis tight; axis square; box off;
-      %set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-      % title(sprintf('Jumps found'));
-    % else
-      % title(sprintf('No jumps'));
-    % end
-    %%
     % ==================================================================
     % 5. REMOVE LINE NOISE
     % ==================================================================
@@ -215,6 +237,7 @@ function taskPreprocNumbers( cfgin )
 
     % set cutoff
     cfg.artfctdef.zvalue.cutoff      = 30;
+    %TODO:inconsistent number of samples. Needs to be fixed.
     [~, artifact_Muscle]             = ft_artifact_zvalue(cfg, data);
 
     cfg                              = [];
@@ -240,16 +263,9 @@ function taskPreprocNumbers( cfgin )
     %sampleinfo=sampleinfo-sampleinfo;
     sampleinfo = data.sampleinfo
     [ data ] = delete_artifact_Numbers(artifact_Muscle, data, sampleinfo);
+    data.sampleinfo=[1 length(data.time{1})];
 
 
-    %%
-    %Finally resample the data
-    cfg3.resample = 'yes';
-    cfg3.fsample = 1200;
-    cfg3.resamplefs = 500;
-    cfg3.detrend = 'no';
-
-    data = ft_resampledata(cfg3,data);
 
 
     %%
@@ -283,7 +299,7 @@ function taskPreprocNumbers( cfgin )
     %Save the artifacts
     artstore=sprintf('artifacts%s.mat',dsfile(end-8:end-4));
 
-    save(artstore,'artifact_eogVertical','artifact_eogHorizontal','artifact_Muscle','artifact_Jump') %Jumpos?
+    save(artstore,'artifact_eogVertical','artifact_Muscle','artifact_Jump') %Jumpos?
 
     %save the invisible figure
     figurestore=sprintf('Overview%s.png',dsfile(end-8:end-4));
