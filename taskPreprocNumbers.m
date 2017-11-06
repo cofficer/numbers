@@ -174,7 +174,6 @@ function taskPreprocNumbers( cfgin )
 
     %TODO: Join the findSquidJumps with the first freq analysis...
     channelJump=findSquidJumps(data,cfgin.restingfile);
-    channelJump=[];
     artifact_Jump = channelJump;
     subplot(2,3,cnt); cnt = cnt + 1;
 
