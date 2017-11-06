@@ -21,8 +21,14 @@ function taskPreprocNumbers( cfgin )
     %   cfgin.restingfile(7) ='3';
     % endp 23_s3_b3
 
-    dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
-    load(dsfile);
+    if str2num(cfgin.restingfile(2:3))>9
+
+      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+    else
+      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
+    end
+
+    load(dsfile(end-12:end));
 
     % resample the data
     cfg3 = [];
