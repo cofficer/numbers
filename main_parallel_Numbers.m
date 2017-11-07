@@ -12,13 +12,13 @@ restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 1:12%length(restingpaths)
+for icfg = 1:length(restingpaths)
 
     if restingpaths(icfg).name(7) ~= '1'
         restingpaths(icfg).name(7) = '3';
     end
       cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
-      %cfgin{1}=cfgin{111}
+      %cfgin=cfgin{111}
       %idx_cfg = idx_cfg + 1;
 
 end
@@ -29,6 +29,13 @@ runcfg.timreq          = 2000; % number of minutes.
 runcfg.parallel         ='torque'; %local or torque
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial')
+
+
+
+
+
+
+
 
 %84 - manual rest fully autom. 108 crash
 %150, preproc missing.
