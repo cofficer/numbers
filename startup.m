@@ -6,7 +6,6 @@ warning off
 
 whichFieldtrip = '2017-2';
 
-#Comment baajs
 if strcmp(whichFieldtrip,'2015')
 
     addpath(genpath('/mnt/homes/home024/chrisgahn/Documents/MATLAB/code/analysis'))

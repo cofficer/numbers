@@ -44,6 +44,44 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname )
   %cfg.hpfreq   = 60;
   data            = ft_preprocessing(cfg, data);
 
+  %====================================================
+  %Find and plot the trials where the block changes.
+  %Each trial is now 7s long. 212 trls, 1484s, 24min.
+  %fsample 500hz. dataold.oldtrl(3)/3500 is which trial?
+  %how to get at the sample of each trial. each trial 3500samples. 308938
+  %====================================================
+
+  dat_lab1st = cellfun(@(x) x(1),data.label);
+  ind_meg = (ismember(dat_lab1st,'M'));
+  trl_ind_blockch = round(dataold.oldtrl(1)/3500)+1;
+
+  % figure(1),clf
+  % hold on
+  % dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
+  trl_rem(1)=trl_ind_blockch;
+  % plot(dat_plot(10,:),'g')
+
+  if dataold.oldtrl>2
+    trl_ind_blockch = trl_ind_blockch+round(dataold.oldtrl(2)/3500);
+    trl_rem(2)=trl_ind_blockch;
+    % dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
+    % plot(dat_plot(10,:),'k')
+  end
+
+  % saveas(gca,'test_fig_trl_blockchange.png','png')
+
+  %remove trials with blockchange   saveas(gca,'test_jumps_blockchange.png','png')
+  cfg = [];
+  cfg.trials=ones(1,length(data.trial))
+  cfg.trials(trl_rem)=0;
+  cfg.trials=logical(cfg.trials);
+  data = ft_selectdata(cfg,data);
+
+  %====================================================
+
+  %====================================================
+
+
   % compute the intercept of the loglog fourier spectrum on each trial
   disp('searching for trials with squid jumps...');
 

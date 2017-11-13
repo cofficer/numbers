@@ -28,7 +28,7 @@ function taskPreprocNumbers( cfgin )
       dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
     end
 
-    load(dsfile(end-12:end));
+    load(dsfile);
 
     % resample the data
     cfg3 = [];
@@ -39,10 +39,17 @@ function taskPreprocNumbers( cfgin )
 
     data = ft_resampledata(cfg3,data);
 
-    %Fuse the trial seperation. Not sure this is a good approach.
-    %First of all it is slower. I would rather split the data in the trials.
-    %I could loop over the trl nr. Do some ft_selectdata.
+
+
+    %===========================================================
+    %Fuse the trial seperation.
     %Change data.time, so to be unique all the way.
+    %===========================================================
+
+    %Save the size of each trial
+    for itrl = 1:length(data.trial)
+      data.oldtrl(itrl) = length(data.trial{itrl});
+    end
     %TODO: remove unneccessary channels.
     dat_trl = [data.trial{:}];
     data.trial=[];
