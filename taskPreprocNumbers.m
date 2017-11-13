@@ -48,7 +48,7 @@ function taskPreprocNumbers( cfgin )
 
     %Save the size of each trial
     for itrl = 1:length(data.trial)
-      data.oldtrl(itrl) = length(data.trial{itrl});
+      oldtrl(itrl) = length(data.trial{itrl});
     end
     %TODO: remove unneccessary channels.
     dat_trl = [data.trial{:}];
@@ -186,7 +186,7 @@ function taskPreprocNumbers( cfgin )
     % saveas(gca,figurefreqname,'png')
 
     %TODO: Join the findSquidJumps with the first freq analysis...
-    channelJump=findSquidJumps(data,cfgin.restingfile);
+    channelJump=findSquidJumps(data,cfgin.restingfile,oldtrl);
     artifact_Jump = channelJump;
     subplot(2,3,cnt); cnt = cnt + 1;
 

@@ -1,21 +1,9 @@
-function [channelJump,trialnum]=findSquidJumps( data,pathname )
-  %UNTITLED Summary of this function goes here
-  %   Detailed explanation goes here
-
-  %clear all
-
-  %%
-  %Change the folder to where MEG data is contained
-  %cd('/mnt/homes/home024/ktsetsos/resting')
-
-  %Store all the seperate data files
-  %restingpaths = dir('*.mat');
-
-  %Loop all data files into seperate jobs
-
-  %for icfg = 1:length(restingpaths)
-
-  % cfgin{icfg}.restingfile             = restingpaths(icfg).name;%128 works.
+function [channelJump,trialnum]=findSquidJumps( data,pathname ,oldtrl)
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %
+  %Identify all instances of Jumps.
+  %Edited 13th November 2017. Tailored for trial-based numbers.
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   %load data
   %load(pathname.restingfile)
@@ -53,7 +41,7 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname )
 
   dat_lab1st = cellfun(@(x) x(1),data.label);
   ind_meg = (ismember(dat_lab1st,'M'));
-  trl_ind_blockch = round(dataold.oldtrl(1)/3500)+1;
+  trl_ind_blockch = round(oldtrl(1)/3500)+1;
 
   % figure(1),clf
   % hold on
@@ -61,8 +49,8 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname )
   trl_rem(1)=trl_ind_blockch;
   % plot(dat_plot(10,:),'g')
 
-  if dataold.oldtrl>2
-    trl_ind_blockch = trl_ind_blockch+round(dataold.oldtrl(2)/3500);
+  if oldtrl>2
+    trl_ind_blockch = trl_ind_blockch+round(oldtrl(2)/3500);
     trl_rem(2)=trl_ind_blockch;
     % dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
     % plot(dat_plot(10,:),'k')
