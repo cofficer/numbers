@@ -37,6 +37,7 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname ,oldtrl)
   %Each trial is now 7s long. 212 trls, 1484s, 24min.
   %fsample 500hz. dataold.oldtrl(3)/3500 is which trial?
   %how to get at the sample of each trial. each trial 3500samples. 308938
+  %idx2 = ismember(data.label,channelJump)
   %====================================================
 
   dat_lab1st = cellfun(@(x) x(1),data.label);
@@ -56,7 +57,7 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname ,oldtrl)
     % plot(dat_plot(100,:),'k')
   end
 
-  saveas(gca,'test_fig_trl_blockchange.png','png')
+  % saveas(gca,'test_fig_trl_blockchange.png','png')
 
   %remove trials with blockchange   saveas(gca,'test_jumps_blockchange.png','png')
   cfg = [];
@@ -98,7 +99,8 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname ,oldtrl)
 
 
   % detect jumps as outliers, actually this returns the channels too...
-  [~, idx] = deleteoutliers(intercept(:));
+  alphalvl = 0.00001;
+  [~, idx] = deleteoutliers(intercept(:),alphalvl);
 
   %subplot(4,4,cnt); cnt = cnt + 1;
   if isempty(idx),
@@ -133,6 +135,31 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname ,oldtrl)
       %Store the name of the channel
       channelJump(iout) = freq.label(x);
       trialnum(iout)    = y;
+    end
+
+
+    %====================================================
+    %Plot the outliers independently.
+    %====================================================
+    testplot=0;
+    if testplot
+
+      figure(1),clf
+      hold on
+      for iplots = 1:length(idx)
+        plot(data.trial{trialnum(iplots)}(ismember(data.label,channelJump(iplots)),:))
+      end
+
+
+      cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/plots')
+      %New naming file standard. Apply to all projects.
+      formatOut = 'yyyy-mm-dd';
+      todaystr = datestr(now,formatOut);
+      namefigure='jumpdetection_preproc_task'
+      figurefreqname = sprintf('%s_%s_2P%s_T%d.png',todaystr,namefigure)%
+      saveas(gca,figurefreqname,'png')
+
+
     end
   end
 end

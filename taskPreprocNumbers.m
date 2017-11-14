@@ -35,8 +35,8 @@ function taskPreprocNumbers( cfgin )
     cfg3.resample = 'yes';
     cfg3.fsample = 1200;
     cfg3.resamplefs = 500;
-    cfg3.detrend = 'no';
-
+    cfg3.detrend = 'yes';
+    cfg3.demean = 'yes';
     data = ft_resampledata(cfg3,data);
 
 
