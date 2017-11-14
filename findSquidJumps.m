@@ -43,17 +43,17 @@ function [channelJump,trialnum]=findSquidJumps( data,pathname ,oldtrl)
   ind_meg = (ismember(dat_lab1st,'M'));
   trl_ind_blockch = floor(oldtrl(1)/3500)+1;
 
-  figure(1),clf
-  hold on
-  dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
+  % figure(1),clf
+  % hold on
+  % dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
   trl_rem(1)=trl_ind_blockch;
-  plot(dat_plot(100,:),'g')
+  % plot(dat_plot(100,:),'g')
 
   if oldtrl>2
     trl_ind_blockch = trl_ind_blockch+round(oldtrl(2)/3500);
     trl_rem(2)=trl_ind_blockch;
-    dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
-    plot(dat_plot(100,:),'k')
+    % dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
+    % plot(dat_plot(100,:),'k')
   end
 
   saveas(gca,'test_fig_trl_blockchange.png','png')
