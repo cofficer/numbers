@@ -12,13 +12,13 @@ restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 1:12%length(restingpaths)
+for icfg = 13:25%length(restingpaths)
 
     if restingpaths(icfg).name(7) ~= '1'
         restingpaths(icfg).name(7) = '3';
     end
       cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
-      %cfgin=cfgin{10}
+      %cfgin=cfgin{18}
       %idx_cfg = idx_cfg + 1;
 
 end
