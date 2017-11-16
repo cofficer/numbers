@@ -3,9 +3,14 @@ function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
 %should be rejected. cfgin.restingfile='040_3_3.mat'
 %channelRej='4' %'UADC004'; %UADC004, % EEG059 Heart.
 
+if strcmp(cfgin.blocktype,'resting')
 %define ds file, this is actually from the trial-based data
-dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/preprocS%s_P%s.mat'...
+  dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/preprocS%s_P%s.mat'...
     ,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+else
+  dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s/preprocs%s_b%s.mat'...
+      ,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+end
 
 load(dsfile)
 

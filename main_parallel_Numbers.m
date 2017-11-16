@@ -12,27 +12,27 @@ restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 13:25%length(restingpaths)
+for icfg = 1:12;%84 beein pre 16/11-17. length(restingpaths)
 
     if restingpaths(icfg).name(7) ~= '1'
         restingpaths(icfg).name(7) = '3';
     end
-      cfgin{icfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
+      cfgin{idx_cfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
       %cfgin=cfgin{18}
-      %idx_cfg = idx_cfg + 1;
+      cfgin{idx_cfg}.blocktype                = 'trial'; %trial or resting
+      idx_cfg = idx_cfg + 1;
 
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute = 'preprocTrial'; %preproc, parallel, findsquid, check_nSensors, ICA
-runcfg.timreq          = 2000; % number of minutes.
-runcfg.parallel         ='torque'; %local or torque
+runcfg.execute          = 'preprocTrial'; %preproc, parallel, findsquid, check_nSensors, ICA
+runcfg.timreq           =  2000; % number of minutes.
+runcfg.parallel         = 'torque'; %local or torque
+
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial')
 
-
-
-
+run_parallel_Numbers(runcfg, cfgin)
 
 
 
@@ -45,8 +45,6 @@ cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial')
 % run_parallel_Numbers(runcfg, cfgin{icfg2})
 % end
 
-
-run_parallel_Numbers(runcfg, cfgin)
 
 
 %%

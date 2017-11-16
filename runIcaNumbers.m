@@ -9,18 +9,22 @@ function [ output_args ] = runIcaNumbers( cfgin )
 
 %restoredefaultpath
 try
-cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(2:3)))
+  cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(2:3)))
 
-%load the preproc data.
-if cfgin.restingfile(7)=='2'
-  load(sprintf('preprocS%s_P3.mat',cfgin.restingfile(5)))
-  savefile = sprintf('compS%s_P3.mat',cfgin.restingfile(5));
-else
-  load(sprintf('preprocS%s_P1.mat',cfgin.restingfile(5)))
-  savefile = sprintf('compS%s_P1.mat',cfgin.restingfile(5));
-end
-
-%load the raw data:
+  %load the preproc data.
+  if strcmp(cfgin.blocktype,'resting')
+    if cfgin.restingfile(7)=='2'
+      load(sprintf('preprocS%s_P3.mat',cfgin.restingfile(5)))
+      savefile = sprintf('compS%s_P3.mat',cfgin.restingfile(5));
+    else
+      load(sprintf('preprocS%s_P1.mat',cfgin.restingfile(5)))
+      savefile = sprintf('compS%s_P1.mat',cfgin.restingfile(5));
+    end
+  else
+    load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(5),cfgin.restingfile(7)))
+    savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(5),cfgin.restingfile(7));
+  end
+  %load the raw data:
 %dsfile = '/mnt/homes/home024/ktsetsos/resting/01_S2_P1.mat';
 
 %load(dsfile)
