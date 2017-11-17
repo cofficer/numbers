@@ -24,7 +24,7 @@ function run_parallel_Numbers(runcfg, cfgin)
   case 'cohICA'
 
     %component for blinks
-    [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'3');
+    [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
     %component for heart rate
     [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
     %cellfun(@createFullMatrix, cfg1, outputfile);

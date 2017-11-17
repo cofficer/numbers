@@ -12,7 +12,7 @@ restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 1:12;%84 beein pre 16/11-17. length(restingpaths)
+for icfg = 1:20;%84 beein pre 16/11-17. length(restingpaths)
 
     if restingpaths(icfg).name(7) ~= '1'
         restingpaths(icfg).name(7) = '3';
