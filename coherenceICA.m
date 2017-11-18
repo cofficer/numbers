@@ -23,6 +23,17 @@ ecg.label{:} = channelRej;
 
 % concatenate component activity, small change, test
 
+
+%%%%%%
+%Download 07_3_3. Check the ecg channel for finding the heart beats.
+%Problem seems to be that they are not getting identified.
+figure(1),clf
+plot(ecg.trial{1}(end-10000:end))
+saveas(gca,'test_heartrate_channel.png','png')
+%%%%%%%%%%%%%%%%
+
+
+
 %%
 %select components for heart rate
 cfg                       = [];
@@ -38,10 +49,10 @@ else
 end
 cfg.channel            ={channelRej};
 cfg.artfctdef.ecg.channel               = {channelRej};
-cfg.artfctdef.ecg.inspect = {channelRej};
-cfg.artfctdef.ecg.cutoff  = 1;
+cfg.artfctdef.ecg.inspect  = {channelRej};
+cfg.artfctdef.ecg.cutoff   = 10;
 cfg.artfctdef.ecg.feedback = 'no';
-[cfg, artifact]           = ft_artifact_ecg(cfg, ecg);
+[cfg, artifact]            = ft_artifact_ecg(cfg, ecg);
 
 %%
 %can the same be done with the preprocessed data... YES!

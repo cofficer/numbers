@@ -9,7 +9,7 @@ function taskPreprocNumbers( cfgin )
 
   try
     %Folder with the resting data
-    rawpath = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/raw/';
+    rawpath = '/mnt/homes/home024/ktsetsos/preproc3/';
     cd(rawpath)
 
     %The key here is to use the already defined tables for samples when calling
@@ -23,19 +23,24 @@ function taskPreprocNumbers( cfgin )
 
     if str2num(cfgin.restingfile(2:3))>9
 
-      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+      dsfile =sprintf('p%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
     else
-      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
+      dsfile =sprintf('p%s_s%s_b%s.mat',cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
     end
 
-    load(dsfile);
+    dsfileAll = dir('*.mat');
 
-    % resample the data
+    idx_ds = ismember({dsfileAll.name},dsfile);
+    idx_ds = find(idx_ds==1);
+    load(dsfileAll(22).name);
+    load('p2_s2_b3.mat')
+    % resample the data, the demean and detrend should only affect MEG.
+    % At least only the detrending.
     cfg3 = [];
     cfg3.resample = 'yes';
     cfg3.fsample = 1200;
     cfg3.resamplefs = 500;
-    cfg3.detrend = 'yes';
+    cfg3.detrend = 'no';
     cfg3.demean = 'yes';
     data = ft_resampledata(cfg3,data);
 
@@ -58,7 +63,8 @@ function taskPreprocNumbers( cfgin )
 
     dat_tme = [data.time{:}];
     data.time=[];
-    data.time{1}=[0:length(dat_tme)-1]./1200;
+    %Before 2017-11-18. 500
+    data.time{1}=[0:length(dat_tme)-1]./500;
 
     %data.sampleinfo=[data.sampleinfo(1) data.sampleinfo(end)];
 

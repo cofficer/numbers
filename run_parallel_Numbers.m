@@ -45,7 +45,7 @@ function run_parallel_Numbers(runcfg, cfgin)
     comp_idx=unique(comp_idx);
 
     disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
-    add_comps=0
+    add_comps=1
     if add_comps
       resp_add = input('\nChange components? 1-add, 2-remove 3-same \n\n ','s')
 
