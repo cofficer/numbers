@@ -9,7 +9,7 @@ function taskPreprocNumbers( cfgin )
 
   try
     %Folder with the resting data
-    rawpath = '/mnt/homes/home024/ktsetsos/preproc3/';
+    rawpath = '/home/chrisgahn/Documents/MATLAB/ktsetsos/trial/raw/';
     cd(rawpath)
 
     %The key here is to use the already defined tables for samples when calling
@@ -23,17 +23,17 @@ function taskPreprocNumbers( cfgin )
 
     if str2num(cfgin.restingfile(2:3))>9
 
-      dsfile =sprintf('p%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
     else
-      dsfile =sprintf('p%s_s%s_b%s.mat',cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
+      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
     end
 
-    dsfileAll = dir('*.mat');
-
-    idx_ds = ismember({dsfileAll.name},dsfile);
-    idx_ds = find(idx_ds==1);
-    load(dsfileAll(22).name);
-    load('p2_s2_b3.mat')
+    % dsfileAll = dir('*.mat');
+    load(dsfile)
+    % idx_ds = ismember({dsfileAll.name},dsfile);
+    % idx_ds = find(idx_ds==1);
+    % load(dsfileAll(22).name);
+    % load('p2_s2_b3.mat')
     % resample the data, the demean and detrend should only affect MEG.
     % At least only the detrending.
     cfg3 = [];
