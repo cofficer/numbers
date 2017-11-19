@@ -42,6 +42,22 @@ function taskPreprocNumbers( cfgin )
     %cfg3.resamplefs = 500;
     cfg3.detrend = 'no';
     cfg3.demean = 'yes';
+
+    idx_1str = cellfun(@(x) x(1),data.label);
+
+    idx_1str = ismember(idx_1str,'M');
+
+    idx_channels = [242,100];
+    cfg3.channel = data.label(idx_1str)
+    more_channels = {'EYE01',...
+    'EYE02','EYE03','UADC003',...
+    'UADC004','EEG058','EEG059',...
+    'HLC0011','HLC0012','HLC0013', ...
+    'HLC0021','HLC0022','HLC0023', ...
+    'HLC0031','HLC0032','HLC0033'};
+
+    cfg3.channel = [cfg3.channel;more_channels'];
+
     data = ft_preprocessing(cfg3,data);
 
 
@@ -65,7 +81,7 @@ function taskPreprocNumbers( cfgin )
     data.time=[];
     %Before 2017-11-18. 500
     data.time{1}=[0:length(dat_tme)-1]./500;
-    
+
     data.sampleinfo = [1 length(data.trial{1})]
     %data.sampleinfo=[data.sampleinfo(1) data.sampleinfo(end)];
 
@@ -92,7 +108,7 @@ function taskPreprocNumbers( cfgin )
     loglog(freq.freq, mean(freq.powspctrm), 'k', 'linewidth', 1);
     axis tight; axis square; box off;
     set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-
+    clear freq
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed')
 
     %%
@@ -202,7 +218,7 @@ function taskPreprocNumbers( cfgin )
       %I will do the channelrepair from here on
       %Need to save the EOG058 and eyelink channels.
       cfg   = [];
-      cfg.channel = {'EEG058','EEG059','UADC003','UADC004'};
+      cfg.channel = {'EEG058','EEG059','UADC003','UADC004','EYE01','EYE02','EYE03'};
       eyeData = ft_selectdata(cfg,data);
       cfg = [];
       cfg.method = 'spline';
