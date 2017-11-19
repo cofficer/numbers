@@ -25,6 +25,7 @@ try
     savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(5),cfgin.restingfile(7));
   end
   %load the raw data:
+
 %dsfile = '/mnt/homes/home024/ktsetsos/resting/01_S2_P1.mat';
 
 %load(dsfile)
