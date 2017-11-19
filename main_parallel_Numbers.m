@@ -5,28 +5,42 @@
 clear all
 %%
 %Change the folder to where eyelink data is contained
-cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
-%cd('/home/ktsetsos/preproc3')
+% cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
+cd('/home/ktsetsos/preproc3')
 
 %Store all the seperate data files
 restingpaths = dir('*.mat');
 
+restingpaths={restingpaths.name};
+
+
+sort_sessions = cellfun(@(x) x(2:3),restingpaths,'UniformOutput',false)
+sort_sessions = strtok( sort_sessions, '_' );
+
+sort_sessions = cellfun(@str2num,sort_sessions);
+
+[~,idx_sort] = sort(sort_sessions);
+
+
+restingpaths=restingpaths(idx_sort);
+
+
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 1:84 %beein pre 16/11-17. length(restingpaths)
+for icfg = 1:10%84 %beein pre 16/11-17. length(restingpaths)
 
-    if restingpaths(icfg).name(7) ~= '1'
-        restingpaths(icfg).name(7) = '3';
-    end
-      cfgin{idx_cfg}.restingfile             = restingpaths(icfg).name;%40 100. test 232, issues.
-      %cfgin=cfgin{18}
+    % if restingpaths(icfg).name(7) ~= '1'
+    %     restingpaths(icfg).name(7) = '3';
+    % end
+      cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
+      %cfgin=cfgin{6}
       cfgin{idx_cfg}.blocktype                = 'trial'; %trial or resting
       idx_cfg = idx_cfg + 1;
 
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'ICA'; %preproc, parallel, findsquid, check_nSensors, ICA
+runcfg.execute          = 'preprocTrial'; %preproc, parallel, findsquid, check_nSensors, ICA
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
 
@@ -34,7 +48,6 @@ runcfg.parallel         = 'torque'; %local or torque
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial')
 
 run_parallel_Numbers(runcfg, cfgin)
-
 
 
 

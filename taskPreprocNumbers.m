@@ -21,14 +21,15 @@ function taskPreprocNumbers( cfgin )
     %   cfgin.restingfile(7) ='3';
     % endp 23_s3_b3
 
-    if str2num(cfgin.restingfile(2:3))>9
-
-      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
-    else
-      dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
-    end
+    % if str2num(cfgin.restingfile(2:3))>9
+    %
+    %   dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+    % else
+    %   dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
+    % end
 
     % dsfileAll = dir('*.mat');
+    dsfile=cfgin.restingfile
     load(dsfile)
     % idx_ds = ismember({dsfileAll.name},dsfile);
     % idx_ds = find(idx_ds==1);
