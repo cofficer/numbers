@@ -12,14 +12,14 @@ function run_parallel_Numbers(runcfg, cfgin)
     nnodes = 1;%64; % how many licenses?
     stack = 1;%round(length(cfg1)/nnodes);
     qsubcellfun(@taskPreprocNumbers, cfgin, 'compile', 'no', ...
-    'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
+    'memreq', 16*1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
 
   case 'ICA'
 
     nnodes = 1;%64; % how many licenses?
     stack = 1;%round(length(cfg1)/nnodes);
     qsubcellfun(@runIcaNumbers, cfgin, 'compile', 'no', ...
-    'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
+    'memreq', 16*1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
 
   case 'cohICA'
 
