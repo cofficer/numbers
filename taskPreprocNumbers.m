@@ -92,7 +92,11 @@ function taskPreprocNumbers( cfgin )
     cfgfreq.output      = 'pow';
     cfgfreq.taper       = 'hanning';
     cfgfreq.channel     = 'MEG';
-    cfgfreq.foi         = 1:130;
+    cfgfreq.foi         = 1:10:130;
+    %Due to memory issue, trying to reduce oadding.
+    cfgfreq.padtype     = 'zero'
+    cfgfreq.pad         = 1;
+    cfgfreq.padlength   = 1;
     cfgfreq.keeptrials  = 'no';
     %Requires a tonne of memory, 16gb needed.
     %But this analysis is imortant, for quality checking jumps.
