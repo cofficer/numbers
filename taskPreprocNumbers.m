@@ -65,7 +65,8 @@ function taskPreprocNumbers( cfgin )
     data.time=[];
     %Before 2017-11-18. 500
     data.time{1}=[0:length(dat_tme)-1]./500;
-
+    
+    data.sampleinfo = [1 length(data.trial{1})]
     %data.sampleinfo=[data.sampleinfo(1) data.sampleinfo(end)];
 
     % plot a quick power spectrum
