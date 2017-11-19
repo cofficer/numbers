@@ -12,42 +12,16 @@ function taskPreprocNumbers( cfgin )
     rawpath = '/mnt/homes/home024/ktsetsos/preproc3/' %'/home/chrisgahn/Documents/MATLAB/ktsetsos/trial/raw/';
     cd(rawpath)
 
-    %The key here is to use the already defined tables for samples when calling
-    %trialfun function which I should define next.
-
-    %define ds file, this is actually from the trial-based data
-    %So the ending of P2 does not exist and needs to be P3...
-    % if cfgin.restingfile(7)=='2'
-    %   cfgin.restingfile(7) ='3';
-    % endp 23_s3_b3
-
-    % if str2num(cfgin.restingfile(2:3))>9
-    %
-    %   dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
-    % else
-    %   dsfile =sprintf('%sp%s_s%s_b%s.mat',rawpath,cfgin.restingfile(3),cfgin.restingfile(5),cfgin.restingfile(7));
-    % end
-
-    % dsfileAll = dir('*.mat');
+    %load datafile
     dsfile=cfgin.restingfile
     load(dsfile)
-    % idx_ds = ismember({dsfileAll.name},dsfile);
-    % idx_ds = find(idx_ds==1);
-    % load(dsfileAll(22).name);
-    % load('p2_s2_b3.mat')
-    % resample the data, the demean and detrend should only affect MEG.
-    % At least only the detrending.
+
+    %only keep relevant sensors.
     cfg3 = [];
-    %cfg3.resample = 'yes';
-    %cfg3.fsample = 500;
-    %cfg3.resamplefs = 500;
     cfg3.detrend = 'no';
     cfg3.demean = 'yes';
-
     idx_1str = cellfun(@(x) x(1),data.label);
-
     idx_1str = ismember(idx_1str,'M');
-
     idx_channels = [242,100];
     cfg3.channel = data.label(idx_1str)
     more_channels = {'EYE01',...
@@ -58,7 +32,6 @@ function taskPreprocNumbers( cfgin )
     'HLC0031','HLC0032','HLC0033'};
 
     cfg3.channel = [cfg3.channel;more_channels'];
-
     data = ft_preprocessing(cfg3,data);
 
 
@@ -96,8 +69,8 @@ function taskPreprocNumbers( cfgin )
     cfgfreq.foi         = 1:10:130;
     %Due to memory issue, trying to reduce oadding.
     cfgfreq.padtype     = 'zero'
-    cfgfreq.pad         = 1;
-    cfgfreq.padlength   = 1;
+    cfgfreq.pad         = 'nextpow2';
+    %cfgfreq.padlength   = 1;
     cfgfreq.keeptrials  = 'no';
     %Requires a tonne of memory, 16gb needed.
     %But this analysis is imortant, for quality checking jumps.

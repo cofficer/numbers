@@ -8,20 +8,13 @@ clear all
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 cd('/home/ktsetsos/preproc3')
 
-%Store all the seperate data files
+%Sort the sessions and id in correct order. 
 restingpaths = dir('*.mat');
-
 restingpaths={restingpaths.name};
-
-
 sort_sessions = cellfun(@(x) x(2:3),restingpaths,'UniformOutput',false)
 sort_sessions = strtok( sort_sessions, '_' );
-
 sort_sessions = cellfun(@str2num,sort_sessions);
-
 [~,idx_sort] = sort(sort_sessions);
-
-
 restingpaths=restingpaths(idx_sort);
 
 
