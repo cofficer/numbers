@@ -6,13 +6,14 @@ clear all
 %%
 %Change the folder to where eyelink data is contained
 cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
+%cd('/home/ktsetsos/preproc3')
 
 %Store all the seperate data files
 restingpaths = dir('*.mat');
 
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 1:20;%84 beein pre 16/11-17. length(restingpaths)
+for icfg = 1:84 %beein pre 16/11-17. length(restingpaths)
 
     if restingpaths(icfg).name(7) ~= '1'
         restingpaths(icfg).name(7) = '3';
@@ -25,7 +26,7 @@ for icfg = 1:20;%84 beein pre 16/11-17. length(restingpaths)
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'preprocTrial'; %preproc, parallel, findsquid, check_nSensors, ICA
+runcfg.execute          = 'ICA'; %preproc, parallel, findsquid, check_nSensors, ICA
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
 

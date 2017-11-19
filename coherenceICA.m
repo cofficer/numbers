@@ -50,7 +50,7 @@ end
 cfg.channel            ={channelRej};
 cfg.artfctdef.ecg.channel               = {channelRej};
 cfg.artfctdef.ecg.inspect  = {channelRej};
-cfg.artfctdef.ecg.cutoff   = 10;
+cfg.artfctdef.ecg.cutoff   = 2; %Important setting, since its automatic. 
 cfg.artfctdef.ecg.feedback = 'no';
 [cfg, artifact]            = ft_artifact_ecg(cfg, ecg);
 
