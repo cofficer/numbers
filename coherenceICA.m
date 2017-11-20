@@ -163,7 +163,7 @@ fdcomp         = ft_connectivityanalysis(cfg, freq);
 
 %Take the  highest correlating component and use as a spatial template to calculate the coherence
 %But only for the eyeblinks!
-if channelRej ~= 'EEG059'
+if ~strcmp(channelRej,'EEG059')
     rej_components = idx_coh(end);
 
     %Compute the spatial correlation of artifact and all components
