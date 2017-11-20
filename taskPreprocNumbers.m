@@ -248,13 +248,10 @@ function taskPreprocNumbers( cfgin )
 
     %
     % % plot final power spectrum
-    freq            = ft_freqanalysis(cfgfreq, data);
+    %plot freq analysis
     subplot(2,3,cnt);
-    %loglog(freq.freq, freq.powspctrm, 'linewidth', 0.5); hold on;
-    loglog(freq.freq, squeeze(mean(freq.powspctrm)), 'k', 'linewidth', 1);
-    axis tight; axis square; box off; %ylim(ylims);
-    set(gca, 'xtick', [10 50 100], 'tickdir', 'out');
-
+    check_freq_plot(cfgin,data,cnt);
+    
     %%
 
     %Run a function which removes the artifacts we want. So far only muscle,
