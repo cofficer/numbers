@@ -34,8 +34,6 @@ function taskPreprocNumbers( cfgin )
     cfg3.channel = [cfg3.channel;more_channels'];
     data = ft_preprocessing(cfg3,data);
 
-
-
     %===========================================================
     %Fuse the trial seperation.
     %Change data.time, so to be unique all the way.
@@ -45,7 +43,7 @@ function taskPreprocNumbers( cfgin )
     for itrl = 1:length(data.trial)
       oldtrl(itrl) = length(data.trial{itrl});
     end
-    %TODO: remove unneccessary channels.
+
     dat_trl = [data.trial{:}];
     data.trial=[];
     data.trial{1}=dat_trl;
@@ -57,37 +55,22 @@ function taskPreprocNumbers( cfgin )
     data.time{1}=[0:length(dat_tme)-1]./500;
 
     data.sampleinfo = [1 length(data.trial{1})]
-    %data.sampleinfo=[data.sampleinfo(1) data.sampleinfo(end)];
 
-    % plot a quick power spectrum
-    % save those cfgs for later plotting
-    cfgfreq             = [];
-    cfgfreq.method      = 'mtmfft';
-    cfgfreq.output      = 'pow';
-    cfgfreq.taper       = 'hanning';
-    cfgfreq.channel     = 'MEG';
-    cfgfreq.foi         = 1:10:130;
-    %Due to memory issue, trying to reduce oadding.
-    cfgfreq.padtype     = 'zero'
-    cfgfreq.pad         = 'nextpow2';
-    %cfgfreq.padlength   = 1;
-    cfgfreq.keeptrials  = 'no';
-    %Requires a tonne of memory, 16gb needed.
-    %But this analysis is imortant, for quality checking jumps.
-    %The questions is if dividing up the data is better/faster.
-    freq                = ft_freqanalysis(cfgfreq, data); %Should only be done on MEG channels.
-
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %plot freq Overview
     %plot those data and save for visual inspection
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     figure('vis','off'),clf
     cnt                   = 1;
     subplot(2,3,cnt); cnt = cnt + 1;
 
-    loglog(freq.freq, freq.powspctrm, 'linewidth', 0.1); hold on;
-    loglog(freq.freq, mean(freq.powspctrm), 'k', 'linewidth', 1);
-    axis tight; axis square; box off;
-    set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-    clear freq
+    %plot freq analysis
+    check_freq_plot(cfgin,data,cnt);
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed')
+
+
+
+    %data.sampleinfo=[data.sampleinfo(1) data.sampleinfo(end)];
 
     %%
 
@@ -298,8 +281,11 @@ function taskPreprocNumbers( cfgin )
     %Change folder and save approapriate data + figures
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/')
 
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s',cfgin.restingfile(2:3));
-
+    if strcmp(cfgin.restingfile(3),'_')
+      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P0%s',cfgin.restingfile(2));
+    else
+      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s',cfgin.restingfile(2:3));
+    end
     if 7==exist(name,'dir')
 
       cd(name)
