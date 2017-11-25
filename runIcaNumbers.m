@@ -28,8 +28,14 @@ try
       savefile = sprintf('compS%s_P1.mat',cfgin.restingfile(5));
     end
   else
-    load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(5),cfgin.restingfile(8)))
-    savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(5),cfgin.restingfile(8));
+    if strcmp(cfgin.restingfile(3),'_')
+      load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(5),cfgin.restingfile(8)))
+      savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(5),cfgin.restingfile(8));
+    else
+      load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(6),cfgin.restingfile(9)))
+      savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(6),cfgin.restingfile(9));    
+    end
+
   end
   %load the raw data:
 

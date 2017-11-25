@@ -20,7 +20,7 @@ restingpaths  = restingpaths(idx_sort);
 
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 1:20%84 %beein pre 16/11-17. length(restingpaths)
+for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
     % if restingpaths(icfg).name(7) ~= '1'
     %     restingpaths(icfg).name(7) = '3';
@@ -33,7 +33,7 @@ for icfg = 1:20%84 %beein pre 16/11-17. length(restingpaths)
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'cohICA'; %preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'ICA'; %preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
 
