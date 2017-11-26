@@ -14,8 +14,8 @@ function  run_coherenceICA( cfgin )
   [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
   %cellfun(@createFullMatrix, cfg1, outputfile);
   %get the comp_idx for all correlation >0.52. TODO: decide on threshold.
-  comp_idx1= idx_corBlink(val_corBlink>0.52)';
-  comp_idx2= idx_corHR(val_corHR>0.52);
+  comp_idx1= idx_corBlink(val_corBlink>0.40)';
+  comp_idx2= idx_corHR(val_corHR>0.40);
 
   if isempty(comp_idx1) & ~isempty(comp_idx2)
     comp_idx=comp_idx2;
@@ -52,8 +52,8 @@ function  run_coherenceICA( cfgin )
   end
 
 
-  %TODO: Save the removed components, as well as what they look like, for a final inspection. 
-  %remove_ICA(cfgin,comp_idx)
+  %TODO: Save the removed components, as well as what they look like, for a final inspection.
+  remove_ICA(cfgin,comp_idx)
 
 
   %Decide where to save the component to reject information,
