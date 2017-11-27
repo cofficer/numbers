@@ -15,7 +15,7 @@ function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
     if strcmp(cfgin.restingfile(3),'_')
       dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P0%s/preprocs%s_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
     else
-      dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s/preprocs%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(8));
+      dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s/preprocs%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
     end
   end
 
@@ -109,7 +109,7 @@ function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
     if strcmp(cfgin.restingfile(3),'_')
       load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P0%s/compS%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8)));
     else
-      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s/compS%s_B%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(8)));
+      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s/compS%s_B%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9)));
     end
   end
   % decompose the ECG-locked datasegments into components, using the previously found (un)mixing matrix
@@ -204,7 +204,7 @@ function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
   comp_labels   = comp.label;
   comp.label    = corect_labels(1:length(comp_labels));
   cfg.channel  = [idx_coh(end-7:end)];
-  cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed';
+  cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed';
   cfg.prefix   = 'cohComp';
   cfg.layout          = 'CTF275.lay';
   cfg.viewmode        = 'component';
