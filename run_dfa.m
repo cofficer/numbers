@@ -9,8 +9,8 @@ function run_dfa(cfgin)
 
 %load clean data
 if strcmp(cfgin.restingfile(3),'_')
-  dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P0%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
-  savefile= sprintf('P0%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+  dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+  savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
 else
   dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
   savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
