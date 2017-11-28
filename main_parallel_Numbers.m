@@ -20,7 +20,7 @@ restingpaths  = restingpaths(idx_sort);
 
 %Loop all data files into seperate jobs
 idx_cfg = 1;
-for icfg = 184:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
+for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
     % if restingpaths(icfg).name(7) ~= '1'
     %     restingpaths(icfg).name(7) = '3';
