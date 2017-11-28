@@ -33,7 +33,8 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'cohICA'; %preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'dfa'; %preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+                                    %dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
 

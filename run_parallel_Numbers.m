@@ -14,6 +14,13 @@ function run_parallel_Numbers(runcfg, cfgin)
     qsubcellfun(@taskPreprocNumbers, cfgin, 'compile', 'no', ...
     'memreq', 10*1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
 
+    case 'dfa'
+
+      nnodes = 1;%64; % how many licenses?
+      stack = 1;%round(length(cfg1)/nnodes);
+      qsubcellfun(@run_dfa, cfgin, 'compile', 'no', ...
+      'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
+
   case 'ICA'
 
     nnodes = 1;%64; % how many licenses?
