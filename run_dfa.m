@@ -39,7 +39,7 @@ for i_val = 1:length(intervals)
   % Fs:       sampling rate
   % overlap:  overlap of windows (default: 0.5)
   % binnum:   number of time bins for fitting (default: 10)
-  win = [1 50];
+  win = [3 50];
   Fs  = 500;
   overlap = 0.5;
   binnum = 10;
@@ -57,6 +57,8 @@ save(savefile,'dfa_all')
 %TODO: Check the number of components removed from each participant.
 %TODO: Figure out best way of storage.
 %TODO: Decide on loops, need to compute for each freq band. Maybe cluster is
+%TODO: Append the data from same session
+%TODO: Re-run all DFAs
 %better after all.
 
 
