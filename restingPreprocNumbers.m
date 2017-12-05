@@ -316,14 +316,14 @@ function restingPreprocNumbers( cfgin )
     [ data ] = delete_artifact_Numbers(artifact_Muscle, data, sampleinfo);
 
 
-    %%
-    %Finally resample the data
-    cfg3.resample = 'yes';
-    cfg3.fsample = 1200;
-    cfg3.resamplefs = 500;
-    cfg3.detrend = 'no';
-
-    data = ft_resampledata(cfg3,data);
+    % %%
+    % %Finally resample the data
+    % cfg3.resample = 'yes';
+    % cfg3.fsample = 1200;
+    % cfg3.resamplefs = 500;
+    % cfg3.detrend = 'no';
+    %
+    % data = ft_resampledata(cfg3,data);
 
 
     %%
