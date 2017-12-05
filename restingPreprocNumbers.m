@@ -216,12 +216,28 @@ function restingPreprocNumbers( cfgin )
     %call function which calculates all jumps
     oldtrl=[];
     channelJump=findSquidJumps(data,cfgin,oldtrl);
-
     artifact_Jump = channelJump;
     subplot(2,3,cnt); cnt = cnt + 1;
 
     %If there are jumps, plot them.
     if ~isempty(channelJump)
+      %I will do the channelrepair from here on
+      %Need to save the EOG058 and eyelink channels.
+      cfg   = [];
+      cfg.channel = {'EEG058','EEG059','UADC003','UADC004','EYE01','EYE02','EYE03'};
+      eyeData = ft_selectdata(cfg,data);
+      cfg = [];
+      cfg.method = 'spline';
+      cfg.badchannel = artifact_Jump%ismember(data.label,artifact_Jump);
+      cfg2=[];
+      cfg2.method = 'template';
+      cfg2.template = 'CTF275_neighb.mat';
+      cfg2.channel = 'MEG';
+      cfg.neighbours = ft_prepare_neighbours(cfg2,data);
+      cfg.senstype = 'meg';
+      data=ft_channelrepair(cfg,data);
+      cfg =[];
+      data = ft_appenddata(cfg,data,eyeData);
       %subplot...
       for ijump = 1:length(channelJump)
         plot(data.trial{1}( ismember(data.label,channelJump{ijump}),:))
