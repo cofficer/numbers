@@ -6,35 +6,61 @@ clear all
 %%
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
-cd('/home/ktsetsos/preproc3')
+
+blocktype = 'resting'; %trial or resting
+
+if strcmp(blocktype,'resting')
+  cd('/home/ktsetsos/resting')
+elseif strcmp(blocktype,'trial')
+  cd('/home/ktsetsos/preproc3')
+end
 
 %Sort the sessions and id in correct order.
 restingpaths  = dir('*.mat');
 restingpaths  = {restingpaths.name};
-sort_sessions = cellfun(@(x) x(2:3),restingpaths,'UniformOutput',false)
-sort_sessions = strtok( sort_sessions, '_' );
+if strcmp(blocktype,'resting')
+  sort_sessions = cellfun(@(x) x(1:2),restingpaths,'UniformOutput',false)
+
+elseif strcmp(blocktype,'trial')
+  sort_sessions = cellfun(@(x) x(2:3),restingpaths,'UniformOutput',false)
+  sort_sessions = strtok( sort_sessions, '_' );
+
+end
+
 sort_sessions = cellfun(@str2num,sort_sessions);
-[~,idx_sort]  = sort(sort_sessions);
+[sid,idx_sort]  = sort(sort_sessions);
 restingpaths  = restingpaths(idx_sort);
 
 
 %Loop all data files into seperate jobs
-idx_cfg = 1;
-for icfg = 131:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
+dfa_append = 0; %TODO: append the separate trial blocks.
+idx_cfg    = 1;
+for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
-    % if restingpaths(icfg).name(7) ~= '1'
-    %     restingpaths(icfg).name(7) = '3';
-    % end
-      cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
-      %cfgin=cfgin{12}
-      cfgin{idx_cfg}.blocktype                = 'trial'; %trial or resting
-      idx_cfg = idx_cfg + 1;
+  %If append all of the same session data restingpaths(1:4)
+  %Then reduce number of cfgin to one per session.
+  if dfa_append
+
+    ib=diff(sid)
+
+    cfgin{sid}.blocks{ib}=restingpaths{icfg};
+
+  else
+    cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
+    %cfgin=cfgin{12}
+    cfgin{idx_cfg}.blocktype                = blocktype; %trial or resting
+    idx_cfg = idx_cfg + 1;
+  end
+  % if restingpaths(icfg).name(7) ~= '1'
+  %     restingpaths(icfg).name(7) = '3';
+  % end
+
 
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'dfa'; %preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
-                                    %dfa
+runcfg.execute          = 'preproc'; %preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+%dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
 

@@ -5,7 +5,7 @@ function restingPreprocNumbers( cfgin )
 
   try
     %Folder with the resting data
-    rawpath = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/raw/';
+    rawpath = '/home/ktsetsos/resting';
     cd(rawpath)
 
     %The key here is to use the already defined tables for samples when calling
@@ -13,13 +13,31 @@ function restingPreprocNumbers( cfgin )
 
     %define ds file, this is actually from the trial-based data
     %So the ending of P2 does not exist and needs to be P3...
-    if cfgin.restingfile(7)=='2'
-      cfgin.restingfile(7) ='3';
-    end
+    % if cfgin.restingfile(7)=='2'
+    %   cfgin.restingfile(7) ='3';
+    % end
 
-    dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
-    data = load(dsfile);
-    data = data.combined_dat;
+    % dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+    load(cfgin.restingfile);
+
+    %only keep relevant sensors.
+    cfg3 = [];
+    cfg3.detrend = 'no';
+    cfg3.demean = 'yes';
+    idx_1str = cellfun(@(x) x(1),data.label);
+    idx_1str = ismember(idx_1str,'M');
+    idx_channels = [242,100];
+    cfg3.channel = data.label(idx_1str)
+    more_channels = {'EYE01',...
+    'EYE02','EYE03','UADC003',...
+    'UADC004','EEG058','EEG059',...
+    'HLC0011','HLC0012','HLC0013', ...
+    'HLC0021','HLC0022','HLC0023', ...
+    'HLC0031','HLC0032','HLC0033'};
+
+    cfg3.channel = [cfg3.channel;more_channels'];
+    data = ft_preprocessing(cfg3,data);
+    % data = data.combined_dat;
 
     %%
     %From Anne, Donner git example
@@ -77,7 +95,7 @@ function restingPreprocNumbers( cfgin )
 
     % channel selection, cutoff and padding
     %The channel '4' is the appended eyelink.
-    cfg.artfctdef.zvalue.channel     = {'4'}; %UADC004 UADC003
+    cfg.artfctdef.zvalue.channel     = {'EEG058'}; %UADC004 UADC003 EYE03
 
     % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
     cfg.artfctdef.zvalue.trlpadding  = 0; % avoid filter edge artefacts by setting to negative
@@ -92,7 +110,7 @@ function restingPreprocNumbers( cfgin )
     % cfg.artfctdef.zvalue.hilbert    = 'yes';
 
     % set cutoff
-    cfg.artfctdef.zvalue.cutoff     = 4; % to detect all blinks, be strict
+    cfg.artfctdef.zvalue.cutoff     = 1; % to detect all blinks, be strict
     cfg.artfctdef.zvalue.interactive = 'no';
     [~, artifact_eog]               = ft_artifact_zvalue(cfg, data);
     artifact_eogVertical = artifact_eog;
@@ -105,18 +123,18 @@ function restingPreprocNumbers( cfgin )
 
     %plot the blink rate vertical??
     cfg=[];
-    cfg.channel = '4'; % UADC004 if eyelink is present
+    cfg.channel = 'EEG058'; % UADC004 if eyelink is present
     blinks = ft_selectdata(cfg,data);
 
 
 
     %If there is no variance in the data then it is probably because the
     %eyelink was not working for that session.
-    if var(blinks.trial{:})<0.01 %No eyelink
-      %raise error
-      msg='There is no Eylink data';
-      error(msg);
-    end
+    % if var(blinks.trial{:})<0.01 %No eyelink
+    %   %raise error
+    %   msg='There is no Eylink data';
+    %   error(msg);
+    % end
     subplot(2,3,cnt); cnt = cnt + 1;
     plot(blinks.trial{:})
     axis tight; axis square; box off;
@@ -138,7 +156,7 @@ function restingPreprocNumbers( cfgin )
     cfg.continuous                   = 'yes'; % data has been epoched
 
     % channel selection, cutoff and padding
-    cfg.artfctdef.zvalue.channel     = {'3'}; %UADC003 UADC004s
+    cfg.artfctdef.zvalue.channel     = {'EEG058'}; %UADC003 UADC004s
 
     % 001, 006, 0012 and 0018 are the vertical and horizontal eog chans
     cfg.artfctdef.zvalue.trlpadding  = 0; % padding doesnt work for data thats already on disk
@@ -153,7 +171,7 @@ function restingPreprocNumbers( cfgin )
     % cfg.artfctdef.zvalue.hilbert    = 'yes';
 
     % set cutoff
-    cfg.artfctdef.zvalue.cutoff     = 4;
+    cfg.artfctdef.zvalue.cutoff     = 1;
     cfg.artfctdef.zvalue.interactive = 'no';
     [~, artifact_eog]               = ft_artifact_zvalue(cfg, data);
 
@@ -171,7 +189,7 @@ function restingPreprocNumbers( cfgin )
 
     %plot the blink rate horizontal??
     cfg=[];
-    cfg.channel = '3'; %UADC003 UADC004 if eyelink is present
+    cfg.channel = 'EYE03'; %UADC003 UADC004 if eyelink is present
     blinks = ft_selectdata(cfg,data);
 
     %If there is no variance in the data then it is probably because the
@@ -196,7 +214,10 @@ function restingPreprocNumbers( cfgin )
     % ==================================================================
 
     %call function which calculates all jumps
-    channelJump=findSquidJumps(data,cfgin);
+    oldtrl=[];
+    channelJump=findSquidJumps(data,cfgin.restingfile,oldtrl);
+    channelJump=findSquidJumps(data,cfgin.restingfile,oldtrl);
+
     artifact_Jump = channelJump;
     subplot(2,3,cnt); cnt = cnt + 1;
 
@@ -213,24 +234,24 @@ function restingPreprocNumbers( cfgin )
 
     % if ~isempty(idx_jump)
 
-      % for iout = 1:length(idx_jump)
+    % for iout = 1:length(idx_jump)
 
-        %I belive that y is trial and x is channel.
-        % [y,x] = ind2sub(size(intercept),idx_jump(iout)) ;
+    %I belive that y is trial and x is channel.
+    % [y,x] = ind2sub(size(intercept),idx_jump(iout)) ;
 
-        %Store the name of the channel
-        % channelJump{iout} = freq.label(x);
+    %Store the name of the channel
+    % channelJump{iout} = freq.label(x);
 
-        %Plot each channel containing a jump.
-        % plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
-        % hold on
+    %Plot each channel containing a jump.
+    % plot(data.trial{1}( ismember(data.label,channelJump{iout}),:))
+    % hold on
 
-      % end
-      % axis tight; axis square; box off;
-      %set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
-      % title(sprintf('Jumps found'));
+    % end
+    % axis tight; axis square; box off;
+    %set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
+    % title(sprintf('Jumps found'));
     % else
-      % title(sprintf('No jumps'));
+    % title(sprintf('No jumps'));
     % end
     %%
     % ==================================================================
