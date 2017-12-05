@@ -11,9 +11,9 @@ function [ output_args ] = runIcaNumbers( cfgin )
 try
 
   if strcmp(cfgin.restingfile(3),'_')
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P0%s',cfgin.restingfile(2));
+    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
   else
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s',cfgin.restingfile(2:3));
+    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(2:3));
   end
 
   cd(name)
@@ -33,7 +33,7 @@ try
       savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(5),cfgin.restingfile(8));
     else
       load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(6),cfgin.restingfile(9)))
-      savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(6),cfgin.restingfile(9));    
+      savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(6),cfgin.restingfile(9));
     end
 
   end
