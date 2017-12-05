@@ -337,7 +337,7 @@ function restingPreprocNumbers( cfgin )
     %Change folder and save approapriate data + figures
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/')
 
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(2:3));
+    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s',cfgin.restingfile(1:2));
 
     if 7==exist(name,'dir')
 
