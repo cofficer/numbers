@@ -351,16 +351,16 @@ function restingPreprocNumbers( cfgin )
     %some are not.
     data.sampleinfoOld = sampleinfo;
     %Save the data
-    filestore=sprintf('preproc%s.mat',dsfile(end-8:end-4));
+    filestore=sprintf('preproc%s.mat',cfgin.restingfile(end-8:end-4));
     save(filestore,'data')
 
     %Save the artifacts
-    artstore=sprintf('artifacts%s.mat',dsfile(end-8:end-4));
+    artstore=sprintf('artifacts%s.mat',cfgin.restingfile(end-8:end-4));
 
     save(artstore,'artifact_eogVertical','artifact_eogHorizontal','artifact_Muscle','artifact_Jump') %Jumpos?
 
     %save the invisible figure
-    figurestore=sprintf('Overview%s.png',dsfile(end-8:end-4));
+    figurestore=sprintf('Overview%s.png',cfgin.restingfile(end-8:end-4));
     saveas(gca,figurestore,'png')
 
     %Catch any error and write into file
