@@ -14,8 +14,8 @@ function  run_coherenceICA( cfgin )
   [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
   %cellfun(@createFullMatrix, cfg1, outputfile);
   %get the comp_idx for all correlation >0.52. TODO: decide on threshold.
-  comp_idx1= idx_corBlink(val_corBlink>0.40)';
-  comp_idx2= idx_corHR(val_corHR>0.40);
+  comp_idx1= idx_corBlink(val_corBlink>0.50)';
+  comp_idx2= idx_corHR(val_corHR>0.50);
 
   if isempty(comp_idx1) & ~isempty(comp_idx2)
     comp_idx=comp_idx2;

@@ -58,7 +58,7 @@ function remove_ICA(cfgin,comp_idx)
 
   data = ft_rejectcomponent(cfg, comp, data)
 
-  dataname=sprintf('P%s',cfgin.restingfile(2:end))
+  dataname=sprintf('P%s',cfgin.restingfile(1:end))
 
   cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/',cfgin.blocktype))
 
