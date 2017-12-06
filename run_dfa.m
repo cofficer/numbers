@@ -9,11 +9,11 @@ function run_dfa(cfgin)
 if strcmp(cfgin.blocktype,'resting')
   %define ds file, this is actually from the trial-based data
   if strcmp(cfgin.restingfile(1),'0')
-    dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
-    savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+    dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+    savefile= sprintf('P%s_S%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
   else
-    dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
-    savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+    dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+    savefile= sprintf('P%s_S%s_B%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
   end
 elseif strcmp(cfgin.blocktype,'trial')
   %load clean data
@@ -32,7 +32,7 @@ load(dsfile)
 intervals = [2 4;4 8;8 12;12 24];
 
 for i_val = 1:length(intervals)
-
+  disp(i_val)
   %bandpass filter signal
   cfg =[];
   cfg.bpfreq = intervals(i_val,:);
@@ -49,7 +49,11 @@ for i_val = 1:length(intervals)
   % Fs:       sampling rate
   % overlap:  overlap of windows (default: 0.5)
   % binnum:   number of time bins for fitting (default: 10)
-  win = [3 50];
+  if strcmp(cfgin.blocktype,'resting')
+    win = [3 30];
+  else
+    win = [3 50];
+  end
   Fs  = 500;
   overlap = 0.5;
   binnum = 10;
@@ -59,7 +63,11 @@ for i_val = 1:length(intervals)
 
 end
 
-cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/DFA')
+if strcmp(cfgin.blocktype,'resting')
+  cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/DFA')
+else
+  cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/DFA')
+end
 
 save(savefile,'dfa_all')
 
