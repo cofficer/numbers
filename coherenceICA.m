@@ -8,8 +8,11 @@ function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
 
   if strcmp(cfgin.blocktype,'resting')
     %define ds file, this is actually from the trial-based data
-    dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/preprocS%s_P%s.mat'...
-    ,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
+    if strcmp(cfgin.restingfile(1),'0')
+      dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P0%s/preprocS%s_P%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+    else
+      dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/preprocS%s_P%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+    end
   else
 
     if strcmp(cfgin.restingfile(3),'_')
@@ -43,6 +46,7 @@ function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
 
   %%
   %select components for heart rate
+  data.sampleinfo = [1 length(data.trial{1})];
   cfg                       = [];
   cfg.trl                   = [1 length(data.trial{1})];
   cfg.dataset               = data;
@@ -102,10 +106,13 @@ function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
   %load the previously computed ICA components
 
   if strcmp(cfgin.blocktype,'resting')
-    load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/compS%s_P%s.mat',...
-    cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7)))
-  else
 
+    if strcmp(cfgin.restingfile(1),'0')
+      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P0%s/compS%s_P%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8)));
+    else
+      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/compS%s_P%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8)));
+    end
+  else
     if strcmp(cfgin.restingfile(3),'_')
       load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P0%s/compS%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8)));
     else

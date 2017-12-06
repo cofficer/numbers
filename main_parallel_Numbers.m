@@ -47,7 +47,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
   else
     cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
-    %cfgin=cfgin{12}
+    %cfgin=cfgin{120}
     cfgin{idx_cfg}.blocktype                = blocktype; %trial or resting
     idx_cfg = idx_cfg + 1;
   end
@@ -59,7 +59,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 end
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'ICA'; %preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'cohICA'; %preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
