@@ -9,8 +9,8 @@ function run_dfa(cfgin)
 if strcmp(cfgin.blocktype,'resting')
   %define ds file, this is actually from the trial-based data
   if strcmp(cfgin.restingfile(1),'0')
-    dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
-    savefile= sprintf('P%s_S%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+    dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P0%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+    savefile= sprintf('P0%s_S%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
   else
     dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
     savefile= sprintf('P%s_S%s_B%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
@@ -25,7 +25,7 @@ elseif strcmp(cfgin.blocktype,'trial')
     savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
   end
 end
-
+%P08_S2_P1.mat, P08_S3_P1.mat
 load(dsfile)
 
 %Define bandpass intervals
