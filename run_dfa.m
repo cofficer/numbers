@@ -36,8 +36,9 @@ function run_dfa(cfgin)
       %bandpass filter signal
       cfg =[];
       cfg.bpfreq = intervals(i_val,:);
+      cfg.bpfilter='yes';
       cfg.bpfilttype='but';
-      cfg.channel = 'MEG';
+      cfg.channel = 'MEG'; 
       dataBP=ft_preprocessing(cfg,data);
 
       %compute the amplitude envelope
@@ -49,7 +50,7 @@ function run_dfa(cfgin)
       % Fs:       sampling rate
       % overlap:  overlap of windows (default: 0.5)
       % binnum:   number of time bins for fitting (default: 10)
-      if strcmp(cfgin.blocktype,'resting')
+      if strcmp(cfgin.blocktype,'resting') 
         win = [3 30];
       else
         win = [3 50];
