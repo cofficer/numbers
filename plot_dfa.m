@@ -7,7 +7,7 @@ function T_dfa = plot_dfa(~)
   clear all
 
   intervals = [2 4;4 8;8 12;12 24];
-  which_freq = 1;%Alpha 3
+  which_freq = 3;%Alpha 3
   %load csv of session info.
   cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos')
   drug_order=xlsread('Drug_Placebo.xlsx');
