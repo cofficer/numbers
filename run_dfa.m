@@ -50,7 +50,7 @@ function run_dfa(cfgin)
       % Fs:       sampling rate
       % overlap:  overlap of windows (default: 0.5)
       % binnum:   number of time bins for fitting (default: 10)
-      if strcmp(cfgin.blocktype,'resting') 
+      if strcmp(cfgin.blocktype,'resting')
         win = [3 30];
       else
         win = [3 50];
