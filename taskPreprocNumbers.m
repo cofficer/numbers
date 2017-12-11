@@ -251,7 +251,7 @@ function taskPreprocNumbers( cfgin )
     %plot freq analysis
     subplot(2,3,cnt);
     check_freq_plot(cfgin,data,cnt);
-    
+
     %%
 
     %Run a function which removes the artifacts we want. So far only muscle,

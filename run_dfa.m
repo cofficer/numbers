@@ -29,17 +29,26 @@ function run_dfa(cfgin)
     load(dsfile)
 
     %Define bandpass intervals
-    intervals = [2 4;4 8;8 12;12 24];
-
+    % intervals = [2 4;4 8;8 12;12 24];
+    intervals = [1];
     for i_val = 1:length(intervals)
       disp(i_val)
       %bandpass filter signal
-      cfg =[];
-      cfg.bpfreq = intervals(i_val,:);
-      cfg.bpfilter='yes';
-      cfg.bpfilttype='but';
-      cfg.channel = 'MEG';
-      dataBP=ft_preprocessing(cfg,data);
+      % cfg =[];
+      % cfg.bpfreq = intervals(i_val,:);
+      % cfg.bpfilter='yes';
+      % cfg.bpfilttype='but';
+      % cfg.channel = 'MEG';
+      % dataBP=ft_preprocessing(cfg,data);
+
+      %Different filtered
+      cfg = [];
+      cfg.fsample = 500;
+      cfg.flp     = 12;
+      cfg.type    = 'but';
+      dataBP = ft_preproc_lowpassfilter(cfg,data);
+
+
 
       %compute the amplitude envelope
       dataBP.trial{1}=abs(hilbert(dataBP.trial{1}));

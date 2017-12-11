@@ -7,7 +7,7 @@ function T_dfa = plot_dfa(~)
   clear all
 
   intervals = [2 4;4 8;8 12;12 24];
-  which_freq = 3;%Alpha 3
+  which_freq = 1;%Alpha 3
   %load csv of session info.
   cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos')
   drug_order=xlsread('Drug_Placebo.xlsx');
@@ -123,7 +123,7 @@ function T_dfa = plot_dfa(~)
 
   clean_T_dfa{:,{'nocebo_trl'}}
 
-
+  %save('DFA_exponents_2-4Hz.mat','T_dfa')
 
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,7 +154,8 @@ function T_dfa = plot_dfa(~)
   g.set_names('column','Origin','x','Group','y','DFA exp','color','Pla/Noc/Lor');
   % g.set_text_options('base_size',20);
   % g(2,1).set_color_options('chroma',0,'lightness',20)
-  % g.set_title('Time (s) since rotation stop');
+  g.set_title(sprintf('Bandpass %d-%dHz',intervals(which_freq,1),intervals(which_freq,2)));
+
   %g.facet_grid('space','free')
   figure('Position',[100 100 800 600]);
   g.axe_property('XTick',[1 2 3 4 5 6])
@@ -170,7 +171,7 @@ function T_dfa = plot_dfa(~)
   %name filess
   formatOut = 'yyyy-mm-dd';
   todaystr = datestr(now,formatOut);
-  namefigure = sprintf('DFA_exponents_boxplot_2-4Hz');%fractionTrialsRemaining
+  namefigure = sprintf('prelim2_DFA_exponents_newplot_%d-%dHz',intervals(which_freq,1),intervals(which_freq,2));%fractionTrialsRemaining
   filetype    = filetyp;
   figurename = sprintf('%s_%s.%s',todaystr,namefigure,filetype);
   g.export('file_name',figurename,'file_type',filetype);
@@ -236,6 +237,8 @@ function T_dfa = plot_dfa(~)
   %Average the DFA across trial/resting, and only check drug/placebo.
   placebo = [clean_T_dfa.placebo_trl',clean_T_dfa.placebo_rest'];
   lorazepam = [clean_T_dfa.lora_trl',clean_T_dfa.lora_rest'];
+
+
 
   [~,p_drug]=ttest(placebo',lorazepam')
 
