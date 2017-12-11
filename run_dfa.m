@@ -43,10 +43,11 @@ function run_dfa(cfgin)
 
       %Different filtered
       cfg = [];
-      cfg.fsample = 500;
-      cfg.flp     = 12;
-      cfg.type    = 'but';
-      dataBP = ft_preproc_lowpassfilter(cfg,data);
+      cfg.fsample  = 500;
+      cfg.lpfreq     = 12;
+      cfg.type     = 'but';
+      cfg.lpfilter ='yes';
+      dataBP = ft_preprocessing(cfg,data);
 
 
 
