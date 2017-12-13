@@ -123,7 +123,7 @@ function T_dfa = plot_dfa(~)
 
   clean_T_dfa{:,{'nocebo_trl'}}
 
-  %save('DFA_exponents_2-4Hz.mat','T_dfa')
+  %save('DFA_exponents_-12Hz.mat','T_dfa')
 
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

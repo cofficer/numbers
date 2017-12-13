@@ -20,7 +20,7 @@ try
 
   %load the preproc data.
   if strcmp(cfgin.blocktype,'resting')
-    if cfgin.restingfile(7)=='2'
+    if cfgin.restingfile(8)=='3'
       load(sprintf('preprocS%s_P3.mat',cfgin.restingfile(5)))
       savefile = sprintf('compS%s_P3.mat',cfgin.restingfile(5));
     else
