@@ -10,10 +10,19 @@ function [ output_args ] = runIcaNumbers( cfgin )
 %restoredefaultpath
 try
 
-  if strcmp(cfgin.restingfile(3),'_')
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
+  if strcmp(cfgin.blocktype,'resting')
+    if strcmp(cfgin.restingfile(1),'0')
+      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
+    else
+      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(1:2));
+    end
   else
-    name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(2:3));
+
+    if strcmp(cfgin.restingfile(3),'_')
+      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
+    else
+      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(2:3));
+    end
   end
 
   cd(name)

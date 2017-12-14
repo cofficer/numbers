@@ -26,6 +26,7 @@ function run_parallel_Numbers(runcfg, cfgin)
 
     nnodes = 1;%64; % how many licenses?
     stack = 1;%round(length(cfg1)/nnodes);
+    %cellfun(@runIcaNumbers,cfgin,'UniformOutput',false)
     qsubcellfun(@runIcaNumbers, cfgin, 'compile', 'no', ...
     'memreq', 16*1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
 

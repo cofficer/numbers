@@ -54,6 +54,10 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
   % if restingpaths(icfg).name(7) ~= '1' P01_S2_P3.mat
   %     restingpaths(icfg).name(7) = '3';
   % end
+  %idxn=[13, 28, 51, 66, 83, 84, 209, 210]
+  %cfgin={cfgin{idxn}}
+  %idxna=1:length(cfgin)
+  %idxna(idxn)=[];
 
 
 end
