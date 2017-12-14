@@ -1,7 +1,7 @@
 # Numbers
 # Preprocessing 
 
-The preprocessing pipeline is executed from main_parallel_Numbers.m
+The preprocessing pipeline is executed from main_parallel_Numbers.m.
 The purpose of main_parallel_Numbers.m is to create cfg structures for each separate 
 dataset to be analyzed. Many different types of analyses can be executed from this script. 
 But to run preprocessing, define runcfg.execute  = 'preprocTrial', for trial based data or
