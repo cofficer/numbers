@@ -65,7 +65,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 end
 
 %Select cfgin of interest.
-cfgin_sel = {'p43_s1'}%,'p19_s3','p15_s3'}
+cfgin_sel = {'p43_s1'}
 
 namecfg = cellfun(@(x) x(1:6),namecfg,'UniformOutput',false)
 
