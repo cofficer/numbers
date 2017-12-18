@@ -9,7 +9,7 @@ function  run_coherenceICA( cfgin )
 
 
   %component for blinks
-  %cfgin=ab{9} %redo comp '15_S3_P3.mat'. PART 43, no comp!!
+  %cfgin=ab{6} %redo comp '15_S3_P3.mat'. PART 43, no comp!!
   [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
   %[val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
   %component for heart rate
@@ -31,7 +31,7 @@ function  run_coherenceICA( cfgin )
 
   end
   comp_idx=unique(comp_idx);
-  %comp_idx=[6,5,9,26]
+  %comp_idx=[1,12,23]
 
   disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
   add_comps=0

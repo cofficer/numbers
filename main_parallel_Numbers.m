@@ -7,7 +7,7 @@ clear all
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
-blocktype = 'resting'; %trial or resting
+blocktype = 'trial'; %trial or resting
 
 if strcmp(blocktype,'resting')
   cd('/home/ktsetsos/resting')
@@ -47,23 +47,40 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
   else
     cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
+    namecfg{idx_cfg} = restingpaths{icfg};
     %cfgin=cfgin{120}
     cfgin{idx_cfg}.blocktype                = blocktype; %trial or resting
     idx_cfg = idx_cfg + 1;
+
   end
   % if restingpaths(icfg).name(7) ~= '1' P01_S2_P3.mat
   %     restingpaths(icfg).name(7) = '3';
   % end
   %idxn=[13, 28, 51, 66, 83, 84, 209, 210]
-  %cfgin={cfgin{idxn}}
+  %cfgin={cfgin{209:214}}
   %idxna=1:length(cfgin)
   %idxna(idxn)=[];
 
 
 end
 
+%Select cfgin of interest.
+cfgin_sel = {'p43_s1'}%,'p19_s3','p15_s3'}
+
+namecfg = cellfun(@(x) x(1:6),namecfg,'UniformOutput',false)
+
+
+for icfgin =1:length(cfgin)
+
+  idx_name(icfgin) = ismember(namecfg(icfgin),cfgin_sel);
+
+end
+cfgin={cfgin{idx_name}};
+
+%1 and 6 error ICA
+
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'ICA'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'preprocTrial'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
