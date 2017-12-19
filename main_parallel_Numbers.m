@@ -7,7 +7,7 @@ clear all
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
-blocktype = 'trial'; %trial or resting
+blocktype = 'resting'; %trial or resting
 
 if strcmp(blocktype,'resting')
   cd('/home/ktsetsos/resting')
@@ -63,19 +63,19 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
 
 end
-
-%Select cfgin of interest.
-cfgin_sel = {'p13_s2_b1'} % {'p43_s1','p19_s3','p15_s3'}
-
-namecfg = cellfun(@(x) x(1:9),namecfg,'UniformOutput',false)
-
-
-for icfgin =1:length(cfgin)
-
-  idx_name(icfgin) = ismember(namecfg(icfgin),cfgin_sel);
-
-end
-cfgin={cfgin{idx_name}};
+%
+% %Select cfgin of interest.
+% cfgin_sel = {'p13_s2_b1'} % {'p43_s1','p19_s3','p15_s3'}
+%
+% namecfg = cellfun(@(x) x(1:9),namecfg,'UniformOutput',false)
+%
+%
+% for icfgin =1:length(cfgin)
+%
+%   idx_name(icfgin) = ismember(namecfg(icfgin),cfgin_sel);
+%
+% end
+% cfgin={cfgin{idx_name}};
 
 %1 and 6 error ICA
 

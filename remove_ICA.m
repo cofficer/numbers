@@ -58,7 +58,7 @@ function remove_ICA(cfgin,comp_idx)
 
   data = ft_rejectcomponent(cfg, comp, data)
 
-  if cfgin.strcmp(cfgin.blocktype,'trial')
+  if strcmp(cfgin.blocktype,'trial')
     dataname=sprintf('P%s',cfgin.restingfile(2:end))
   else
     dataname=sprintf('P%s',cfgin.restingfile(1:end))
