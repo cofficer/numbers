@@ -65,9 +65,9 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 end
 
 %Select cfgin of interest.
-cfgin_sel = {'p43_s1'}
+cfgin_sel = {'p13_s2_b1'} % {'p43_s1','p19_s3','p15_s3'}
 
-namecfg = cellfun(@(x) x(1:6),namecfg,'UniformOutput',false)
+namecfg = cellfun(@(x) x(1:9),namecfg,'UniformOutput',false)
 
 
 for icfgin =1:length(cfgin)
@@ -80,7 +80,7 @@ cfgin={cfgin{idx_name}};
 %1 and 6 error ICA
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'preprocTrial'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'dfa'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque

@@ -10,8 +10,8 @@ function  run_coherenceICA( cfgin )
 
   %component for blinks
   %cfgin=ab{6} %redo comp '15_S3_P3.mat'. PART 43, no comp!!
-  % [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
-  [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
+  [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
+  % [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
   %component for heart rate
   [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
   %cellfun(@createFullMatrix, cfg1, outputfile);
@@ -31,7 +31,7 @@ function  run_coherenceICA( cfgin )
 
   end
   comp_idx=unique(comp_idx);
-  %comp_idx=[1,12,23]
+  %comp_idx=[7,6,18]
 
   disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
   add_comps=0
@@ -57,7 +57,7 @@ function  run_coherenceICA( cfgin )
 
 
   %TODO: Save the removed components, as well as what they look like, for a final inspection.
-  % remove_ICA(cfgin,comp_idx)
+  remove_ICA(cfgin,comp_idx)
 
 
   %Decide where to save the component to reject information,
