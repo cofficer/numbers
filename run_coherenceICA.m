@@ -11,7 +11,7 @@ function  run_coherenceICA( cfgin )
   %component for blinks
   %cfgin=ab{6} %redo comp '15_S3_P3.mat'. PART 43, no comp!!
   [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
-  % [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
+  [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
   %component for heart rate
   [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
   %cellfun(@createFullMatrix, cfg1, outputfile);

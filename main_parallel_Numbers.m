@@ -7,7 +7,7 @@ clear all
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
-blocktype = 'trial'; %trial or resting
+blocktype = 'resting'; %trial or resting
 
 if strcmp(blocktype,'resting')
   cd('/home/ktsetsos/resting')
@@ -66,8 +66,8 @@ end
 %
 % %Select cfgin of interest.
 % cfgin_sel = {'p13_s2_b1'} % {'p43_s1','p19_s3','p15_s3'}
-%
-% namecfg = cellfun(@(x) x(1:9),namecfg,'UniformOutput',false)
+% cfgin_sel={'p16_s2'}
+% namecfg = cellfun(@(x) x(1:6),namecfg,'UniformOutput',false)
 %
 %
 % for icfgin =1:length(cfgin)
@@ -77,13 +77,13 @@ end
 % end
 %cfgin={cfgin{idx_name}}; % cfgin={cfgin{logical(sit)}}
 
-%sit=zeros(1,length(cfgin));sit([30,155,167,187,208,216,246,283,332])=1;
+%sit=zeros(1,length(cfgin));sit([2,12,65,66,67])=1;
 %cfgin={cfgin{logical(sit)}}
 
 %1 and 6 error ICA
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'cohICA'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'dfa'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque

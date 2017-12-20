@@ -6,8 +6,8 @@ function T_dfa = plot_dfa(~)
 
   clear all
 
-  intervals = [2 4;4 8;8 12;12 24];
-  which_freq = 1;%Alpha 3
+  intervals = [2 4;4 8;8 12;12 24; NaN NaN]; %Nan = <12
+  which_freq = 2;%Alpha 3
   %load csv of session info.
   cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos')
   drug_order=xlsread('Drug_Placebo.xlsx');
@@ -123,6 +123,7 @@ function T_dfa = plot_dfa(~)
 
   clean_T_dfa{:,{'nocebo_trl'}}
 
+  %cd('')
   %save('DFA_exponents_-12Hz.mat','T_dfa')
   %load('DFA_exponents.mat')
 
@@ -134,9 +135,9 @@ function T_dfa = plot_dfa(~)
   x_labels ={'placebo task','placebo rest','nocebo task','nocebo rest','lorazepam task','lorazepam rest'};
 
 
-  o29 =ones(1,33);
-  idx_group = ones(1,66);
-  idx_group(33:end)=2;
+  o29 =ones(1,36);
+  idx_group = ones(1,74);
+  idx_group(36:end)=2;
   clear g;close all
   % g=gramm('x',idx_group,'y',[clean_T_dfa.placebo_trl',clean_T_dfa.lora_trl'],'color',idx_group);
   g=gramm('x',[o29,o29*2,o29*3,o29*4,o29*5,o29*6],'y',[clean_T_dfa.placebo_trl',...
