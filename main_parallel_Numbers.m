@@ -83,11 +83,13 @@ end
 %1 and 6 error ICA
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'dfa'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'ICA'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+                                 %complete_trial,complete_rest
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque
 
+%parallel, ICA, cohICA, dfa.
 
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial')
 
