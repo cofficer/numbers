@@ -11,13 +11,13 @@ function  run_coherenceICA( cfgin )
   %component for blinks
   %cfgin=ab{6} %redo comp '15_S3_P3.mat'. PART 43, no comp!!
   [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
-  [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
+  % [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
   %component for heart rate
   [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
   %cellfun(@createFullMatrix, cfg1, outputfile);
   %get the comp_idx for all correlation >0.52. TODO: decide on threshold.
 
-  comp_idx1= idx_corBlink(val_corBlink>0.50)';
+  comp_idx1= idx_corBlink(val_corBlink>0.70)';
   comp_idx2= idx_corHR(val_corHR>0.50);
 
   if isempty(comp_idx1) & ~isempty(comp_idx2)

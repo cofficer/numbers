@@ -56,8 +56,8 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
   % if restingpaths(icfg).name(7) ~= '1' P01_S2_P3.mat
   %     restingpaths(icfg).name(7) = '3';
   % end
-  %idxn=[13, 28, 51, 66, 83, 84, 209, 210]
-  %cfgin={cfgin{209:214}}
+  %idxn=[6,11,34,36,66,196,209,210]
+  %cfgin={cfgin{idxn}}
   %idxna=1:length(cfgin)
   %idxna(idxn)=[];
 
@@ -83,7 +83,7 @@ end
 %1 and 6 error ICA
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'dfa'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'ICA'; %dfa preproc, preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
 runcfg.parallel         = 'torque'; %local or torque

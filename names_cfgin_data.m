@@ -12,10 +12,10 @@ function cfgin=names_cfgin_data(blocktype)
   restingpaths  = dir('*.mat');
   restingpaths  = {restingpaths.name};
   if strcmp(blocktype,'resting')
-    sort_sessions = cellfun(@(x) x(1:2),restingpaths,'UniformOutput',false)
+    sort_sessions = cellfun(@(x) x(1:2),restingpaths,'UniformOutput',false);
 
   elseif strcmp(blocktype,'trial')
-    sort_sessions = cellfun(@(x) x(2:3),restingpaths,'UniformOutput',false)
+    sort_sessions = cellfun(@(x) x(2:3),restingpaths,'UniformOutput',false);
     sort_sessions = strtok( sort_sessions, '_' );
 
   end
