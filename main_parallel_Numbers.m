@@ -7,16 +7,18 @@ clear all
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
-blocktype = 'resting'; %trial or resting
+blocktype = 'trial'; %trial or resting
 
 if strcmp(blocktype,'resting')
   cd('/home/ktsetsos/resting')
+  restingpaths  = dir('*S*.mat');
 elseif strcmp(blocktype,'trial')
   cd('/home/ktsetsos/preproc3')
+  restingpaths  = dir('*.mat');
 end
 
 %Sort the sessions and id in correct order.
-restingpaths  = dir('*.mat');
+
 restingpaths  = {restingpaths.name};
 if strcmp(blocktype,'resting')
   sort_sessions = cellfun(@(x) x(1:2),restingpaths,'UniformOutput',false)
@@ -56,7 +58,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
   % if restingpaths(icfg).name(7) ~= '1' P01_S2_P3.mat
   %     restingpaths(icfg).name(7) = '3';
   % end
-  %idxn=[9,11,34,36,66,196,209,210]
+  %idxn=[165,167,170]
   %cfgin={cfgin{idxn}}
   %idxna=1:length(cfgin)
   %idxna(idxn)=[];
@@ -83,7 +85,7 @@ end
 %1 and 6 error ICA
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'ICA'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'complete_trial'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
                                  %complete_trial,complete_rest
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
