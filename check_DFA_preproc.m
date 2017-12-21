@@ -56,5 +56,20 @@ idx_trial_miss = ismember(cfg_trial,dfa_trial);
 
 name_trial_miss = cfg_trial(~idx_trial_miss);
 
+%
+name_trial_miss
+name_rest_miss
+
+
+'04_S1_P3.mat' %comp 9
+'04_S2_P3.mat' %comp 11
+'08_S2_P3.mat' %comp 34
+'08_S3_P3.mat' %comp 36
+'15_S3_P3.mat' %DFA 66
+'39_S3_P2.mat' %DFA 196
+'43_S1_P1.mat' %DFA 209
+'43_S1_P3.mat' %DFA 210
+
+
 
 end

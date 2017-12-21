@@ -20,6 +20,17 @@ function restingPreprocNumbers( cfgin )
     % dsfile =sprintf('%s%s_S%s_P%s.mat',rawpath,cfgin.restingfile(2:3),cfgin.restingfile(5),cfgin.restingfile(7));
     load(cfgin.restingfile);
 
+    if length(data.time{1})>200000
+      %Resample some datasets
+      cfg3=[];
+      cfg3.resample = 'yes';
+      cfg3.fsample = 1200;
+      cfg3.resamplefs = 500;
+      cfg3.detrend = 'no';
+
+      data = ft_resampledata(cfg3,data)
+    end
+
     %only keep relevant sensors.
     cfg3 = [];
     cfg3.detrend = 'no';
