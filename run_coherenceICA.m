@@ -13,6 +13,17 @@ function  run_coherenceICA( cfgin )
   try
     [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
   catch err
+  catch err
+
+      cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/')
+      fid=fopen('logfile_noEYE01','a+');
+      c=clock;
+      fprintf(fid,sprintf('\n\n\n\nNew entry for %s at %i/%i/%i %i:%i\n\n\n\n',cfgin.restingfile,fix(c(1)),fix(c(2)),fix(c(3)),fix(c(4)),fix(c(5))))
+
+      fprintf(fid,'%s',err.getReport('extended','hyperlinks','off'))
+
+      fclose(fid)
+
     [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
   end
   %component for heart rate

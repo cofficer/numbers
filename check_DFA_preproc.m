@@ -70,6 +70,9 @@ name_rest_miss
 '43_S1_P1.mat' %DFA 208
 '43_S1_P3.mat' %DFA 209
 
-
+%trials
+'p23_s3_b1.mat' % 167
+'p23_s3_b4.mat' % 170
+'p26_s2_b2.mat' % 165
 
 end

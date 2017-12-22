@@ -85,7 +85,7 @@ end
 %1 and 6 error ICA
 
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'complete_trial'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'dfa'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
                                  %complete_trial,complete_rest
 %dfa
 runcfg.timreq           =  2000; % number of minutes.
