@@ -236,8 +236,7 @@ function comp=check_manual_ICA_components(blocktype)
   comp.P28_2_3=[4,10,12]
   comp.P28_3_1=[5,9,12]  %missed 5, not necessary 10
   comp.P28_3_2=[6,12,15] %missed 6, not necessary 13
-  comp.P28_3_3=[3,13,18
-
+  comp.P28_3_3=[3,13,18]
   comp.P29_1_1=[6,7,15] %missed 6, not necessary 19
   comp.P29_1_2=[7,8,19,43]
   comp.P29_1_3=[8,9,17]
