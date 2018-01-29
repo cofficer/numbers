@@ -12,7 +12,7 @@ function  run_coherenceICA( cfgin )
   %cfgin=ab{6} %redo comp '15_S3_P3.mat'. PART 43, no comp!!
   try
     [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
-  catch err
+
   catch err
 
       cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/')
@@ -45,7 +45,7 @@ function  run_coherenceICA( cfgin )
 
   end
   comp_idx=unique(comp_idx);
-  %comp_idx=[24,22,27]
+  %comp_idx=[1,2,3]
 
   disp(sprintf('\n\nIdentified components: %s',num2str(comp_idx)))
   add_comps=0

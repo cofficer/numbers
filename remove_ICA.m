@@ -8,7 +8,7 @@ function remove_ICA(cfgin,comp_idx)
   % remove the bad components and backproject the data
   cfg = [];
   cfg.component = comp_idx;%[9 10 14 24]; % to be removed component(s)
-
+  cfg.channel= {'MEG'};
 
   %define ds file, this is actually from the trial-based data
   if strcmp(cfgin.blocktype,'trial')

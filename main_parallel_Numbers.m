@@ -7,7 +7,7 @@ clear all
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
-blocktype = 'trial'; %trial or resting
+blocktype = 'resting'; %trial or resting
 
 if strcmp(blocktype,'resting')
   cd('/home/ktsetsos/resting')
@@ -66,10 +66,13 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
 end
 %
-% %Select cfgin of interest.
-% cfgin_sel = {'p13_s2_b1'} % {'p43_s1','p19_s3','p15_s3'}
+% %Select cfgin of interest. cfgin_sel={'04_S1_P3.mat','32_S2_P3.mat'}
+ % cfgin_sel = {'p11_s3_b3', 'p12_s3_b1', 'p20_s3_b1', 'p26_s2_b3', 'p24_s3_b1',...
+ %                'p24_s3_b2', 'p24_s3_b3', 'p26_s3_b3', 'p30_s2_b3', 'p35_s2_b1',...
+ %                'p36_s3_b3', 'p36_s1_b3', 'p13_s2_b1', 'p29_s3_b3'}; % {'p43_s1','p19_s3','p15_s3'}
 % cfgin_sel={'p16_s2'}
-% namecfg = cellfun(@(x) x(1:6),namecfg,'UniformOutput',false)
+% cfgin_sel = {'p20_s2_b3','p33_s3_b1','p5_s3_b2.','p7_s2_b2.','p7_s2_b3.'}
+% namecfg = cellfun(@(x) x(1:12),namecfg,'UniformOutput',false)
 %
 %
 % for icfgin =1:length(cfgin)
@@ -82,8 +85,9 @@ end
 %sit=zeros(1,length(cfgin));sit([2,12,65,66,67])=1;
 %cfgin={cfgin{logical(sit)}}
 
-%1 and 6 error ICA
 
+%1 and 6 error ICA
+% cfgin=ab;
 %Define script to run and whether to run on the torque
 runcfg.execute          = 'dfa'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
                                  %complete_trial,complete_rest
@@ -96,6 +100,23 @@ runcfg.parallel         = 'torque'; %local or torque
 cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial')
 
 run_parallel_Numbers(runcfg, cfgin)
+
+
+%Redo files:
+% P11_s3_b3
+% P12_s3_b1
+% P20_s3_b1
+% P26_s2_b3
+% P24_s3_b1
+% P24_s3_b2
+% P24_s3_b3
+% P26_s3_b3
+% P30_s2_b3
+% P35_s2_b1
+% P36_s3_b3
+% P36_s1_b3
+% P13_s2_b1
+% P29_s3_b3
 
 
 
