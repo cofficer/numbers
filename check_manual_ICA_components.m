@@ -373,7 +373,7 @@ function comp=check_manual_ICA_components(blocktype)
   comp.P41_2_3=[1,4,8,16] %not sure on 16
   comp.P41_3_1=[1,2,8,21] %missed 1
   comp.P41_3_2=[1,2,19,27] %missed 1, not necessary 12.
-  comp.P41_3_3=[1,2,25 %missed 1, not necessary 10
+  comp.P41_3_3=[1,2,25] %missed 1, not necessary 10
 
   %almost all have comp.Peaks of bad headm
   comp.P43_1_1=[27,29,35] %missed 29, not necessary 77
