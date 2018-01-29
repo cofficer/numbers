@@ -1,10 +1,4 @@
-
-
-
-
-
-
-%Trial datasets. ~75 faulty datasets which needs revisiting.
+%Trial datasets.
 P1_1_1=6,10,11
 P1_1_2=14,11,9
 P1_1_3=8,12,18
