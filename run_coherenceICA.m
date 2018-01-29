@@ -14,10 +14,18 @@ function  run_coherenceICA( cfgin )
   %Decide to load manually defined components or compute automatic rejection
   if strcmp(cfgin.comp,'manual')
     comp=check_manual_ICA_components(cfgin.blocktype);
-    if strcmp(cfgin.restingfile(3),'_')
-      dataset=sprintf('P%s_%s_%s',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
-    else
-      dataset=sprintf('P%s_%s_%s',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+    if strcmp(cfgin.blocktype,'trial')
+      if strcmp(cfgin.restingfile(3),'_')
+        dataset=sprintf('P%s_%s_%s',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      else
+        dataset=sprintf('P%s_%s_%s',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+      end
+    elseif strcmp(cfgin.blocktype,'resting')
+      if strcmp(cfgin.restingfile(1),'0')
+        dataset=sprintf('P%s_%s_%s',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      else
+        dataset=sprintf('P%s_%s_%s',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+      end
     end
     comp_idx=comp.(dataset);
   else
