@@ -23,7 +23,7 @@ function [val_cor,idx_coh] = coherenceICA( varargin )
     end
   end
 
-  if isefield(cfg,'runblock')
+  if isefield(cfgin,'runblock')
     data=varargin{3};
   else
     load(dsfile)
