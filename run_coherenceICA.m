@@ -101,7 +101,7 @@ function  run_coherenceICA( varargin )
   end
 
   %TODO: Save the removed components, as well as what they look like, for a final inspection.
-  data=remove_ICA(cfgin,comp_idx);
+  data=remove_ICA(cfgin,comp_idx,data,comp);
 
 
   %Decide where to save the component to reject information,
