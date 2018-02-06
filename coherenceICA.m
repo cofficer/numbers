@@ -3,8 +3,8 @@ function [val_cor,idx_coh] = coherenceICA( varargin )
   %should be rejected. cfgin.restingfile='040_3_3.mat'
   %channelRej='4' %'UADC004'; %UADC004, % EEG059 Heart.
 
-  cfgin=varagrin{1};
-  channelRej=varagrin{2};
+  cfgin=varargin{1};
+  channelRej=varargin{2};
 
 
   if strcmp(cfgin.blocktype,'resting')
