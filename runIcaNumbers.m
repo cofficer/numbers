@@ -13,7 +13,9 @@ cfgin=varargin{1};
 
 %restoredefaultpath
 try
-  if ~isfield(cfgin,'runblock')
+  if isfield(cfgin,'runblock')
+    data=varargin{2};
+  else
     if strcmp(cfgin.blocktype,'resting')
       if strcmp(cfgin.restingfile(1),'0')
         name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
@@ -48,10 +50,10 @@ try
         load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(6),cfgin.restingfile(9)))
         savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(6),cfgin.restingfile(9));
       end
-    else
-      data=varargin{2};
+
     end
   end
+end
   %load the raw data:
 
 %dsfile = '/mnt/homes/home024/ktsetsos/resting/01_S2_P1.mat';
