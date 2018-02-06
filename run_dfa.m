@@ -1,32 +1,48 @@
-function run_dfa(cfgin)
+function run_dfa(varargin)
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %Run Tom Pfeffer's implementation of DFA analysis, on restin
   %and trial based data
   %Created 2017-11-28
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+  cfgin=varargin{1};
+
+
   try
-    if strcmp(cfgin.blocktype,'resting')
-      %define ds file, this is actually from the trial-based data
-      if strcmp(cfgin.restingfile(1),'0')
-        dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P0%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
-        savefile= sprintf('P0%s_S%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
-      else
-        dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
-        savefile= sprintf('P%s_S%s_B%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
-      end
-    elseif strcmp(cfgin.blocktype,'trial')
-      %load clean data
+    if isfield(cfgin,'runblock')
+      data=varargin{2};
       if strcmp(cfgin.restingfile(3),'_')
-        dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
-        savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+        savefile= sprintf('P%s_s%s_b%s_task%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),num2str(cfgin.runblock));
       else
-        dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
-        savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+        savefile= sprintf('P%s_s%s_b%s_task%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),num2str(cfgin.runblock));
       end
+    else
+
+      if strcmp(cfgin.blocktype,'resting')
+        %define ds file, this is actually from the trial-based data
+        if strcmp(cfgin.restingfile(1),'0')
+          dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P0%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+          savefile= sprintf('P0%s_S%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+        else
+          dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_S%s_P%s.mat',cfgin.blocktype,cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+          savefile= sprintf('P%s_S%s_B%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+        end
+      elseif strcmp(cfgin.blocktype,'trial')
+        %load clean data
+        if strcmp(cfgin.restingfile(3),'_')
+          dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+          savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+        else
+          dsfile = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/P%s_s%s_b%s.mat',cfgin.blocktype,cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+          savefile= sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+        end
+      end
+      %P08_S2_P1.mat, P08_S3_P1.mat
+
+      load(dsfile)
+
     end
-    %P08_S2_P1.mat, P08_S3_P1.mat
-    load(dsfile)
 
     %Define bandpass intervals
     intervals = [2 4;4 8;8 12;12 24;NaN NaN];
@@ -76,14 +92,19 @@ function run_dfa(cfgin)
 
     end
 
-    if strcmp(cfgin.blocktype,'resting')
-      cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/DFA')
+    if isfield(cfgin,'runblock')
+      cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/auto_task')
+      save(savefile,'dfa_all')
     else
-      cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/DFA')
+
+      if strcmp(cfgin.blocktype,'resting')
+        cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/DFA')
+      else
+        cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/DFA')
+      end
+
+      save(savefile,'dfa_all')
     end
-
-    save(savefile,'dfa_all')
-
 
     %TODO: Check the number of components removed from each participant.
     %TODO: Figure out best way of storage.
