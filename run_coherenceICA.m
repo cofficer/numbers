@@ -1,4 +1,4 @@
-function  run_coherenceICA( varargin )
+function  data=run_coherenceICA( varargin )
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %Handle the coherence analysis this function will output the channels which
   %should be rejected. cfgin.restingfile='040_3_3.mat'
