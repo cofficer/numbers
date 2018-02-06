@@ -3,8 +3,8 @@ function [val_cor,idx_coh] = coherenceICA( varargin )
   %should be rejected. cfgin.restingfile='040_3_3.mat'
   %channelRej='4' %'UADC004'; %UADC004, % EEG059 Heart.
 
-cfgin=varagrin{1};
-channelRej=varagrin{2};
+  cfgin=varagrin{1};
+  channelRej=varagrin{2};
 
 
   if strcmp(cfgin.blocktype,'resting')
@@ -23,8 +23,11 @@ channelRej=varagrin{2};
     end
   end
 
-  load(dsfile)
-
+  if isefield(cfg,'runblock')
+    data=varargin{3};
+  else
+    load(dsfile)
+  end
   cd(dsfile(1:end-16))
 
   cfg=[];
@@ -105,19 +108,22 @@ channelRej=varagrin{2};
   ecg.channel{:} = 'ECG';%channelRej;
 
   %load the previously computed ICA components
-
-  if strcmp(cfgin.blocktype,'resting')
-
-    if strcmp(cfgin.restingfile(1),'0')
-      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P0%s/compS%s_P%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8)));
-    else
-      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/compS%s_P%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8)));
-    end
+  if isfield(cfgin,'runblock')
+    comp=varargin{4};
   else
-    if strcmp(cfgin.restingfile(3),'_')
-      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P0%s/compS%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8)));
+    if strcmp(cfgin.blocktype,'resting')
+
+      if strcmp(cfgin.restingfile(1),'0')
+        load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P0%s/compS%s_P%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8)));
+      else
+        load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/preprocessed/P%s/compS%s_P%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8)));
+      end
     else
-      load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s/compS%s_B%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9)));
+      if strcmp(cfgin.restingfile(3),'_')
+        load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P0%s/compS%s_B%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8)));
+      else
+        load(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed/P%s/compS%s_B%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9)));
+      end
     end
   end
   % decompose the ECG-locked datasegments into components, using the previously found (un)mixing matrix
@@ -162,7 +168,9 @@ channelRej=varagrin{2};
   subplot(2,1,1); plot(fdcomp.freq, abs(fdcomp.cohspctrm));
   subplot(2,1,2); imagesc(abs(fdcomp.cohspctrm));
   figurestore=sprintf('cohspctrmComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
-  saveas(gca,figurestore,'png')
+  if ~isfield(cfgin,'runblock')
+    saveas(gca,figurestore,'png')
+  end
   close
   %Save this figure.
 
@@ -193,61 +201,61 @@ channelRej=varagrin{2};
   %2. Also the variance of the top coherence components.
   %3. Also the first thirty components. And their variances.
 
+  if ~isfield(cfgin,'runblock')
+    %Plot the comoponent data together with the artifact data, timelocked to
+    %the artifact.
+    figure('vis','off'),clf
+    subplot(2,1,1); plot(timelock.time, timelock.avg(1,:))
+    subplot(2,1,2); plot(timelock.time, timelock.avg(2:end,:))
+    figurestore=sprintf('TimelockComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
+    saveas(gca,figurestore,'png')
+    close
 
-  %Plot the comoponent data together with the artifact data, timelocked to
-  %the artifact.
-  figure('vis','off'),clf
-  subplot(2,1,1); plot(timelock.time, timelock.avg(1,:))
-  subplot(2,1,2); plot(timelock.time, timelock.avg(2:end,:))
-  figurestore=sprintf('TimelockComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
-  saveas(gca,figurestore,'png')
-  close
+    %Plot the variance of the components.
+    %f=figure('vis','off'),clf
+    cfg = [];
 
-  %Plot the variance of the components.
-  %f=figure('vis','off'),clf
-  cfg = [];
-
-  %trick fieldtrip into thinking it has meg and not comp.
-  corect_labels = ft_channelselection('meg',data.label);
-  comp_labels   = comp.label;
-  comp.label    = corect_labels(1:length(comp_labels));
-  cfg.channel  = [idx_coh(end-7:end)];
-  cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed';
-  cfg.prefix   = 'cohComp';
-  cfg.layout          = 'CTF275.lay';
-  cfg.viewmode        = 'component';
-  %plot the 8 highest coherence components.
-  modded_ft_icabrowser(cfg,comp);
-  figurestore=sprintf('highCohComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
-  saveas(gca,figurestore,'png')
-
-  %Only necessary to plot the first 30 components once.
-  if ~strcmp(channelRej,'EEG059')
-    %plot the 30 first components.
-    cfg.channel  = 1:8;
+    %trick fieldtrip into thinking it has meg and not comp.
+    corect_labels = ft_channelselection('meg',data.label);
+    comp_labels   = comp.label;
+    comp.label    = corect_labels(1:length(comp_labels));
+    cfg.channel  = [idx_coh(end-7:end)];
+    cfg.path     = '/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/preprocessed';
+    cfg.prefix   = 'cohComp';
+    cfg.layout          = 'CTF275.lay';
+    cfg.viewmode        = 'component';
+    %plot the 8 highest coherence components.
     modded_ft_icabrowser(cfg,comp);
-    figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
+    figurestore=sprintf('highCohComp%s_%s.png',channelRej,cfgin.restingfile(1:end-4));
     saveas(gca,figurestore,'png')
 
-    %plot the 30 first components.
-    cfg.channel  = 9:16;
-    modded_ft_icabrowser(cfg,comp);
-    figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
-    saveas(gca,figurestore,'png')
+    %Only necessary to plot the first 30 components once.
+    if ~strcmp(channelRej,'EEG059')
+      %plot the 30 first components.
+      cfg.channel  = 1:8;
+      modded_ft_icabrowser(cfg,comp);
+      figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
+      saveas(gca,figurestore,'png')
 
-    %plot the 30 first components.
-    cfg.channel  = 17:24;
-    modded_ft_icabrowser(cfg,comp);
-    figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
-    saveas(gca,figurestore,'png')
+      %plot the 30 first components.
+      cfg.channel  = 9:16;
+      modded_ft_icabrowser(cfg,comp);
+      figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
+      saveas(gca,figurestore,'png')
 
-    %plot the 30 first components.
-    cfg.channel  = 25:32;
-    modded_ft_icabrowser(cfg,comp);
-    figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
-    saveas(gca,figurestore,'png')
+      %plot the 30 first components.
+      cfg.channel  = 17:24;
+      modded_ft_icabrowser(cfg,comp);
+      figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
+      saveas(gca,figurestore,'png')
+
+      %plot the 30 first components.
+      cfg.channel  = 25:32;
+      modded_ft_icabrowser(cfg,comp);
+      figurestore=sprintf('Comp%d-%d_%s.png',cfg.channel(1),cfg.channel(end),cfgin.restingfile(1:end-4));
+      saveas(gca,figurestore,'png')
+    end
   end
-
   % decompose the original data as it was prior to downsampling to 150Hz
   % cfg           = [];
   % cfg.unmixing  = comp.unmixing;

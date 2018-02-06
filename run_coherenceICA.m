@@ -1,4 +1,4 @@
-function  run_coherenceICA( cfgin )
+function  run_coherenceICA( varargin )
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %Handle the coherence analysis this function will output the channels which
   %should be rejected. cfgin.restingfile='040_3_3.mat'
@@ -7,7 +7,7 @@ function  run_coherenceICA( cfgin )
   %Created 2017-11-20
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+  cfgin=varargin{1};
   %component for blinks
   %cfgin=ab{6} %redo comp '15_S3_P3.mat'. PART 43, no comp!!
 
@@ -30,8 +30,14 @@ function  run_coherenceICA( cfgin )
     comp_idx=comp.(dataset);
   else
     try
-      %Convert coherenceICA to varargin... 
-      [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
+      %Convert coherenceICA to varargin...
+      if isfield(cfgin,'runblock')
+        data=varargin{2};
+        comp=varargin{3};
+        [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01',data,comp);
+      else
+        [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
+      end
 
     catch err
 
@@ -47,7 +53,11 @@ function  run_coherenceICA( cfgin )
       [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
     end
     %component for heart rate
-    [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
+    if isfield(cfgin,'runblock')
+      [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059',data,comp);
+    else
+      [val_corHR,idx_corHR] = coherenceICA(cfgin,'EEG059');
+    end
     %cellfun(@createFullMatrix, cfg1, outputfile);
     %get the comp_idx for all correlation >0.52. TODO: decide on threshold.
 
@@ -91,7 +101,7 @@ function  run_coherenceICA( cfgin )
   end
 
   %TODO: Save the removed components, as well as what they look like, for a final inspection.
-  remove_ICA(cfgin,comp_idx)
+  data=remove_ICA(cfgin,comp_idx);
 
 
   %Decide where to save the component to reject information,

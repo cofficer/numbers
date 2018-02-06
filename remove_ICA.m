@@ -1,4 +1,4 @@
-function remove_ICA(cfgin,comp_idx)
+function data=remove_ICA(cfgin,comp_idx)
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %2017-09-27. Input: the identified components to reject.
   %
@@ -57,16 +57,15 @@ function remove_ICA(cfgin,comp_idx)
   %clean and save
 
   data = ft_rejectcomponent(cfg, comp, data)
-
-  if strcmp(cfgin.blocktype,'trial')
-    dataname=sprintf('P%s',cfgin.restingfile(2:end))
-  else
-    dataname=sprintf('P%s',cfgin.restingfile(1:end))
+  if ~isfield(cfgin,'runblock')
+    if strcmp(cfgin.blocktype,'trial')
+      dataname=sprintf('P%s',cfgin.restingfile(2:end))
+    else
+      dataname=sprintf('P%s',cfgin.restingfile(1:end))
+    end
+    cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/',cfgin.blocktype))
+    save(dataname,'data','comp_idx')
   end
-  cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned/',cfgin.blocktype))
-
-  save(dataname,'data','comp_idx')
-
 
 
 
