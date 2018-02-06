@@ -53,7 +53,7 @@ try
 
     end
   end
-end
+
   %load the raw data:
 
 %dsfile = '/mnt/homes/home024/ktsetsos/resting/01_S2_P1.mat';
