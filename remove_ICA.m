@@ -64,7 +64,10 @@ function data=remove_ICA(varargin)
 
 
   %clean and save
-
+  cfg=[];
+  cfg.channel='MEG';
+  data=ft_selectdata(cfg,data);
+  
   data = ft_rejectcomponent(cfg, comp, data)
   if ~isfield(cfgin,'runblock')
     if strcmp(cfgin.blocktype,'trial')
