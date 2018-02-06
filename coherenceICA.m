@@ -1,9 +1,10 @@
-function [val_cor,idx_coh] = coherenceICA( cfgin,channelRej )
+function [val_cor,idx_coh] = coherenceICA( varargin )
   %Using coherence analysis this function will output the channels which
   %should be rejected. cfgin.restingfile='040_3_3.mat'
   %channelRej='4' %'UADC004'; %UADC004, % EEG059 Heart.
 
-
+cfgin=varagrin{1};
+channelRej=varagrin{2};
 
 
   if strcmp(cfgin.blocktype,'resting')

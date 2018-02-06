@@ -30,6 +30,7 @@ function  run_coherenceICA( cfgin )
     comp_idx=comp.(dataset);
   else
     try
+      %Convert coherenceICA to varargin... 
       [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EYE01');
 
     catch err

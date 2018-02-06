@@ -1,4 +1,4 @@
-function [ output_args ] = runIcaNumbers( cfgin )
+function [ comp ] = runIcaNumbers( varargin )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -7,44 +7,50 @@ function [ output_args ] = runIcaNumbers( cfgin )
 % =========================================================================
 % pconn_preproc_ica
 
+cfgin=varargin{1};
+
+
+
 %restoredefaultpath
 try
-
-  if strcmp(cfgin.blocktype,'resting')
-    if strcmp(cfgin.restingfile(1),'0')
-      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
+  if ~isfield(cfgin,'runblock')
+    if strcmp(cfgin.blocktype,'resting')
+      if strcmp(cfgin.restingfile(1),'0')
+        name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
+      else
+        name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(1:2));
+      end
     else
-      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(1:2));
-    end
-  else
 
-    if strcmp(cfgin.restingfile(3),'_')
-      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
-    else
-      name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(2:3));
-    end
-  end
-
-  cd(name)
-
-  %load the preproc data.
-  if strcmp(cfgin.blocktype,'resting')
-    if cfgin.restingfile(8)=='3'
-      load(sprintf('preprocS%s_P3.mat',cfgin.restingfile(5)))
-      savefile = sprintf('compS%s_P3.mat',cfgin.restingfile(5));
-    else
-      load(sprintf('preprocS%s_P1.mat',cfgin.restingfile(5)))
-      savefile = sprintf('compS%s_P1.mat',cfgin.restingfile(5));
-    end
-  else
-    if strcmp(cfgin.restingfile(3),'_')
-      load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(5),cfgin.restingfile(8)))
-      savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(5),cfgin.restingfile(8));
-    else
-      load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(6),cfgin.restingfile(9)))
-      savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(6),cfgin.restingfile(9));
+      if strcmp(cfgin.restingfile(3),'_')
+        name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P0%s',cfgin.blocktype,cfgin.restingfile(2));
+      else
+        name = sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/preprocessed/P%s',cfgin.blocktype,cfgin.restingfile(2:3));
+      end
     end
 
+    cd(name)
+
+    %load the preproc data.
+    if strcmp(cfgin.blocktype,'resting')
+      if cfgin.restingfile(8)=='3'
+        load(sprintf('preprocS%s_P3.mat',cfgin.restingfile(5)))
+        savefile = sprintf('compS%s_P3.mat',cfgin.restingfile(5));
+      else
+        load(sprintf('preprocS%s_P1.mat',cfgin.restingfile(5)))
+        savefile = sprintf('compS%s_P1.mat',cfgin.restingfile(5));
+      end
+    else
+      if strcmp(cfgin.restingfile(3),'_')
+        load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(5),cfgin.restingfile(8)))
+        savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(5),cfgin.restingfile(8));
+      else
+        load(sprintf('preprocs%s_b%s.mat',cfgin.restingfile(6),cfgin.restingfile(9)))
+        savefile = sprintf('compS%s_B%s.mat',cfgin.restingfile(6),cfgin.restingfile(9));
+      end
+    else
+      data=varargin{2};
+    end
   end
   %load the raw data:
 
@@ -66,7 +72,9 @@ data=ft_selectdata(cfg,data);
 
 %run the ica
 comp = ft_componentanalysis(cfg,data);
-save(savefile,'comp')
+if ~isfield(cfgin,'runblock')
+  save(savefile,'comp')
+end
 
 catch err
 

@@ -7,7 +7,7 @@ clear all
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
-blocktype = 'resting'; %trial or resting
+blocktype = 'trial'; %trial or resting
 
 if strcmp(blocktype,'resting')
   cd('/home/ktsetsos/resting')
@@ -49,7 +49,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
   else
     cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
-    cfgin{idx_cfg}.comp                    ='manual'; %decide load manual components or auto = manual/automatic
+    cfgin{idx_cfg}.comp                    ='auto'; %decide load manual components or auto = manual/automatic
     namecfg{idx_cfg} = restingpaths{icfg};
     %cfgin=cfgin{120}
     cfgin{idx_cfg}.blocktype                = blocktype; %trial or resting

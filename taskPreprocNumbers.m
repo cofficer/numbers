@@ -1,4 +1,4 @@
-function taskPreprocNumbers( cfgin )
+function data=taskPreprocNumbers( cfgin )
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %The current code is copied from restingPreprocNumbers
   %Needs to output 1 continuous trial, from 3 trial input.
@@ -16,7 +16,7 @@ function taskPreprocNumbers( cfgin )
     dsfile=cfgin.restingfile
     load(dsfile)
 
-    
+
 
     %only keep relevant sensors.
     cfg3 = [];
@@ -40,24 +40,31 @@ function taskPreprocNumbers( cfgin )
     %Fuse the trial seperation.
     %Change data.time, so to be unique all the way.
     %===========================================================
+    if isfield(cfgin,'runblock')
+      cfg4 =[];
+      cfg4.trials=zeros(1,3);
+      cfg4.trials(cfgin.runblock)=1;
+      cfg4.trials=logical(cfg4.trials')
+      data=ft_selectdata(cfg4,data);
+    else
+      %Save the size of each trial
+      for itrl = 1:length(data.trial)
+        oldtrl(itrl) = length(data.trial{itrl});
+      end
 
-    %Save the size of each trial
-    for itrl = 1:length(data.trial)
-      oldtrl(itrl) = length(data.trial{itrl});
+      dat_trl = [data.trial{:}];
+      data.trial=[];
+      data.trial{1}=dat_trl;
+      clear dat_trl
+
+      dat_tme = [data.time{:}];
+      data.time=[];
+      %Before 2017-11-18. 500
+      data.time{1}=[0:length(dat_tme)-1]./500;
+
+      data.sampleinfo = [1 length(data.trial{1})]
+
     end
-
-    dat_trl = [data.trial{:}];
-    data.trial=[];
-    data.trial{1}=dat_trl;
-    clear dat_trl
-
-    dat_tme = [data.time{:}];
-    data.time=[];
-    %Before 2017-11-18. 500
-    data.time{1}=[0:length(dat_tme)-1]./500;
-
-    data.sampleinfo = [1 length(data.trial{1})]
-
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %plot freq Overview
     %plot those data and save for visual inspection
@@ -297,18 +304,29 @@ function taskPreprocNumbers( cfgin )
     %some are not.
     data.sampleinfoOld = sampleinfo;
     %Save the data
-    filestore=sprintf('preproc%s.mat',dsfile(end-8:end-4));
-    save(filestore,'data')
+    if isfield(cfgin,'runblock')
+      cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/auto_task')
 
-    %Save the artifacts
-    artstore=sprintf('artifacts%s.mat',dsfile(end-8:end-4));
+      if strcmp(cfgin.restingfile(3),'_')
+        figurestore=sprintf('P0%s_Overview%s_task%s.png',cfgin.restingfile(2),dsfile(end-8:end-4),num2str(cfgin.runblock));
+      else
+        figurestore=sprintf('P%s_Overview%s_task%s.png',cfgin.restingfile(2:3),dsfile(end-8:end-4),num2str(cfgin.runblock));
+      end
 
-    save(artstore,'artifact_eogVertical','artifact_Muscle','artifact_Jump') %Jumpos?
+      saveas(gca,figurestore,'png')
+    else
+      filestore=sprintf('preproc%s.mat',dsfile(end-8:end-4));
+      save(filestore,'data')
 
-    %save the invisible figure
-    figurestore=sprintf('Overview%s.png',dsfile(end-8:end-4));
-    saveas(gca,figurestore,'png')
+      %Save the artifacts
+      artstore=sprintf('artifacts%s.mat',dsfile(end-8:end-4));
 
+      save(artstore,'artifact_eogVertical','artifact_Muscle','artifact_Jump') %Jumpos?
+
+      %save the invisible figure
+      figurestore=sprintf('Overview%s.png',dsfile(end-8:end-4));
+      saveas(gca,figurestore,'png')
+    end
     %Catch any error and write into file
   catch err
 

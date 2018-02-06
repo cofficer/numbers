@@ -239,6 +239,7 @@ function comp=check_manual_ICA_components(blocktype)
     comp.P28_3_1=[5,9,12];  %missed 5, not necessary 10
     comp.P28_3_2=[6,12,15]; %missed 6, not necessary 13
     comp.P28_3_3=[3,13,18];
+
     comp.P29_1_1=[6,7,15]; %missed 6, not necessary 19
     comp.P29_1_2=[7,8,19,43];
     comp.P29_1_3=[8,9,17];
@@ -278,6 +279,7 @@ function comp=check_manual_ICA_components(blocktype)
     comp.P32_3_2=[1,2,3];
     comp.P32_3_3=[1,2,3];
 
+    %Several datsets with massive headm
     comp.P33_1_1=[4,10,12];
     comp.P33_1_2=[5,7];
     comp.P33_1_3=[]; %Massive head movement, weird comcomp.Ponents, many channels removed.
@@ -309,7 +311,7 @@ function comp=check_manual_ICA_components(blocktype)
     comp.P35_3_3=[19,24,27];
     comp.P35_3_4=[22,28,29];
 
-    %Many massive movements throughout comp.Part 36
+    %Many massive movements for 5 datasets
     comp.P36_1_1=[2,8,13]; %Missed 8, not necessary 21
     comp.P36_1_2=[2,4,12]; %Missed 4, not necessary 8
     comp.P36_1_3=[3,4,11];

@@ -123,8 +123,8 @@ function T_dfa = plot_dfa(~)
 
   clean_T_dfa{:,{'nocebo_trl'}}
 
-  %cd('')
-  %save('2017-12-26_DFA_exponents_-12Hz.mat','T_dfa')
+  %cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos')
+  %save('2018-01-29_DFA_exponents_-12Hz.mat','T_dfa')
   %load('DFA_exponents.mat')
 
 
