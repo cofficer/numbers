@@ -46,6 +46,7 @@ function data=taskPreprocNumbers( cfgin )
       cfg4.trials(cfgin.runblock)=1;
       cfg4.trials=logical(cfg4.trials')
       data=ft_selectdata(cfg4,data);
+      oldtrl=length(data.trial{1});
     else
       %Save the size of each trial
       for itrl = 1:length(data.trial)
