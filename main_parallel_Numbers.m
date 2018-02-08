@@ -51,7 +51,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
     cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
     cfgin{idx_cfg}.comp                    ='auto'; %decide load manual components or auto = manual/automatic
     namecfg{idx_cfg} = restingpaths{icfg};
-    %cfgin=cfgin{120}
+    %cfgin=cfgin{1}
     cfgin{idx_cfg}.blocktype                = blocktype; %trial or resting
     idx_cfg = idx_cfg + 1;
 
