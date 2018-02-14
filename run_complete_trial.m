@@ -10,7 +10,17 @@ for iblock = 1:3
   data=taskPreprocNumbers(cfgin);
   comp=runIcaNumbers(cfgin,data);
   data=run_coherenceICA(cfgin,data,comp)
-  run_dfa(cfgin,data)
+  %save data preprocessed.
+  cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/auto_task')
+  if isfield(cfgin,'runblock')
+    if strcmp(cfgin.restingfile(3),'_')
+      savefile= sprintf('P%s_s%s_b%s_preproc_task%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),num2str(cfgin.runblock));
+    else
+      savefile= sprintf('P%s_s%s_b%s_preproc_task%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),num2str(cfgin.runblock));
+    end
+  end
+  save(savefile,'data')
+  %run_dfa(cfgin,data)
 end
 
 end
