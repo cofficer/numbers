@@ -40,7 +40,7 @@ function freq_numbers(cfgin,block)
 
   %Redefine the trials to make them 5s long.
   cfg = [];
-  cfg.length=5;
+  cfg.length=20;
   data_trl = ft_redefinetrial(cfg,data);
 
   %cut the continuous data into 5s sections before running freq analysis.
@@ -51,9 +51,9 @@ function freq_numbers(cfgin,block)
   cfgfreq.output      = 'pow';
   cfgfreq.taper       = 'dpss';
   cfgfreq.channel     = 'MEG';
-  cfgfreq.foi         = 2:130;
+  cfgfreq.foi         = 2:0.2:130;
   cfgfreq.t_ftimwin   = ones(1,length(cfgfreq.foi))*5;
-  cfgfreq.tapsmofrq   =  1;%
+  cfgfreq.tapsmofrq   = 0.12;%
   % cfgfreq.keeptrials  = 'yes';
   freq                = ft_freqanalysis(cfgfreq, data_trl); %Should only be done on MEG channels.
 
@@ -79,7 +79,14 @@ function freq_numbers(cfgin,block)
     end
   end
 
-
+  %
+  % figure(1),clf
+  %
+  % loglog(freq.freq, freq.powspctrm, 'linewidth', 0.1); hold on;
+  % loglog(freq.freq, mean(freq.powspctrm), 'k', 'linewidth', 1);
+  % % axis tight; axis square; box off;
+  %   % set(gca, 'xtick', [10 50 100], 'tickdir', 'out', 'xticklabel', []);
+  % saveas(gca,'figure.png')
   save(outputfile, 'freq','-v7.3');
 
 end
