@@ -1,4 +1,4 @@
-function freq_numbers(cfgin)
+function freq_numbers(cfgin,block)
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %Created 2018-02-14
   %Run spectral decomposition on all numbers data.
@@ -10,9 +10,9 @@ function freq_numbers(cfgin)
   if strcmp(cfgin.blocktype,'trial')
     cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/auto_task',cfgin.blocktype))
     if strcmp(cfgin.restingfile(3),'_')
-      dataset=sprintf('P%s_s%s_b%s_preproc_task1.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),block);
     else
-      dataset=sprintf('P%s_s%s_b%s_preproc_task1.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+      dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
     end
   elseif strcmp(cfgin.blocktype,'resting')
     if strcmp(cfgin.restingfile(1),'0')
@@ -67,9 +67,9 @@ function freq_numbers(cfgin)
   cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/freq/',cfgin.blocktype))
   if strcmp(cfgin.blocktype,'trial')
     if strcmp(cfgin.restingfile(3),'_')
-      outputfile=sprintf('P%s_s%s_b%s_freq_task1.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      outputfile=sprintf('P%s_s%s_b%s_freq_task%d,.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),block);
     else
-      outputfile=sprintf('P%s_s%s_b%s_freq_task1.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+      outputfile=sprintf('P%s_s%s_b%s_freq_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
     end
   elseif strcmp(cfgin.blocktype,'resting')
     if strcmp(cfgin.restingfile(1),'0')
