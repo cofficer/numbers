@@ -10,9 +10,9 @@ function freq_numbers(cfgin)
   if strcmp(cfgin.blocktype,'trial')
     cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/auto_task',cfgin.blocktype))
     if strcmp(cfgin.restingfile(3),'_')
-      dataset=sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      dataset=sprintf('P%s_s%s_b%s_preproc_task1.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
     else
-      dataset=sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+      dataset=sprintf('P%s_s%s_b%s_preproc_task1.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
     end
   elseif strcmp(cfgin.blocktype,'resting')
     if strcmp(cfgin.restingfile(1),'0')
@@ -23,7 +23,7 @@ function freq_numbers(cfgin)
   end
 
   load(dataset)
-  
+
 
   %Seperate the data into orthogonal sensors
   cfg_pn = [];
@@ -38,7 +38,12 @@ function freq_numbers(cfgin)
   cfg_mp.neighbours = ft_prepare_neighbours(cfg_pn, data);
   data = ft_megplanar(cfg_mp, data);
 
+  %Redefine the trials to make them 5s long.
+  cfg = [];
+  cfg.length=5;
+  data_trl = ft_redefinetrial(cfg,data);
 
+  %cut the continuous data into 5s sections before running freq analysis.
   % plot a quick power spectrum
   % save those cfgs for later plotting
   cfgfreq             = [];
@@ -47,10 +52,10 @@ function freq_numbers(cfgin)
   cfgfreq.taper       = 'dpss';
   cfgfreq.channel     = 'MEG';
   cfgfreq.foi         = 2:130;
-  cfgfreq.t_ftimwin   = (4./cfgfreq.foi)
-  cfgfreq.tapsmofrq   =  0.1 *cfg.foi
-  cfgfreq.keeptrials  = 'yes';
-  freq                = ft_freqanalysis(cfgfreq, data); %Should only be done on MEG channels.
+  cfgfreq.t_ftimwin   = ones(1,length(cfgfreq.foi))*5;
+  cfgfreq.tapsmofrq   =  0.5;%
+  % cfgfreq.keeptrials  = 'yes';
+  freq                = ft_freqanalysis(cfgfreq, data_trl); %Should only be done on MEG channels.
 
 
   %Combine planar
@@ -59,7 +64,22 @@ function freq_numbers(cfgin)
   cfgC.combinemethod='sum';
   freq=ft_combineplanar(cfgC,freq);
 
+  cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/freq/',cfgin.blocktype))
+  if strcmp(cfgin.blocktype,'trial')
+    if strcmp(cfgin.restingfile(3),'_')
+      outputfile=sprintf('P%s_s%s_b%s_freq_task1.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+    else
+      outputfile=sprintf('P%s_s%s_b%s_freq_task1.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+    end
+  elseif strcmp(cfgin.blocktype,'resting')
+    if strcmp(cfgin.restingfile(1),'0')
+      outputfile=sprintf('P%s_%s_freq_%s',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+    else
+      outputfile=sprintf('P%s_%s_freq_%s',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+    end
+  end
 
 
+  save(outputfile, 'freq','-v7.3');
 
 end
