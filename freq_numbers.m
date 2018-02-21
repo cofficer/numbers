@@ -53,7 +53,7 @@ function freq_numbers(cfgin)
   cfgfreq.channel     = 'MEG';
   cfgfreq.foi         = 2:130;
   cfgfreq.t_ftimwin   = ones(1,length(cfgfreq.foi))*5;
-  cfgfreq.tapsmofrq   =  0.5;%
+  cfgfreq.tapsmofrq   =  1;%
   % cfgfreq.keeptrials  = 'yes';
   freq                = ft_freqanalysis(cfgfreq, data_trl); %Should only be done on MEG channels.
 
