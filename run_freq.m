@@ -9,6 +9,4 @@ function run_freq(cfgin)
   for block =1:3
     freq_numbers(cfgin,block)
   end
-
-  
 end
