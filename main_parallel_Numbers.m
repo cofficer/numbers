@@ -7,7 +7,7 @@ clear all
 %Change the folder to where eyelink data is contained
 % cd('/home/chrisgahn/Documents/MATLAB/ktsetsos/resting/eyedat/')
 
-blocktype = 'trial'; %trial or resting
+blocktype = 'resting'; %trial or resting
 
 if strcmp(blocktype,'resting')
   cd('/home/ktsetsos/resting')
@@ -90,7 +90,7 @@ end
 %1 and 6 error ICA
 % cfgin=ab;
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'complete_trial'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'freq'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
                                  %complete_trial,complete_rest
 %dfa
 runcfg.timreq           =  2000; % number of minutes.

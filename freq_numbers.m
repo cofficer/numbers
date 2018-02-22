@@ -15,10 +15,11 @@ function freq_numbers(cfgin,block)
       dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
     end
   elseif strcmp(cfgin.blocktype,'resting')
+    cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned',cfgin.blocktype))
     if strcmp(cfgin.restingfile(1),'0')
-      dataset=sprintf('P%s_%s_%s',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      dataset=sprintf('P0%s_S%s_P%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
     else
-      dataset=sprintf('P%s_%s_%s',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+      dataset=sprintf('P%s_S%s_P%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
     end
   end
 
@@ -73,9 +74,9 @@ function freq_numbers(cfgin,block)
     end
   elseif strcmp(cfgin.blocktype,'resting')
     if strcmp(cfgin.restingfile(1),'0')
-      outputfile=sprintf('P%s_%s_freq_%s',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      outputfile=sprintf('P0%s_S%s_freq_P%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
     else
-      outputfile=sprintf('P%s_%s_freq_%s',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+      outputfile=sprintf('P%s_%s_freq_%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
     end
   end
 

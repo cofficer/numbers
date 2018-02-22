@@ -214,12 +214,14 @@ function data=taskPreprocNumbers( cfgin )
 
 
     % ==================================================================
-    % 5. REMOVE LINE NOISE
+    % 5. REMOVE LINE NOISE 1200 = 50  1200/500, 50*2.4
     % ==================================================================
 
     cfg             = [];
     cfg.bsfilter    = 'yes';
     cfg.bsfreq      = [49 51; 99 101; 149 151];
+    cfg.fsample     = 500; 
+
     data            = ft_preprocessing(cfg, data);
 
 
