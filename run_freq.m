@@ -5,8 +5,11 @@ function run_freq(cfgin)
   %load each cfgin
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-  for block =1:3
-    freq_numbers(cfgin,block)
+  if strcmp(cfgin.blocktype,'resting')
+    freq_numbers(cfgin,1)
+  else
+    for block =1:3
+      freq_numbers(cfgin,block)
+    end
   end
 end

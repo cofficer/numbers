@@ -14,6 +14,7 @@ function freq_numbers(cfgin,block)
     else
       dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
     end
+    load(dataset)
   elseif strcmp(cfgin.blocktype,'resting')
     cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/cleaned',cfgin.blocktype))
     if strcmp(cfgin.restingfile(1),'0')
@@ -21,9 +22,16 @@ function freq_numbers(cfgin,block)
     else
       dataset=sprintf('P%s_S%s_P%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
     end
-  end
 
-  load(dataset)
+    %Missing elec and grad during resting so add these from trial-based.
+    dat=load('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/auto_task/P8_s3_b2_preproc_task3.mat');
+    load(dataset)
+    data.elec=dat.data.elec;
+    data.grad=dat.data.grad;
+    cfg = [];
+    cfg.channel='MEG';
+    data=ft_selectdata(cfg,data);
+  end
 
 
   %Seperate the data into orthogonal sensors
@@ -76,7 +84,7 @@ function freq_numbers(cfgin,block)
     if strcmp(cfgin.restingfile(1),'0')
       outputfile=sprintf('P0%s_S%s_freq_P%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
     else
-      outputfile=sprintf('P%s_%s_freq_%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
+      outputfile=sprintf('P%s_S%s_freq_P%s.mat',cfgin.restingfile(1:2),cfgin.restingfile(5),cfgin.restingfile(8));
     end
   end
 
