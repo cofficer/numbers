@@ -5,7 +5,7 @@ function plot_freq_numbers(~)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-  cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/trial/freq')
+  cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/resting/freq')
 
   freq_files = dir('*.mat')
 
@@ -14,26 +14,27 @@ function plot_freq_numbers(~)
   for ifreq = 1:length(freq_files)
 
     disp(ifreq)
-    load(freq_files(5).name)
+    load(freq_files(ifreq).name)
 
     mat_freq(ifreq,:,:)=freq.powspctrm(1:269,:);
 
   end
 
 
-  mat_freq          =      squeeze(mean(mat_freq(1:143,:,:),1));
+  mat_freq          =      squeeze(mean(mat_freq(:,:,:),1));
   freq.powspctrm    =      mat_freq;
 
+  cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/plots')
   %Plot the figure
   figure(1),clf
   % loglog(freq.freq, freq.powspctrm, 'linewidth', 0.1); hold on;
   loglog(freq.freq, mean(freq.powspctrm), 'k', 'linewidth', 1);
-  xlim([0.5 130])
-  % ylim([0.5 50])
-  nticks = 5;
-  tickpos = round( logspace(log10(0.5),log10(50), nticks) );
-  set(gca, 'XTick', tickpos)
-  grid on;
+  xlim([1 130])
+  % % ylim([0.5 50])
+  % nticks = 5;
+  % tickpos = round( logspace(log10(0.5),log10(50), nticks) );
+  % set(gca, 'XTick', tickpos)
+  % grid on;
   % semilogx(freq.freq,freq.powspctrm)
   % hold on
   % semilogx(freq.freq,mean(freq.powspctrm),'r')
@@ -44,6 +45,6 @@ function plot_freq_numbers(~)
   %find(freq.freq==12)
   % xticklabels({'12','50','100'})
   % set(gca, 'xticklabel', [freq.freq(10),freq.freq(50),freq.freq(100)], 'tickdir', 'out', 'xticklabel', []);
-  saveas(gca,'figure3.png')
+  saveas(gca,'figure17.png')
 
 end

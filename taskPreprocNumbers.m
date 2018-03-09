@@ -220,7 +220,17 @@ function data=taskPreprocNumbers( cfgin )
     cfg             = [];
     cfg.bsfilter    = 'yes';
     cfg.bsfreq      = [49 51; 99 101; 149 151];
-    cfg.fsample     = 500; 
+    cfg.padding     = 10;
+    cfg.continuous  = 'yes';
+
+    % cfg.bsfilter    = 'yes';
+    % cfg.hpfilter    = 'yes';
+    % cfg.lpfilter    = 'no';
+    cfg.dftfilter   = CFG.dftfilter;
+    cfg.dftfreq     = CFG.dftfreq;
+
+    % cfg.bsfreq      = [49 51; 99 101; 149 151];
+    cfg.fsample     = 500;
 
     data            = ft_preprocessing(cfg, data);
 

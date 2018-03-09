@@ -60,7 +60,7 @@ function freq_numbers(cfgin,block)
   cfgfreq.output      = 'pow';
   cfgfreq.taper       = 'dpss';
   cfgfreq.channel     = 'MEG';
-  cfgfreq.foi         = 2:0.2:130;
+  cfgfreq.foi         = 2:0.2:130; %2:0.2:130;
   cfgfreq.t_ftimwin   = ones(1,length(cfgfreq.foi))*5;
   cfgfreq.tapsmofrq   = 0.12;%
   % cfgfreq.keeptrials  = 'yes';

@@ -33,7 +33,7 @@ function check_freq_plot(cfgin,data,cnt)
   cfgfreq.output      = 'pow';
   cfgfreq.taper       = 'hanning';
   cfgfreq.channel     = 'MEG';
-  cfgfreq.foi         = 1:5:130; %cfgfreq.foi         = 1:100;
+  cfgfreq.foi         = 1:5:130; %cfgfreq.foi         = 1:130;
   %Due to memory issue, trying to reduce oadding.
   cfgfreq.padtype     = 'zero'
   %cfgfreq.pad         = 100;
