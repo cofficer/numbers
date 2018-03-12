@@ -5,7 +5,7 @@ from popen2 import popen2
 import time
 
 # Loop over your jobs
-for i in range(1, 1):
+for i in range(1, 2):
 
     # Open a pipe to the qsub command.
     output, input = popen2('qsub')
