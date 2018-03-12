@@ -5,7 +5,7 @@ from popen2 import popen2
 import time
 
 # Loop over your jobs
-for i in range(1, 10):
+for i in range(1, 1):
 
     # Open a pipe to the qsub command.
     output, input = popen2('qsub')
@@ -15,7 +15,7 @@ for i in range(1, 10):
     walltime = "1:00:00"
     processors = "nodes=1:ppn=1"
     memory = "10gb"
-    command = "[your_torque_job.py] [arg1=%d]" % i
+    command = "run_test_py_qsub.m [arg1=%d]" % i
 
     job_string = """#!/bin/bash
     #PBS -N %s
