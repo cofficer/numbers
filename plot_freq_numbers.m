@@ -135,6 +135,7 @@ function plot_freq_numbers(~)
   % save('2018-03-09_trial_freqs.mat','nocebo_trl','placebo_trl','lora_trl')
   % load('2018-03-09_resting_freqs.mat')
   % load('2018-03-09_trial_freqs.mat')
+  % load('2018-03-11_cluster_mask_pla-lora_powspctrm.mat')
   %Implement a gramm plot for resting.
   %The values of
   % nocebo_rest     = nanmean(nocebo_rest,1);
@@ -164,6 +165,17 @@ function plot_freq_numbers(~)
   placebo_rest  = placebo_rest(idx_nan,:);
   lora_rest     = lora_rest(idx_nan,:);
 
+  %insert nans for the freq spectrm we dont care about, around 50 and 100.
+  idx_50                            =find(freq.freq==50);
+  idx_100                           =find(freq.freq==100);
+  nocebo_trl(:,idx_50-10:idx_50+10)   =NaN;
+  nocebo_trl(:,idx_100-10:idx_100+10) =NaN;
+  placebo_trl(:,idx_50-10:idx_50+10)  =NaN;
+  placebo_trl(:,idx_100-10:idx_100+10)=NaN;
+  lora_trl(:,idx_50-10:idx_50+10)     =NaN;
+  lora_trl(:,idx_100-10:idx_100+10)   =NaN;
+
+
   %Looks like the best way to use gramm, is using converting the data
   %into long vectors....
   % dat.nocebo_rest = nocebo_rest';
@@ -185,6 +197,7 @@ function plot_freq_numbers(~)
     dat.nocebo_trl(ist:ien) = nocebo_trl(ipart,1:641);
     dat.placebo_trl(ist:ien) = placebo_trl(ipart,1:641);
     dat.lora_trl(ist:ien) = lora_trl(ipart,1:641);
+    dat.idx_mask(ist:ien) = idx_mask
     ist = ist+641;
     ien = ien+641;
   end
@@ -214,48 +227,57 @@ function plot_freq_numbers(~)
   dat.xfreq_trl       = dat.xfreq_trl(:);
 
   %Gramm plot
-  x_labels ={'placebo rest','nocebo rest','lorazepam rest'};
-
-  load('/home/chrisgahn/Documents/MATLAB/toolkits/gramm/example_data.mat')
-
-
-    numdat    = size(nocebo_rest,2);
-    o29       = ones(38,numdat);
-    idx_group = ones(1,78);
-    idx_group(39:end)=2;
+  % x_labels ={'placebo rest','nocebo rest','lorazepam rest'};
+  %
+  % load('/home/chrisgahn/Documents/MATLAB/toolkits/gramm/example_data.mat')
+  %
+  % 
+  %   numdat    = size(nocebo_rest,2);
+  %   o29       = ones(38,numdat);
+  %   idx_group = ones(1,78);
+  %   idx_group(39:end)=2;
 
 
     clear g;close all
 
-    g=gramm('x',[log(freq.freq),log(freq.freq),log(freq.freq)],'y',...
-            [log(mean(placebo_rest,1)),log(mean(nocebo_rest,1)),...
-            log(mean(lora_rest,1))],'color',...
-            [ones(1,641),ones(1,641)*2,ones(1,641)*3])
+    % g=gramm('x',[log(freq.freq),log(freq.freq),log(freq.freq)],'y',...
+    %         [log(mean(placebo_rest,1)),log(mean(nocebo_rest,1)),...
+    %         log(mean(lora_rest,1))],'color',...
+    %         [ones(1,641),ones(1,641)*2,ones(1,641)*3])
+    %
+    % g=gramm('x',[log(freq.freq),log(freq.freq),log(freq.freq)],'y',...
+    %         [log(mean(placebo_trl,1)),log(mean(new_nocebo_trl,1)),...
+    %         log(mean(new_loraz_trl,1))],'color',...
+    %         [ones(1,641),ones(1,641)*2,ones(1,641)*3])
+    %
+    % g=gramm('x',[log(freq.freq)],'y',...
+    %         [log(mean(new_nocebo_trl,1))],'color',...
+    %         [ones(1,641)])
+    %
+    % g=gramm('x',[log(dat.xfreq_trl)],'y',...
+    %         [log(dat.lora_trl)])
 
-    g=gramm('x',[log(freq.freq),log(freq.freq),log(freq.freq)],'y',...
-            [log(mean(placebo_trl,1)),log(mean(new_nocebo_trl,1)),...
-            log(mean(new_loraz_trl,1))],'color',...
-            [ones(1,641),ones(1,641)*2,ones(1,641)*3])
+    %add the mask to the data as an extra line, with different values....
+    id_m = ones(1,length(dat.idx_mask));
+    id_m(dat.idx_mask==0)=NaN;
+    id_m=id_m.*-64;
+    id_m=id_m';
 
-    g=gramm('x',[log(freq.freq)],'y',...
-            [log(mean(new_nocebo_trl,1))],'color',...
-            [ones(1,641)])
-
-    g=gramm('x',[log(dat.xfreq_trl)],'y',...
-            [log(dat.lora_trl)])
+    % g=gramm('x',[log(dat.xfreq_trl)],'y',...
+    %         id_m)
 
     % try and plot all the conditions with SEM.
     % colo_def = [ones(1,length(dat.placebo_trl)),ones(1,length(dat.placebo_trl))*2,ones(1,length(dat.placebo_trl))*3]';
-    x_ais = [log(dat.xfreq_trl);log(dat.xfreq_trl);log(dat.xfreq_trl)];
+    x_ais = [log(dat.xfreq_trl);log(dat.xfreq_trl);log(dat.xfreq_trl);log(dat.xfreq_trl)];
     g=gramm('x',x_ais,'y',...
-            [log(dat.placebo_trl),log(dat.nocebo_trl),log(dat.lora_trl)],'color',...
-            [ones(1,length(dat.placebo_trl)),ones(1,length(dat.placebo_trl))*2,ones(1,length(dat.placebo_trl))*3])
+            [log(dat.placebo_trl);log(dat.nocebo_trl);log(dat.lora_trl);id_m],'color',...
+            [ones(1,length(dat.placebo_trl)),ones(1,length(dat.placebo_trl))*2,ones(1,length(dat.placebo_trl))*3,ones(1,length(dat.placebo_trl))*4])
 
-    %plot the resting state.
-    x_ais = [log(dat.xfreq_rest);log(dat.xfreq_rest);log(dat.xfreq_rest)]';
-    g=gramm('x',x_ais,'y',...
-            [log(dat.placebo_rest),log(dat.nocebo_rest),log(dat.lora_rest)],'color',...
-            [ones(1,length(dat.placebo_rest)),ones(1,length(dat.placebo_rest))*2,ones(1,length(dat.placebo_rest))*3])
+    % %plot the resting state.
+    % x_ais = [log(dat.xfreq_rest);log(dat.xfreq_rest);log(dat.xfreq_rest)]';
+    % g=gramm('x',x_ais,'y',...
+    %         [log(dat.placebo_rest),log(dat.nocebo_rest),log(dat.lora_rest)],'color',...
+    %         [ones(1,length(dat.placebo_rest)),ones(1,length(dat.placebo_rest))*2,ones(1,length(dat.placebo_rest))*3])
 
 
     % g(2,1)=gramm('x',log(dat.xfreq),'y',log(dat.placebo_rest))
@@ -296,13 +318,13 @@ function plot_freq_numbers(~)
     g.axe_property('XTickLabel',x_labels)
     figure('Position',[100 100 800 800]);
     g.draw();
-    g.update('color',idx_mask)
+    % g.update('color',idx_mask)
     % freq.freq(idx_mask)
 
 
     % g.facet_grid('scale','free')
     g.facet_axes_handles.XLim=[0.4844 3.5];
-    g.facet_axes_handles.YLim=[-68 -62];
+    g.facet_axes_handles.YLim=[-69 -63];
 
     cd('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/plots/')
     %Name of figure
@@ -310,7 +332,7 @@ function plot_freq_numbers(~)
     %name filess
     formatOut = 'yyyy-mm-dd';
     todaystr = datestr(now,formatOut);
-    namefigure = sprintf('prelim4_FREQ_allconditions_trl_xlim35');%fractionTrialsRemaining
+    namefigure = sprintf('prelim4_FREQ_test_trl_xlim35');%fractionTrialsRemaining
     filetype    = filetyp;
     figurename = sprintf('%s_%s.%s',todaystr,namefigure,filetype);
     g.export('file_name',figurename,'file_type',filetype);
