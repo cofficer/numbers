@@ -21,8 +21,8 @@ for i in range(1, 2):
     #PBS -N %s
     #PBS -l walltime=%s
     #PBS -l %s
-    #PBS -o [path name of python script]/%s.out
-    #PBS -e [path name of python script]/%s.err
+    #PBS -o ./%s.out
+    #PBS -e ./%s.err
     cd $PBS_O_WORKDIR
     %s""" % (job_name, walltime, processors, job_name, job_name, command)
 
