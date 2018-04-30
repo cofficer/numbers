@@ -51,11 +51,15 @@ function [channelJump,trialnum]=findSquidJumps( data,cfgin ,oldtrl)
       trl_rem(1)=trl_ind_blockch;
       % plot(dat_plot(100,:),'g')
 
-      if oldtrl>2
-        trl_ind_blockch = trl_ind_blockch+round(oldtrl(2)/3500);
-        trl_rem(2)=trl_ind_blockch;
-        % dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
-        % plot(dat_plot(100,:),'k')
+
+      % Need exemption when only a single block is preprocessed
+      if ~length(oldtrl)==1
+        if oldtrl>2
+          trl_ind_blockch = trl_ind_blockch+round(oldtrl(2)/3500);
+          trl_rem(2)=trl_ind_blockch;
+          % dat_plot=data.trial{trl_ind_blockch}(ind_meg,:);
+          % plot(dat_plot(100,:),'k')
+        end
       end
 
       % saveas(gca,'test_fig_trl_blockchange.png','png')
