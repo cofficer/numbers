@@ -8,7 +8,7 @@ function run_parallel_Numbers(runcfg, cfgin)
 
   case 'preprocTrial'
     %restingPreprocNumbers(cfgin{1})
-    %cellfun(@restingPreprocNumbers, cfgin);
+    %cellfun(@taskPreprocNumbers, cfgin,'UniformOutput',false);
     nnodes = 1;%64; % how many licenses?
     stack = 1;%round(length(cfg1)/nnodes);
     qsubcellfun(@taskPreprocNumbers, cfgin, 'compile', 'no', ...
@@ -35,6 +35,7 @@ function run_parallel_Numbers(runcfg, cfgin)
 
     nnodes = 1;%64; % how many licenses?
     stack = 1;%round(length(cfg1)/nnodes);
+    %cellfun(@run_coherenceICA,cfgin,'UniformOutput',false)
     qsubcellfun(@run_coherenceICA, cfgin, 'compile', 'no', ...
     'memreq', 16*1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
 

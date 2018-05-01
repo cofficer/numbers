@@ -44,6 +44,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
   %If append all of the same session data restingpaths(1:4)
   %Then reduce number of cfgin to one per session.
+  % restingpaths(167)
   if dfa_append
 
     ib=diff(sid)
@@ -54,7 +55,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
     cfgin{idx_cfg}.restingfile             = restingpaths{icfg};%40 100. test 232, issues.
     cfgin{idx_cfg}.comp                    ='auto'; %decide load manual components or auto = manual/automatic
     namecfg{idx_cfg} = restingpaths{icfg};
-    %cfgin=cfgin{110}
+    %cfgin=cfgin{1}
     cfgin{idx_cfg}.blocktype                = blocktype; %trial or resting
     idx_cfg = idx_cfg + 1;
 
@@ -62,7 +63,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
   % if restingpaths(icfg).name(7) ~= '1' P01_S2_P3.mat
   %     restingpaths(icfg).name(7) = '3';
   % end
-  %idxn=[165,167,170]
+  %idxn=[167,170]
   %cfgin={cfgin{idxn}}
   %idxna=1:length(cfgin)
   %idxna(idxn)=[];
@@ -70,7 +71,7 @@ for icfg = 1:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
 end
 %Define script to run and whether to run on the torque
-runcfg.execute          = 'freq'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
+runcfg.execute          = 'preprocTrial'; %dfa , preprocTrial, parallel, findsquid, check_nSensors, ICA, cohICA
                                  %complete_trial,complete_rest
 %dfa
 runcfg.timreq           =  2000; % number of minutes.

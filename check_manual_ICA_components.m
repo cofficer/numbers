@@ -192,8 +192,10 @@ function comp=check_manual_ICA_components(blocktype)
     comp.P23_2_1=[17,22,29];
     comp.P23_2_2=[14,15];
     comp.P23_2_3=[12,22];
+    comp.P23_3_1=[12,18,28];
     comp.P23_3_2=[13,17,25];
     comp.P23_3_3=[11,17];
+    comp.P23_3_4=[16,15,19];
     comp.P23_3_5=[13,21,30];
 
     %Look deecomp.Per into comp.Part 24. Might just be that the removal of channels is a
