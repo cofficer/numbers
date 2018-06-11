@@ -50,7 +50,13 @@ function  data=run_coherenceICA( varargin )
 
         fclose(fid)
 
-      [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
+        if isfield(cfgin,'runblock')
+          data=varargin{2};
+          comp=varargin{3};
+          [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058',data,comp);
+        else
+          [val_corBlink,idx_corBlink] = coherenceICA(cfgin,'EEG058');
+        end
     end
     %component for heart rate
     if isfield(cfgin,'runblock')

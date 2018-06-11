@@ -71,6 +71,7 @@ function run_parallel_Numbers(runcfg, cfgin)
 
   case 'complete_trial'
     nnodes = 1;%64; % how many licenses?
+    %cellfun(@run_complete_trial, cfgin,'UniformOutput',false);
     stack = 1;%round(length(cfg1)/nnodes);
     qsubcellfun(@run_complete_trial, cfgin, 'compile', 'no', ...
     'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
@@ -85,6 +86,7 @@ function run_parallel_Numbers(runcfg, cfgin)
   case 'freq'
     nnodes = 1;%64; % how many licenses?
     stack = 1;%round(length(cfg1)/nnodes);
+    %cellfun(@run_freq, cfgin,'UniformOutput',false);
     qsubcellfun(@run_freq, cfgin, 'compile', 'no', ...
     'memreq', 1024^3, 'timreq', runcfg.timreq*60, 'stack', stack, 'StopOnError', false, 'backend', runcfg.parallel,'matlabcmd','matlab91');
 
