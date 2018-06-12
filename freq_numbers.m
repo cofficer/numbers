@@ -5,14 +5,23 @@ function freq_numbers(cfgin,block)
   %load each cfgin
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+  auto_clean = 'cleaned'; %cleaned or auto_task
 
 
   if strcmp(cfgin.blocktype,'trial')
-    cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/auto_task',cfgin.blocktype))
+    cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/%s',cfgin.blocktype,auto_clean))
     if strcmp(cfgin.restingfile(3),'_')
-      dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),block);
+      if strcmp(auto_clean,'cleaned')
+        dataset=sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      else
+        dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),block);
+      end
     else
-      dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
+      if strcmp(auto_clean,'cleaned')
+        dataset=sprintf('P%s_s%s_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+      else
+        dataset=sprintf('P%s_s%s_b%s_preproc_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
+      end
     end
     load(dataset)
   elseif strcmp(cfgin.blocktype,'resting')
@@ -76,9 +85,18 @@ function freq_numbers(cfgin,block)
   cd(sprintf('/mnt/homes/home024/chrisgahn/Documents/MATLAB/ktsetsos/%s/freq/',cfgin.blocktype))
   if strcmp(cfgin.blocktype,'trial')
     if strcmp(cfgin.restingfile(3),'_')
-      outputfile=sprintf('P%s_s%s_b%s_freq_task%d,.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),block);
+      if strcmp(auto_clean,'cleaned')
+        outputfile=sprintf('P%s_s%s_cleaned_b%s.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8));
+      else
+        outputfile=sprintf('P%s_s%s_b%s_freq_task%d.mat',cfgin.restingfile(2),cfgin.restingfile(5),cfgin.restingfile(8),block);
+      end
     else
       outputfile=sprintf('P%s_s%s_b%s_freq_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
+      if strcmp(auto_clean,'cleaned')
+        outputfile=sprintf('P%s_s%s_cleaned_b%s.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9));
+      else
+        outputfile=sprintf('P%s_s%s_b%s_freq_task%d.mat',cfgin.restingfile(2:3),cfgin.restingfile(6),cfgin.restingfile(9),block);
+      end
     end
   elseif strcmp(cfgin.blocktype,'resting')
     if strcmp(cfgin.restingfile(1),'0')
