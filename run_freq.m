@@ -8,8 +8,13 @@ function run_freq(cfgin)
   if strcmp(cfgin.blocktype,'resting')
     freq_numbers(cfgin,1)
   else
-    for block =1:3
+    auto_clean = 'cleaned'; %cleaned or auto_task
+    if strcmp(auto_clean,'cleaned')
+      block=1; %should not matter since cleaned is hardcoded twice. 
       freq_numbers(cfgin,block)
-    end
+    else
+      for block =1:3
+        freq_numbers(cfgin,block)
+      end
   end
 end
