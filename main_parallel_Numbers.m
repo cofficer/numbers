@@ -40,7 +40,7 @@ restingpaths  = restingpaths(idx_sort);
 %Loop all data files into seperate jobs
 dfa_append = 0; %TODO: append the separate trial blocks.
 idx_cfg    = 1;
-for icfg = 1:100%length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
+for icfg = 101:length(restingpaths)%20%84 %beein pre 16/11-17.%21:104 Running.
 
   %If append all of the same session data restingpaths(1:4)
   %Then reduce number of cfgin to one per session.

@@ -8,7 +8,7 @@ function all_dfa = create_dfa_table(~)
 
   clear all
 
-  trial_method = 'automatic'; %either manual or automatic
+  trial_method = 'manual'; %either manual or automatic
 
   intervals = [2 4;4 8;8 12;12 24; NaN NaN]; %Nan = <12
   % which_freq = 5;%Alpha 3

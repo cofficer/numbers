@@ -55,7 +55,7 @@ function run_dfa(varargin)
         cfg =[];
         cfg.bpfreq = intervals(i_val,:);
         cfg.bpfilter='yes';
-        cfg.bpfilttype='but';
+        cfg.bpfilttype='fir';
         cfg.channel = 'MEG';
         dataBP=ft_preprocessing(cfg,data);
       else
@@ -63,7 +63,7 @@ function run_dfa(varargin)
         cfg = [];
         cfg.fsample  = 500;
         cfg.lpfreq     = 12;
-        cfg.type     = 'but';
+        cfg.type     = 'fir';
         cfg.lpfilter ='yes';
         dataBP = ft_preprocessing(cfg,data);
       end
