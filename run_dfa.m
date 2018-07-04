@@ -45,7 +45,7 @@ function run_dfa(varargin)
     end
 
     %Define bandpass intervals
-    intervals = [2 4;4 8;8 12;12 24;NaN NaN];
+    intervals = [2 4;4 8;8 12;12 24;40 60;NaN NaN];
     % intervals = [1];
     for i_val = 1:length(intervals)
       disp(i_val)
